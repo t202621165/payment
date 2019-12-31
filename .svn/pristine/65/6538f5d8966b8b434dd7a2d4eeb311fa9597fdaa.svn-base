@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<title>sysSet.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+
+.bggray {
+	background: #f9f9f9;
+	font-size: 14px;
+	padding: 10px 10px 10px 0;
+	width: 120px;
+}
+
+.main-for input.text-word {
+	width: auto;
+}
+
+.main-for select {
+	width: auto;
+}
+
+#main-tab td {
+	font-size: 15px;
+	line-height: 25px;
+}
+
+.main-for {
+	padding: 5px;
+}
+
+label input {
+	cursor: pointer;
+}
+</style>
+<script th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+</head>
+<body>
+	<!--main_top-->
+	<form id="form">
+		<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+			th:cellpadding="0" id="searchmain">
+			<tr>
+				<td th:align="left" th:valign="top">
+					<!-- 网关上传 -->
+					<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+						th:cellpadding="0" id="main-tab" :controller="set">
+						<thead>
+							<tr>
+								<th th:colspan="6"
+									th:style="@{text-align: left;padding: 0 10px;color: #2790F7;}">网关上传</th>
+							</tr>
+						</thead>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">传奇网关：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" name="wg" id="wg"/>
+								<input type="button" value="上传" data-flag="upload" data-id="wg" class="btn-check btn-blue"/>
+								<label style="margin-left:10px;color:red">【有新版本网关再此处上传即可,上传后GM可在老版本网关点击升级网关,即可升级为最新网关,并且会自动备份老网关】</label>
+							</td>
+						</tr>
+						
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">通用网关：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" name="ty" id="ty"/>
+								<input type="button" value="上传" data-flag="upload" data-id="ty" class="btn-check btn-blue"/>
+								<label style="margin-left:10px;color:red">【有新版本网关再此处上传即可,上传后GM可在老版本网关点击升级网关,即可升级为最新网关,并且会自动备份老网关】</label>
+							</td>
+						</tr>
+						
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">传奇3网关：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" name="cq3" id="cq3"/>
+								<input type="button" value="上传" data-flag="upload" data-id="cq3" class="btn-check btn-blue"/>
+								<label style="margin-left:10px;color:red">【有新版本网关再此处上传即可,上传后GM可在老版本网关点击升级网关,即可升级为最新网关,并且会自动备份老网关】</label>
+							</td>
+						</tr>
+	
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td th:width="99+'%'" th:align="left" th:valign="top"
+					th:style="@{padding: 5px;}"></td>
+			</tr>
+			
+			<tr shiro:hasPermission="payee_wechat">
+				<td th:align="left" th:valign="top">
+					<!-- 网关上传 -->
+					<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+						th:cellpadding="0" id="main-tab" :controller="set">
+						<thead>
+							<tr>
+								<th th:colspan="6"
+									th:style="@{text-align: left;padding: 0 10px;color: #2790F7;}">微信支付证书</th>
+							</tr>
+						</thead>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">证书上传：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" name="cert" id="cert"/>
+								<input type="button" value="上传" data-flag="upload" data-id="cert" class="btn-check btn-blue"/>
+								<label style="margin-left:10px;color:red">【上传API安全证书才能进行微信代付】</label>
+							</td>
+						</tr>
+	
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td th:width="99+'%'" th:align="left" th:valign="top"
+					th:style="@{padding: 5px;}"></td>
+			</tr>
+			<tr>
+				<td th:align="left" th:valign="top">
+				<!-- 网站资源设置 -->
+					<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+						th:cellpadding="0" id="main-tab" :controller="set">
+						<thead>
+							<tr>
+								<th th:colspan="6"
+									th:style="@{text-align: left;padding: 0 10px;color: #2790F7;}">网站资源设置</th>
+							</tr>
+						</thead>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">网站logo：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="lg" accept="image/png"/>
+								<input type="button" th:value="上传" data-flag="res" data-id="lg" class="btn-check btn-blue"/>
+							</td>
+							<td>
+								<img src="/assets/images/web/logo.png" width="180" height="30" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【网站logo图片为png格式------建议尺寸:270 * 60 pixels】</label>
+							</td>
+						</tr>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray" style="padding: 10px 10px 10px 0;">网站logo(小)：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="lg_min" accept="image/png"/>
+								<input type="button" th:value="上传" data-flag="res" data-id="lg_min" class="btn-check btn-blue"/>
+							</td>
+							<td><img src="/assets/images/web/logo-min.png" width="50" height="30" style="margin-left: 5px;"></td>
+							<td><label style="margin-left:10px;color:red">【网站小logo图片为png格式------建议尺寸:105 * 60  pixels】</label></td>
+						</tr>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">首页横幅：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="index" accept="image/jpeg"/>
+								<input type="button" th:value="上传" data-flag="res" data-id="index" class="btn-check btn-blue"/>
+							</td>
+							<td>
+								<img src="/assets/images/web/index_banner.jpg" width="180" height="30" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【首页横幅图片为jpg格式------建议尺寸1920 * 800 pixels】</label>
+							</td>
+						</tr>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">注册横幅：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="register" accept="image/jpeg"/>
+								<input type="button" th:value="上传" data-flag="res" data-id="register" class="btn-check btn-blue"/>					
+							</td>
+							<td>
+								<img src="/assets/images/web/register_banner.jpg" width="180" height="30" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【注册横幅图片为jpg格式------建议尺寸:1920 * 400 pixels】</label>
+							</td>
+						</tr>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">资费横幅：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="fee" accept="image/jpeg"/>
+								<input type="button" value="上传" data-flag="res" data-id="fee" class="btn-check btn-blue"/>							
+							</td>
+							<td>
+								<img src="/assets/images/web/fee_banner.jpg" width="180" height="30" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【资费横幅图片为jpg格式------建议尺寸:1920 * 200 pixels】</label>
+							</td>
+						</tr>
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">我们横幅：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="us" accept="image/jpeg"/>
+								<input type="button" value="上传" data-flag="res" data-id="us" class="btn-check btn-blue"/>							
+							</td>
+							<td>
+								<img src="/assets/images/web/us_banner.jpg" width="180" height="30" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【关于我们横幅图片为jpg格式------建议尺寸:1024 * 250 pixels】</label>
+							</td>
+						</tr>
+						<tr shiro:hasPermission="payee_wechat" th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+							<td th:align="right" th:valign="middle"
+								class="borderright borderbottom bggray">二维码：</td>
+							<td th:align="left" th:valign="middle"
+								th:class="@{borderright borderbottom main-for}">
+								<input type="file" id="gzh" accept="image/jpeg"/>
+								<input type="button" value="上传" data-flag="res" data-id="gzh" class="btn-check btn-blue"/>							
+							</td>
+							<td>
+								<img src="/assets/images/web/gzh_ewm.jpg" width="60" height="60" style="margin-left: 5px;">
+							</td>
+							<td>
+								<label style="margin-left:10px;color:red">【微信公众号二维码】</label>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+	<script type="text/javascript">
+		$("input[data-id]").on("click", function() {
+			var e = $(this).attr("data-id");
+			var formData = new FormData();
+			var file = $("#"+e).get(0).files[0];
+			if (file) {
+				formData.append("file", file);
+				window.parent.upload("post","/man/"+$(this).attr("data-flag")+"/"+e,formData);
+			} else {
+				window.parent.error("请选择需要上传的文件！",2000);
+			}
+		});
+	</script>
+</body>
+</html>

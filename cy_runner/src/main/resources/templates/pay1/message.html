@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="pay/common/common :: header(false, 2)"></div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="pay-body">
+			<div class="tool-title msg-title img-png">
+				<h4>欢迎您对本系统进行留言反馈，您的满意是我们最大的动力！</h4>
+			</div>
+			<div class="order">
+				<form id="form-data" class="registry">
+					<div class="col-cz-1" style="*width: 95%;">
+						<div class="form-group col-cz-2-5">
+							<label class="lab-title">游戏分区<span style="color: red;">&nbsp;*</span>
+								<span class="pull-right lab-title-tip"></span>
+							</label>
+							<select id="partition" name="partitionId" data-rule="{required: true}" style="*font-size: 28px;*margin-top:13px;_margin-top:0;">
+		        				<option th:if="${!#lists.isEmpty(list) and #lists.size(list) != 1}" value="">--请选择分区--</option>
+	       						<option th:if="${!#lists.isEmpty(list)}" th:each="item:${list}" 
+	       							th:value="${item.id}" th:text="${item.name}"></option>
+	                        </select>
+						</div>
+						<div class="form-group col-cz-2-5">
+							<label class="lab-title">游戏账号<span style="color: red;">&nbsp;*</span>
+								<span class="pull-right lab-title-tip"></span>
+							</label>
+							<input type="text" name="account" placeholder="游戏账号" data-rule="{required: true}" />
+						</div>
+						<div class="form-group col-cz-2-5">
+							<label class="lab-title">联系ＱＱ<span class="pull-right lab-title-tip"></span>
+							</label>
+							<input type="text" name="qq" maxlength="11" placeholder="QQ号码" data-rule="{qqnumber: false}" />
+						</div>
+						<div class="form-group col-cz-2-5">
+							<label class="lab-title">联系电话
+								<span class="pull-right lab-title-tip"></span>
+							</label>
+							<input type="text" name="phone" maxlength="11" placeholder="手机号码" data-rule="{phonenumber: false}" />
+						</div>
+						<div class="form-group col-cz-1">
+							<label class="lab-title">留言内容<span style="color: red;">&nbsp;*</span>
+								<span class="pull-right lab-title-tip"></span>
+							</label>
+							<textarea name="content" style="height: 150px;resize: vertical;" data-rule="{length: [1, 255]}"></textarea>
+						</div>
+						<div class="form-group col-cz-1">
+							<button id="form-commit" class="btn btn-success2" type="button">确　定</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</form>
+			</div>
+			
+			<div th:replace="pay/common/common :: remark"></div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+	
+	<script type="text/javascript" src="/assets/js/recharge.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$.message();
+		});
+	</script>
+</body>
+</html>

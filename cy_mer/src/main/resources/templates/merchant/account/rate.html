@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">结算比率</span></div>
+			
+			<form id="search" :controller="merproduct">
+				<div class="content-body no-padding" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<table class="table table-hover">
+						<thead :skip='true'>
+							<tr>
+								<th>#</th>
+								<th>产品名称</th>
+								<th>结算费率(%)</th>
+								<th>状态</th>
+								<th th:if="${false}">排序</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${!#lists.isEmpty(products)}" th:each="item, itemState:${products}">
+								<td th:text="${itemState.index + 1}"></td>
+								<td th:text="${item.productName}"></td>
+								<td th:text="${item.rate}"></td>
+								<td>
+									<label th:if="${item.pType == 0}" th:for="${'serviceState'+itemState.index}" class="label-box no-margin no-float">
+										<input th:id="${'serviceState'+itemState.index}" class="switch" type="checkbox" th:value="${item.productId}" th:checked="${item.state}"/>
+										<span class="box-switch"><i></i></span>
+									</label>
+									<span th:if="${item.pType == 1}">--</span>
+								</td>
+								<td th:if="${false}">
+									<input class="form-control text-center sort" type="text" th:id="${item.productId}" size="1" th:attr="data-sort=${item.sort}" th:value="${item.sort}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript">
+		$(function (){
+			$(".switch").on("click", function() {
+				var _this = this;
+				$.ajax({
+					url: "merproduct/state",
+					load: false,
+					data: {productId: _this.value},
+					success: function(data) {
+						$.modalmsg(_this.checked?"【已启用】":"【已禁用】");
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

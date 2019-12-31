@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" class="ancient-ie old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" class="ancient-ie old-ie  bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" class="old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 9]>
+<html id="ie9" class="old-ie9 bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8) | !(IE 9)  ]><!-->
+<html class="bit-html" dir="ltr" lang="zh-CN"  
+	xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<!--<![endif]-->
+	<head th:replace="merchant/common :: head"></head>
+	
+	<style class="column_class qfy_style_class">
+		input:-webkit-autofill { 
+			box-shadow: 0 0 0px 1000px #f5f5f5 inset !important; 
+			text-fill-color: white;
+		}
+		@media only screen and (min-width: 992px) {
+			.qfy-column-1-5d69f40de680c24312>.column_inner {
+				padding: 0 50px 50px;
+			}
+			section.section.qfy-row-1-5d69f4042e196724529 {
+				padding: 20px 15px;
+				min-height: 300px;
+			}
+		}
+		
+		@media only screen and (max-width: 992px) {
+			.qfy-column-1-5d69f40de680c24312>.column_inner {
+				margin: 0 auto 0 !important;
+				padding: 0 50px 30px;
+			}
+		
+			.qfy-column-1-5d69f40de680c24312>.column_inner>.background-overlay,
+			.qfy-column-1-5d69f40de680c24312>.column_inner>.background-media {
+				width: 100% !important;
+				left: 0 !important;
+				right: auto !important;
+			}
+			.bit-html section.section.qfy-row-1-5d69f4042e196724529 {
+				padding: 20px 15px;
+				min-height: 300px;
+			}
+		}
+	</style>
+	
+	<body onkeydown="if(event.keyCode==13){$('#form-commit').click();}" class="content-fullwidth">
+		<div class="bodyheader0">
+
+			<!-- !Header -->
+			<header th:replace="merchant/common :: header(1)"></header>
+
+			<section class="qfy-row-1-5d69f4042e196724529 section" style="min-height: 750px;">
+				<div class="background-media" style="background-image: url('/assets/images/bg-about.jpg');background-repeat:no-repeat;background-size:cover;background-attachment:scroll;"></div>
+
+				<div class="background-overlay" style="background-color: rgba(56,48,37,0.3);"></div>
+
+				<div class="container" style="max-width: 1280px;margin: 0 auto;">
+					
+					
+					<div class="row qfe_row" style="padding: 0 40px;">
+						<div class="qfy-column-1-5d69f40de680c24312">
+							<div class="column_inner animated fadeIn" style="margin-top:100px;position:relative;animation-delay: .2s; animation-name: fadeIn;">
+								<div class=" background-overlay grid-overlay-0" style="background-color:rgba(0,0,0,0.2);width:100%;"></div>
+								<div class="column_containter" style="z-index:3;position:relative;">
+									<div m-padding="40px 0px 7px 0px" p-padding="40px 0px 7px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_iozd5"
+									 class="qfy-element qfy-text qfy-text-72314 qfe_text_column qfe_content_element  mobile_fontsize19 "
+									 style="position: relative;line-height:1.5em;background-repeat: no-repeat;padding-top:40px;padding-bottom:7px;">
+										<div class="qfe_wrapper">
+											<div style="position: relative;">
+												<div style="text-align: center;color:#FFFFFF;">
+													<img src="/assets/images/web/logo-min.png" style="vertical-align: bottom;">
+													<span style="font-family: 微软雅黑;font-size: 36px;height: 60px;line-height: 60px">&nbsp;·&nbsp;公司简介</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="qfy-element qfy-text qfy-text-84377 qfe_text_column qfe_content_element  mobile_fontsize12 "
+									 style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:20px;margin-bottom:0;padding-top:10px;padding-bottom:0;padding-right:0;padding-left:0;border-radius:0px;">
+										<div class="qfe_wrapper">
+											<span style="color:#FFFFFF;font-size: 14px;" th:text="${webInfo.about}"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row qfe_row" style="padding: 0 40px;">
+						<div class="qfy-column-1-5d69f40de680c24312">
+							<div class="column_inner" style="margin-top:50px;position:relative;animation-delay: .2s; animation-name: fadeInUp;">
+								<div class=" background-overlay grid-overlay-0" style="background-color:rgba(0,0,0,0.2);width:100%;"></div>
+								<div class="mobile_fontsize19" style="z-index:3;position:relative;">
+									<div class="mobile_fontsize19" style="position: relative;padding:20px 10px 30px;text-align: center;color: #FFFFFF;">
+										<span style="font-family: 微软雅黑;font-size: 25px;">在线客服</span>
+									</div>
+									<div style="display: flex;justify-content: center;">
+										<div th:if="${webInfo != null and !#strings.isEmpty(webInfo.servicePhone)}" data-animaleinbegin="bottom-in-view" data-animalename="qfyfadeInUp" class="vc_span2_4 vc_mobile qfyanimated" data-dw="1/5" style="animation-name: qfyfadeInUp;">
+											<a href="javascript:;" style="color: #ffffff;">
+												<p style="text-align: center;">
+													<img style="max-width:100%;" class="vc_icon_element-icon" src="/assets/images/24hours.png">
+												</p>
+												<p class="mobile_fontsize12" style="text-align: center;margin: 10px;">服务热线</p>
+												<p class="mobile_fontsize12" style="text-align: center;" th:text="${webInfo.servicePhone}"></p>
+											</a>
+										</div>
+										<div th:if="${!#lists.isEmpty(qqNumbers)}" th:each="item:${qqNumbers}" data-animaleinbegin="bottom-in-view" data-animalename="qfyfadeInUp" class="vc_span2_4 vc_mobile qfyanimated" data-dw="1/5" style="animation-name: qfyfadeInUp;">
+											<a th:href="${'tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin='+item[1]}">
+												<p style="text-align: center;">
+													<img style="max-width:100%;" class="vc_icon_element-icon" src="/assets/images/inline.png">
+												</p>
+												<p class="mobile_fontsize12" style="text-align: center;margin: 10px;"><img style="max-width:100%;" src="/assets/images/qq.jpg"></p>
+												<p class="mobile_fontsize12" style="text-align: center;color: #ffffff;" th:text="${item[0]}"></p>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+				</div>
+			</section><!-- #section -->
+		</div><!-- #bodyheader0 -->
+		
+		<div th:replace="merchant/common :: footer"></div>
+	</body>
+
+</html>

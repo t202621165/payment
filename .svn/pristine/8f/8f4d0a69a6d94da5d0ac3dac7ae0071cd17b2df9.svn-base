@@ -1,0 +1,27 @@
+package com.cypay.common.repository.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.cypay.common.entity.ReissueRecord;
+import com.cypay.common.repository.BaseRepository;
+
+@Repository
+public interface ReissueRecordRepository extends BaseRepository<ReissueRecord, Long> {
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM ReissueRecord r WHERE r.partition.id = ?1")
+	int deleteByPartitionId(Long id);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM ReissueRecord r WHERE r.partition.id IN(?1)")
+	int deleteByPartitionIds(List<Long> ids);
+
+}

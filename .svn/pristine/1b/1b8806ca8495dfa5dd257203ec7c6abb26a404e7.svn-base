@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>多渠道兑换平台</title>
+
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="Keywords"
+	content="畅游计费系统,SDK接入/渠道接入/运营管理工具/客服管理工具/游戏上线,iwanol,深圳市爱玩在线网络科技有限公司">
+<meta name="description"
+	content="畅游计费系统——深圳市爱玩在线网络科技有限公司，畅游针对游戏研发运营接入提供的一站式接入解决方案，平台以接入、运营工具为业务切入点，向游戏开发者、游戏运营、游戏客服、游戏玩家提供对应的业务支持，平台核心模块包括：SDK接入、渠道接入、运营管理工具、客服管理工具、游戏上线等等。开发者可以通过线上申请、接入、提测的方式，提升游戏上线前的接入效率，以此更好的统一平台用户，拓展平台需求。">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link href="/assets/css/web/animate.css" rel="stylesheet">
+<link href="/assets/css/web/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/web/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/assets/css/web/jq1.10.2.js"></script>
+<script type="text/javascript" src="/assets/css/web/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="merchant/common/common :: webHeader"></div>
+	<!-- top结束 -->
+	<div
+		style=" background:url(/assets/images/web/fee_banner.jpg) no-repeat center; height:280px; margin-top:110px;background-size: 100%;"></div>
+	<!--  -->
+	<div class="container">
+		<div class="title">
+			<h1 class="animated fadeInLeft" style="visibility: visible;">资费标准</h1>
+		</div>
+		<div class="row">
+			<table width="100%" border="0" cellspacing="0"
+				class="table table-bordered table-hover payRate-table">
+				<tbody id ="feeBody"></tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<footer>
+		<div th:replace="merchant/common/common :: webFooter"></div>
+	</footer>
+	
+</body>
+</html>

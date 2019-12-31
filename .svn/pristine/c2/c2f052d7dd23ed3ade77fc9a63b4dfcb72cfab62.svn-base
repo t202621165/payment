@@ -1,0 +1,50 @@
+package com.cypay.common.vo;
+
+import java.math.BigDecimal;
+
+import com.cypay.common.entity.GalleryRate;
+
+public class GalleryRateVo extends GalleryRate {
+
+	private static final long serialVersionUID = 1L;
+	
+	private Long productId;
+	
+	private String productName;
+	
+	private String typeMark;
+	
+	public GalleryRateVo(Long productId, String productName,String typeMark, Long id, BigDecimal rate, String reqUrl) {
+		this.productId = productId;
+		this.productName = productName;
+		this.typeMark = typeMark;
+		setId(id);
+		setRate(rate);
+		setReqUrl(reqUrl);
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getTypeMark() {
+		return typeMark;
+	}
+
+	public void setTypeMark(String typeMark) {
+		this.typeMark = typeMark;
+	}
+	
+}

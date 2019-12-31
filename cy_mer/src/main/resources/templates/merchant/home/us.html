@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title th:text="${webInfo.webName}"></title>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="Keywords"
+	content="畅游计费系统,SDK接入/渠道接入/运营管理工具/客服管理工具/游戏上线,iwanol,深圳市爱玩在线网络科技有限公司">
+<meta name="description"
+	content="畅游计费系统——深圳市爱玩在线网络科技有限公司，畅游针对游戏研发运营接入提供的一站式接入解决方案，平台以接入、运营工具为业务切入点，向游戏开发者、游戏运营、游戏客服、游戏玩家提供对应的业务支持，平台核心模块包括：SDK接入、渠道接入、运营管理工具、客服管理工具、游戏上线等等。开发者可以通过线上申请、接入、提测的方式，提升游戏上线前的接入效率，以此更好的统一平台用户，拓展平台需求。">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link href="/assets/css/web/animate.css" rel="stylesheet">
+<link href="/assets/css/web/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/web/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/assets/css/web/jq1.10.2.js"></script>
+<script type="text/javascript" src="/assets/css/web/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="merchant/common/common :: webHeader"></div>
+	<div class="mb-header"></div>
+	<!--aboutUs area-->
+	<section>
+		<div class="warp-container">
+			<div class="warp1">
+				<div class="col-sm-12 container"
+					style="width: ;position: relative;top: 30px;padding-bottom: 50px;margin-bottom: 20px;">
+					<div class="container">
+						<!--<p class="animated fadeInLeft" style="text-align: center;font-size: 40px;color: #009FE2;">关于我们</p>
+							<p class="animated fadeInRight" style="text-align: center;font-size: 20px;margin-bottom: 20px;">Contact us</p>-->
+						<img src="/assets/images/web/us_banner.jpg" style="width: 100%;" />
+
+						<p class=" animated fadeInUp"
+							style="font-size: 16px;font-weight: bold;color: #019f6a;height: 40px;line-height: 40px;border-bottom: 1px solid #ccc;">关于我们</p>
+						<p class=" animated fadeInRight"
+							style="font-size: 14px;color: #666;line-height: 40px;overflow: hidden;" th:text="${webInfo.about}"></p>
+
+						<p class="animated fadeInUp"
+							style="font-size: 16px;font-weight: bold;color: #019f6a;height: 40px;line-height: 40px;border-bottom: 1px solid #ccc;">公司地址</p>
+						<p class="animated fadeInRight"
+							style="font-size: 14px;color: #666;line-height: 40px;overflow: hidden;"  th:text="${webInfo.companyAddress}">--</p>
+						<p class="animated fadeInUp"
+							style="font-size: 16px;font-weight: bold;color: #019f6a;height: 40px;line-height: 40px;border-bottom: 1px solid #ccc;">联系电话</p>
+						<p th:if="${!#strings.isEmpty(webInfo.servicePhone)}" class="animated fadeInRight"
+							style="font-size: 14px;color: #666;line-height: 40px;overflow: hidden;">24小时热线电话：<span th:text="${webInfo.servicePhone}"></span></p>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer>
+		<div th:replace="merchant/common/common :: webFooter"></div>
+	</footer>
+	
+</body>
+</html>

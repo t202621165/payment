@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <name>JavaWEB</name>
+        <author>老毕</author>
+        <price>182</price>
+    </book>
+    <book>
+        <name>SSH</name>
+        <author>老于</author>
+        <price>152</price>
+    </book>
+</books>

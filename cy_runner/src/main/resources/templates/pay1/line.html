@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="pay/common/common :: header(true, -1)"></div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="pay-body">
+			<div class="tool-title">
+				<h4>若当前线路无法访问，请尝试更换其它线路！</h4>
+			</div>
+			<div class="order">
+				<fieldset class="lines">
+					<legend>若当前线路无法访问，请尝试更换其它线路</legend>
+					<ul th:if="${!#lists.isEmpty(list)}">
+						<li th:each="item:${list}" th:if="${item.state}">
+							<a th:href="${item.domainName}" th:text="${item.name}" title="点击前往充值"></a>
+						</li>
+					</ul>
+				</fieldset>
+			</div>
+			<div class="des-remark">
+				<div class="title-block"><i></i>注意事项</div>
+				<p>1.游戏内卖元宝的都是骗子，请不要相信，以免上当受骗。</p>
+				<p>2.为了保证您的资金安全，充值前请关掉外挂，以免被病毒劫持导致资金被转移。</p>
+				<p>3.充值结束后如果对订单结果有疑问请记住订单ID，咨询平台客服。</p>
+			</div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+	
+</body>
+</html>

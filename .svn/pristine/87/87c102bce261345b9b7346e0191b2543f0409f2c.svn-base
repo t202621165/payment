@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>list.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<form id="form" :controller="daifu">
+	<!--main_top-->
+	<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" id="searchmain">
+		<tr>
+			<td th:width="99+'%'" th:align="left" th:valign="top">您的位置：<span
+				th:text="代付列表"></span>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+					<div th:class="searchDiv" th:align="left">
+						<div th:class="search-input">
+							<div th:class="search-input-top">
+								<span id="paging">每页数量：</span>
+								<div th:replace="manage/common/common_js :: pageSize"></div>
+							</div>
+						</div>						
+
+						<div th:class="search-input">
+							<div th:class="search-input-top">
+								<div>
+									<input :click="@render.add()"
+										type="button" th:value="添加"
+										th:class="@{btn-check btn-default btn-query}">
+								</div>
+							</div>
+						</div>
+					</div>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+
+				<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+					th:cellpadding="0" id="main-tab">
+					<thead id="tableTitle">
+						<tr>						
+							<th th:align="center" th:valign="middle" th:class="borderright">编号</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">名称</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">代付类型</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">付款账号</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">付款备注</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">操作</th>
+						</tr>
+					</thead>
+					<tbody id="dataBody" :for="($index,item) in @data.content">
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">							
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}"
+								:text="$index + 1">1</td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}" :text="@item.markName"></td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}" :text="@item.mark=='alipay'?'支付宝':'微信'">
+								<span :if="@item.mark == 'alipay'"></span>
+								<span :if="@item.mark == 'wechat'"></span>
+							</td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}" :text="@item.email">
+							</td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}" :text="@item.remark">
+							</td>													
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}">								
+								<input type="button" th:value="编辑" :click="@render.add(item)" th:class="@{btn-check btn-default}" style="margin-left:5px;">		
+		        				<input type="button" th:value="删除" :click="@render.del(item.id);" th:class="@{btn-check btn-red}" th:style="@{margin-left:5px;}">
+							</td>
+						</tr>
+					</tbody>					
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top" th:class="fenye"
+				th:style="@{text-align: left;}">
+				<div th:replace="manage/common/common_js :: fenye"></div>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script>
+		var layerClose;
+		var options = {
+			add:function(e){
+				layerClose = window.parent.daifuUI(e);
+			},
+			del:function(e){
+				window.parent.del("/man/daifu/delete",e,"是否删除该代付配置?");
+			}
+		}
+		var paging = $.paging("daifu",options,"#form");
+		var reload = function() {
+			layerClose && layerClose();
+			paging.query();
+		};
+	</script>
+</body>
+</html>

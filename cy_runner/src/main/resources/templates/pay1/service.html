@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="pay/common/common :: header(false, 1)"></div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="pay-body">
+			<div class="tool-title service-title img-png">
+				<h4>客服人员在线处理您的反馈！</h4>
+			</div>
+			<div th:if="${service != null and service.serviceState and !#strings.isEmpty(service.servicePhone)}">
+				<div class="title-block"><i></i>服务热线</div>
+				<h2 style="width: 90%;margin: 10px auto;" th:text="${service.servicePhone}"></h2>
+			</div>
+			
+			<div th:if="${service != null and service.serviceState and !#lists.isEmpty(gameQQNumbers)}">
+				<div class="title-block"><i></i>游戏客服</div>
+				<div class="col-cz-1" style="margin-bottom: 20px;">
+					<ul class="generic-nav" style="width: 90%;margin: 20px auto;">
+						<li th:each="item:${gameQQNumbers}">
+							<p><img class="img-png" src="/assets/images/inline.png" /></p>
+							<p style="font-weight: bold;" th:text="${item[0]}"></p>
+							<p id="qq-number" th:text="${item[1]}"></p>
+							<a class="service-qq" data-tooltip-title="点击联系客服" 
+								th:href="${'tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin='+item[1]}"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div th:if="${!#lists.isEmpty(platformQQNumbers)}">
+				<div class="title-block"><i></i>平台客服</div>
+				<div id="platform" class="col-cz-1" style="margin-bottom: 20px;">
+					<ul class="generic-nav" style="width: 90%;margin: 20px auto;">
+						<li th:each="item:${platformQQNumbers}">
+							<p><img class="img-png" src="/assets/images/inline.png" /></p>
+							<p style="font-weight: bold;" th:text="${item[0]}"></p>
+							<p id="qq-number" th:text="${item[1]}"></p>
+							<a class="service-qq" data-tooltip-title="点击联系客服" 
+								th:href="${'tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin='+item[1]}"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			
+			<div th:replace="pay/common/common :: remark"></div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+	
+</body>
+</html>

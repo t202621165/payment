@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="index, follow">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>登陆</title>
+	<style type="text/css">
+		* {margin: 0;padding: 0;box-sizing: border-box;}
+		html,body {height: 100%}
+		body {position: relative;min-width: 400px;background: #000;}
+		.container {width: 400px;margin: 0 auto;padding: 100px 10px 0;}
+		@media screen and (max-width: 768px) {.container {width: 100%;}}
+		.logger {
+		    background-color: #fff;
+		    right: 0;
+		    top: 150px;
+		    border-radius: 0 0 2px 2px;
+		    padding: 30px 20px 20px;
+		    font-size: 14px;
+		    z-index: 999;
+		}
+		.form-group {position: relative;margin-bottom: 25px;}
+		.form-group input {
+		    width: 100%;
+		    height: 40px;
+		    border-radius: 2px;
+		    color: #999;
+		    padding: 4px 4px 4px 36px;
+		    background: #FFFFFF;
+		    border: 1px solid rgb(229, 230, 231);
+		    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		    -webkit-transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+		}
+		.form-group input:focus {outline: 0;border-color: #008194;}
+		.btn {
+			width: 100%;
+		    cursor: pointer;
+		    padding: 10px 19px;
+		    font-size: 15px;
+		    line-height: 1.4;
+		    border-radius: 2px;
+		    border: none;
+		    font-weight: normal;
+		    background-color: #008194;
+		    color: #FFFFFF;
+		    outline: none;
+		    -webkit-font-smoothing: subpixel-antialiased;
+		    transition: border .25s linear, color .25s linear, background-color .25s linear;
+		}
+		.btn:active {-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.25);box-shadow: inset 0 3px 5px rgba(0,0,0,.25);}
+		.title {
+			border-radius: 2px 2px 0 0;
+		    padding: 10px;
+		    background: #008194;
+		    text-align: center;
+		    color: #fff;
+		    font-weight: bold;
+		    font-size: 20px;
+		}
+		img {border: 0;user-select: none;}
+		#data_code {
+		    font-family: Arial;
+		    font-style: italic;
+		    font-size: 25px;
+		    letter-spacing: 3px;
+		    font-weight: bolder;
+		    float: right;
+		    cursor: pointer;
+		    width: 115px;
+		    height: 40px;
+		    line-height: 40px;
+		    text-align: center;
+		    vertical-align: middle;
+		    border: 1px solid #ccc;
+		    background: #FFFFFF;
+		    border-radius: 2px;
+		    -ms-user-select: none;
+		    -moz-user-select: none;
+		    -webkit-user-select: none;
+		}
+		i.icon-login.user {background-position-y: -32px;}
+		i.icon-login.pwd {background-position-y: -64px;}
+		.form-group i.icon-login {
+		    background-image: url(/assets/images/icon.png);
+		    background-repeat: no-repeat;
+		    width: 30px;
+		    height: 30px;
+		    display: inline-block;
+		    position: absolute;
+		    top: 5px;
+		    left: 5px;
+		}
+		.msg {
+			position: absolute;
+			color: #fff;
+			background: #ca0c16;
+		    padding: 5px 10px;
+		    text-align: center;
+		    width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div th:if="${!#strings.isEmpty(msg)}" class="msg" th:text="${msg}"></div>
+	<div class="container">
+		<div class="title">商户登陆</div>
+		<div class="logger">
+			<form id="form-data" action="/mer/signin">
+				<div class="form-group">
+					<input class="i-login" type="text" id="account" name="account" th:value="${account}" placeholder="用户名" />
+					<i class="icon-login user"></i>
+				</div>
+				<div class="form-group">
+					<input class="i-login" type="password" id="password" name="password" th:value="${password}" placeholder="密码" />
+					<i class="icon-login pwd"></i>
+				</div>
+				<div class="form-group" id="code">
+					<input class="i-login" type="text" id="vcode" name="code" maxlength="4" placeholder="验证码" style="width: 160px;"/>
+					<i class="icon-login"></i>
+					<span id="data_code" class="tooltips-bottom" title="点击更换验证码">
+						<img alt="验证码"  th:src="${'/mer/code?'+#strings.randomAlphanumeric(8)}" style="width: 110px;border-radius: 4px;" onclick="this.src='/mer/code?'+Math.random()">
+					</span>
+				</div>
+				<div class="form-group" style="margin-bottom: 0">
+					<button id="form-commit" class="btn" type="button">登　录</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<script th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#form-commit").click(function() {
+				var account = document.getElementById("account");
+				if (!account.value) {
+					alert("用户名不能为空！");
+					account.focus();
+					return;
+				}
+				var password = document.getElementById("password");
+				if (!password.value) {
+					alert("密码不能为空！");
+					password.focus();
+					return;
+				}
+				var code = document.getElementById("vcode");
+				if (!code.value) {
+					alert("请输入验证码！");
+					code.focus();
+					return;
+				}
+				
+				document.getElementById("form-data").submit();
+			});
+		});
+	</script>
+</body>
+
+</html>

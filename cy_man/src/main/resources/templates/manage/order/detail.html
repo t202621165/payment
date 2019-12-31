@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>detail.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<script th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+<script th:src="@{/assets/js/clock.js}"></script>
+<script th:src="@{/assets/js/sdmenu.js}"></script>
+<script th:src="@{/assets/js/jquery.common.js}"></script>
+</head>
+
+<body>
+	<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" class="order-detail-tab">
+		<tr>
+			<td th:align="center" th:valign="middle" class="borderright borderbottom bggray font-weight">系统订单 </td>
+			<td th:align="center" th:valign="middle" class="borderright borderbottom main-for" th:text="${order.orderNumber}">--</td>
+			<td th:align="center" th:valign="middle" class="borderright borderbottom bggray font-weight">服务订单 </td>
+			<td th:align="center" th:valign="middle" class="borderright borderbottom main-for" th:text="${order.supNumber == null? '--' : order.supNumber}">--</td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">商户账号</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.account}">--</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">分　　区</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.partitionName}">--</td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">玩家账号</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.playerAccount}">--</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">充值方式</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span th:text="${order.productName}"></span>(<span th:style='@{color: Red;}' th:text="${order.galleryName}"></span>) </td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">下单时间</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.orderDate}">--</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">完成时间</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.payDate == null? '--' : order.payDate}">--</td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">订单金额</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.amount}"></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">付款金额 </td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span style='color: Red;' th:text="${order.payAmount}"></span></td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">赠送金额</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span class='red_font' th:text="${order.giveAmount}"></span></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">红包赠送</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span class='red_font' th:text="${order.redPacketAmount}"></span></td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">商户收入</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.merchantProfit}"></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">商户比率</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span th:style="@{color:red}" th:text="${order.rankRate}"></span><span th:style="@{color:red}">%</span></td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">平台收入</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.platformProfit}"></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">平台比率</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span th:style="@{color:red}" th:text="${order.galleryRate}"></span><span th:style="@{color:red}">%</span></td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">订单尾额</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.tailAmount}"></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">尾额比率</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span th:style="@{color:red}" th:text="${order.tailRate}"></span><span th:style="@{color:red}">%</span></td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">兑换比例</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for">1 ：<span th:text="${order.ratio}"></span></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">订单状态</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for">
+				<div class="tag default" th:if="${order.state == 0}">未支付</div>
+				<div class="tag success" th:if="${order.state == 1}">成　功</div>
+				<div class="tag primary" th:if="${order.state == 2}">等待下发</div>
+				<div class="tag danger" th:if="${order.state == 3}">已退款</div>
+			</td>
+		</tr>
+		<tr>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">玩家ＩＰ</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" style="color:green" th:text="${order.playerIp}"></td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">玩家ＱＱ</td>
+			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.playerQQ == null ? '--' : order.playerQQ}"></td>
+		</tr>
+<!-- 		<tr> -->
+<!-- 			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">兑换结果</td> -->
+<!-- 			<td th:align='center' th:valign='middle' class="borderright borderbottom main-for"><span th:style='@{color: #FF0000;}' th:text="兑换失败"></span></td> -->
+<!-- 			<td th:align='center' th:valign='middle' class="borderright borderbottom bggray font-weight">下发道具</td> -->
+<!-- 			<td th:colspan='3' th:align='center' th:valign='middle' class="borderright borderbottom main-for" th:text="${order.remarks}">--</td> -->
+<!-- 		</tr> -->
+		<tr th:if="${order.state == 1 or order.state == 2}">
+			<td colspan='4' th:align='center' th:valign='middle' class="borderright borderbottom main-for">
+				<input type="button" th:onclick="${'window.parent.refund('+order.orderNumber+')'}" value="退款" class="btn-check btn-red"/>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

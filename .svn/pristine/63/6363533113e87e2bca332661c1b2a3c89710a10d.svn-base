@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "com.payment.mark",
+    "type": "java.lang.String",
+    "description": "唯一标识"
+  },
+  {
+    "name": "com.payment.name",
+    "type": "java.lang.String",
+    "description": "网站名称/标题"
+  },
+  {
+    "name": "com.payment.ssid",
+    "type": "java.lang.String",
+    "description": "服务集合标识符"
+  }
+]}

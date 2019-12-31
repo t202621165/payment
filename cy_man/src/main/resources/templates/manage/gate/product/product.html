@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>product.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<form id="form" th:object="${product}">
+		<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+			th:cellpadding="0" id="main-tab">
+			<tbody class="active-tb baseInfo">
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>产品名称</td>
+					<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+						<input type="hidden" th:field="*{id}"/>
+						<input type="hidden" th:field="*{sort}">
+						<input class="text-word" type="text" th:field="*{name}" placeholder="输入产品名称" th:style="@{width:100%}">
+					</td>
+				</tr>
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>产品标识</td>
+					<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+						<input class="text-word" type="text" th:field="*{mark}" placeholder="输入产品标识" th:style="@{width:100%}"></td>
+				</tr>			
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>产品类型</td>
+					<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+						<select th:field="*{typeMark}" class="level" style="width:100%">
+							<option value="alipay">支付宝</option>
+							<option value="wechat">微信</option>
+							<option value="hbpay">花呗</option>
+							<option value="tenpay">财付通</option>
+							<option value="qpay">QQ钱包</option>
+							<option value="union">银联扫码</option>
+							<option value="ebank">网银支付</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>默认通道</td>
+					<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+						<select name="gallery.id" class="level" style="width:100%" :controller="gallerys">
+							<option value="">-默认通道-</option>
+							<option :for="($index, item) in @data" :if="@item.support[@dup.typeMark]" 
+								:text="@item.name" th:attr="ms-attr='{value: @item.id,selected:@item.id=='+*{galleryId}+'}'"></option>
+						</select>
+					</td>
+				</tr>
+				
+			</tbody>
+			<tfoot>
+				<tr
+					th:onmouseout="@{this.style.backgroundColor=&quot;#ffffff&quot;}"
+					th:onmouseover="@{this.style.backgroundColor=&quot;#edf5ff&quot;}"
+					th:style="@{background-color: rgb(255, 255, 255);}">
+					<td th:align='center' th:colspan="2" class="main-for">
+						<input id="commit" type="button" value="提交" class="text-but">
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script th:inline="javascript">
+		var options = {
+			id : {
+				id : "gallerys"
+			},
+			query : {
+				type : "get",
+				url : "/man/gallerys",
+				form : "#form"
+			}
+		};
+		var vm = work(options);
+		vm.dup = {typeMark: $("#typeMark").val()};
+		vm.query();
+		
+		$("#typeMark").on("change", function() {
+			vm.dup.typeMark = $("#typeMark").val();
+		});
+	
+		$("#commit").on("click", function() {
+			$.ajax({
+				type : "post",
+				url : "/man/product/save",
+				data : $("#form").serialize(),
+				success : function(data) {
+					parent.success(data.msg, 2000);
+					data.ele && $("input[name="+data.ele+"]").focus();
+					if (data.state) {
+						parent.mainFrame.paging.query();
+						var index = window.parent.layer.getFrameIndex(window.name);
+						window.parent.layer.close(index);
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay1/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="pay1/common/common :: header(false, -1)"></div>
+	<!-- header End-->
+	
+	<!-- container -->
+	<div id="successful" class="container">
+		<div id="window"></div>
+		<div class="pay-body" style="width: 96%;margin: 0 auto 50px;border: 0;background: #ededed;padding: 0;position: relative;">
+			<div id="window-top"></div>
+			<div class="order" th:object="${returnVo}">
+				<div class="text-center" style="background: #1abc9c;padding: 30px 0;color: #FFFFFF;">
+					<div style="line-height: 80px;display: inline-block;margin: 10px 0;">
+						<img class="img-png" src="/assets/images/successful.png" style="float: left;*float: none;">
+						<h1 style="display: inline-block;padding-left: 30px;font-size: 40px;">支付成功！</h1>
+					</div>
+					<p style="font-size: 15px;">如有疑问请联系客服</p>
+				</div>
+				<div class="successful">
+					<div class="successful-title">订单编号：</div>
+					<div class="successful-content" th:text="*{orderNumber}"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="successful">
+					<div class="successful-title">实付金额：</div>
+					<div class="successful-content">
+						<span class="font-name" th:text="*{#numbers.formatCurrency(payAmount + tailAmount)}"></span>&nbsp;元
+					</div>
+					<div class="clear"></div>
+					<div class="successful-title">支付方式：</div>
+					<div class="successful-content" th:text="*{productName}"></div>
+					<div class="clear"></div>
+					<div class="successful-title">游戏大区：</div>
+					<div class="successful-content" th:text="*{partitionName}"></div>
+					<div class="clear"></div>
+					<div class="successful-title">游戏账号：</div>
+					<div class="successful-content" th:text="*{playerAccount}"></div>
+					<div class="clear"></div>
+					<div th:if="*{remarks != null and remarks != ''}">
+						<div class="successful-title">充值奖励：</div>
+						<div class="successful-content" th:text="*{remarks}"></div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="des-remark" style="padding: 10px 10px 20px;background: #ffffff;">
+				<div class="title-block"><i></i>注意事项</div>
+				<p style="color: #e60013;">本次充值奖励已下发至您的充值帐号，如有疑问，请勿领取奖励，并及时与客服联系！</p>
+			</div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay1/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay1/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">获取代码</span></div>
+			
+			<div class="content-body">
+				<div class="node-body flow-hide">
+					<div class="col-xs-3">
+						<div class="node-info">
+							<div class="node-info-name">游戏分组：</div>
+							<div class="node-info-value form">
+								<select id="group" class="form-control">
+									<option th:value="${'_m/'+merchant.uuid}">-请选择-</option>
+								</select>
+							</div>
+						</div>
+						<div class="node-info">
+							<div class="node-info-name">充值站点：</div>
+							<div class="node-info-value form">
+								<select id="line" class="form-control"></select>
+							</div>
+						</div>
+						<div class="node-info text-center">
+							<a id="payurls" class="btn" th:href="${'payurls_m/'+merchant.uuid}" th:attr="download=${'pay/'+merchant.account}">下载多线路充值文件</a>
+						</div>
+						<div :controller="float-style" class="box-nomargin">
+							<h3 class="text-aqua">预览</h3>
+							<div class="col-xs-1 float-style" :controller="float-style" style="display: inline-block;">
+								<label for="status1" class="label-box checkbox2 no-float">
+									<input id="status1" type="radio" name="status" value="1" :duplex="@data.status" :click="@check">
+									<i class="radio default"></i>开启
+								</label>
+								<label for="status2" class="label-box checkbox2 no-float">
+									<input id="status2" type="radio" name="status" value="0" :duplex="@data.status" :click="@check">
+									<i class="radio default"></i>关闭
+								</label>
+							</div>
+							<h3 class="text-aqua">飘浮样式</h3>
+							<div class="col-xs-1 float-style" :controller="float-style" style="display: inline-block;">
+								<label for="float-1" class="label-box checkbox2 no-float">
+									<input id="float-1" type="radio" name="float-style" value="1" :duplex="@data.style" :click="@check" checked>
+									<i class="radio default"></i>普通样式
+								</label>
+								<label for="float-2" class="label-box checkbox2 no-float">
+									<input id="float-2" type="radio" name="float-style" value="2" :duplex="@data.style" :click="@check">
+									<i class="radio default"></i>随机飘浮
+								</label>
+								<label for="float-3" class="label-box checkbox2 no-float">
+									<input id="float-3" type="radio" name="float-style" value="3" :duplex="@data.style" :click="@check">
+									<i class="radio default"></i>对联飘浮
+								</label>
+							</div>
+							<h3 class="text-aqua">飘浮图片</h3>
+							<div class="col-xs-1 text-center check-style">
+								<label for="style1" class="label-box checkbox2 no-float">
+									<input id="style1" type="radio" name="image-style" 
+										value="1" :duplex="@data.img" :click="@check" checked>
+									<i class="radio default"></i>样式一
+								</label>
+								<label for="style2" class="label-box checkbox2 no-float">
+									<input id="style2" type="radio" name="image-style" 
+										value="2" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式二
+								</label>
+								<label for="style3" class="label-box checkbox2 no-float">
+									<input id="style3" type="radio" name="image-style" 
+										value="3" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式三
+								</label>
+								<label for="style4" class="label-box checkbox2 no-float">
+									<input id="style4" type="radio" name="image-style" 
+										value="4" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式四
+								</label>
+							</div>
+							<div class="col-xs-1 text-center check-style">
+								<label for="style5" class="label-box checkbox2 no-float">
+									<input id="style5" type="radio" name="image-style" 
+										value="5" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式五
+								</label>
+								<label for="style6" class="label-box checkbox2 no-float">
+									<input id="style6" type="radio" name="image-style" 
+										value="6" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式六
+								</label>
+								<label for="style7" class="label-box checkbox2 no-float">
+									<input id="style7" type="radio" name="image-style" 
+										value="7" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式七
+								</label>
+								<label for="style8" class="label-box checkbox2 no-float">
+									<input id="style8" type="radio" name="image-style" 
+										value="8" :duplex="@data.img" :click="@check">
+									<i class="radio default"></i>样式八
+								</label>
+							</div>
+						</div>
+						<div class="col-xs-1 text-center">
+							<button id="get-code" class="btn no-margin">复制飘浮代码</button>
+						</div>
+					</div>
+					
+					<div class="col-xs-7 codes">
+						<div class="col-xs-1">
+							<h3 class="text-aqua" style="margin-top: 0;">充值链接</h3>
+							<div class="pre-code" style="color: #cc7832;">
+								<code><span class="domainName"></span><span class="uuid" th:text="${'/pay/partition_m/'+merchant.uuid}"></span></code>
+								<span class="copy-code">复制</span>
+							</div>
+						</div>
+						
+						<div class="col-xs-1">
+							<h3 class="text-aqua">
+								发布站来源统计
+								<label class="label-box no-margin pull-right">
+									<input type="checkbox" th:attr="data-type=${system.isIps?3:''}" th:checked="${merchant.isIps}" th:disabled="${!system.isIps}"/>
+									<span class="box-switch" th:classappend="${system.isIps?'':'disable'}" 
+										th:attr="data-tooltip-title=${system.isIps?'开启/关闭发布站统计':'系统已关闭当前功能'}"><i></i></span>
+								</label>
+							</h3>
+							<div class="pre-code">
+								<code style="color: #bed6ff;word-wrap: break-word;" th:text="${'&lt;script type=''text/javascript''&gt;var path = ''%3Cscript type=\''text/javascript\'' src=\'''+domain+'/mer/flow/record?u='+merchant.uuid+'&c=''+escape(document.referrer)+''\''%3E%3C/script%3E'';document.write(unescape(path));&lt;/script&gt;'}"></code>
+								<span class="copy-code">复制</span>
+							</div>
+							<p>代码功能：统计玩家从哪个广告站进的您的网站,直接进入您网站的玩家不记录访问数据。</p>
+							<p>使用说明：复制该代码加入到网站首页底部的&lt;/body&gt;前面即可。</p>
+						</div>
+						<div class="col-xs-1">
+							<h3 class="text-aqua">
+								登录器访问统计
+								<label class="label-box no-margin pull-right">
+									<input type="checkbox" th:attr="data-type=${system.isLogin?4:''}" th:checked="${merchant.isLogger}" th:disabled="${!system.isLogin}"/>
+									<span class="box-switch" th:classappend="${system.isLogin?'':'disable'}" 
+										th:attr="data-tooltip-title=${system.isLogin?'开启/关闭登录器访问统计':'系统已关闭当前功能'}"><i></i></span>
+								</label>
+							</h3>
+							<div class="pre-code">
+								<code th:text="${'&lt;script type=''text/javascript'' src='''+domain+'/mer/game/record?u='+merchant.uuid+'''&gt;&lt;/script&gt;'}"></code>
+								<span class="copy-code">复制</span>
+							</div>
+							<p>代码功能：统计玩家运行登陆器的次数。</p>
+							<p>使用说明：复制该代码加到登陆器右边广告页面底部的&lt;/body&gt;前面即可。</p>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+		</div>
+		<!-- content End-->
+	</div>
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/zclip/jquery.zclip.min.js"></script>
+	
+	<div id="float-code" :controller="float-code" :visible="@data.status==1">
+		<div style="position: fixed;z-index:999;top: 30%;" :if="@data.style==2">
+			<a href="javascript:;" target="_blank" title="点击前往充值">
+				<img style="border: none;" class="image-style" th:attr="ms-attr='{src: \''+${domain}+'/assets/images/mer/style\'+@data.img+\'.png\'}'">
+			</a>
+			<script data-float-id type="text/javascript" th:src="${domain+'/assets/js/floating.js'}"></script>
+		</div>
+		<div style="position: fixed;z-index:999;top: 30%;" :if="@data.style==3">
+			<a href="javascript:;" target="_blank" title="点击前往充值">
+				<img style="border: none;" class="image-style" th:attr="ms-attr='{src: \''+${domain}+'/assets/images/mer/style\'+@data.img+\'.png\'}'">
+			</a>
+		</div>
+		<div style="position: fixed;z-index:999;top: 30%;right: 0;" :if="@data.style!=2">
+			<a href="javascript:;" target="_blank" title="点击前往充值">
+				<img style="border: none;" class="image-style" th:attr="ms-attr='{src: \''+${domain}+'/assets/images/mer/style\'+@data.img+\'.png\'}'">
+			</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			$._tooltip();
+			$("#group").combobox({
+				isDefault: true,
+				url: "group/list",
+				valueField: "uuid",
+				valuePrefix: "_g/",
+				change: function(data, ele) {
+					if (ele.val()) {
+						$(".uuid").text("/pay/partition" + ele.val());
+						$("#payurls").attr("href", "payurls" + ele.val());
+					}
+				}
+			});
+			$("#line").combobox({
+				isDefault: true,
+				url: "line",
+				valueField: "domainName",
+				execute: true,
+				change: function(data, ele) {
+					if (ele.val()) {
+						$(".domainName").text(ele.val());
+					}
+				}
+			});
+			
+			$(".copy-code").zclip({
+				path: '/assets/js/zclip/ZeroClipboard.swf',
+				copy: function (){
+					return $(this).prev().text();
+				},
+				beforeCopy: function() {
+					this.style.background = "#f3eacb";
+				},
+				afterCopy: function() {
+					this.style.background = "#FFFFFF";
+                    $.modalmsg("\u2714 \u590D\u5236\u6210\u529F");
+				}
+			});
+			
+			$("#get-code").zclip({
+				path: '/assets/js/zclip/ZeroClipboard.swf',
+				copy: function (){
+					$("#float-code a").attr("href", $("#line").val() + "/pay/partition" + $("#group").val());
+					var _code = $("#float-code").clone();
+					_code.children(":first").css({
+						"top": "30%",
+						"left": ""
+					});
+					return _code.html();
+				},
+				afterCopy: function() {
+                    $.modalmsg("\u2714 \u590D\u5236\u6210\u529F");
+				}
+			});
+			$("input[data-type]").on("click", function() {
+				var type = $(this).attr("data-type");
+				type && $.ajax({
+					url: "switch",
+					data: {type: type},
+					success: function(data) {
+						$.modalmsg(data.msg, data.state?"":"danger");
+					}
+				});
+			});
+			var code = avalon.define({
+				$id: "float-code",
+				data: {
+					status: 0,
+					style: 1,
+					img: 1
+				}
+			});
+			avalon.define({
+				$id: "float-style",
+				data: {
+					status: 0,
+					style: 1,
+					img: 1
+				},
+				check: function() {
+					code.data = this.data;
+				}
+			});
+		});
+	</script>
+</body>
+</html>

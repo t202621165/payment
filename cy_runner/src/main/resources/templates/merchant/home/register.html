@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" class="ancient-ie old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" class="ancient-ie old-ie  bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" class="old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 9]>
+<html id="ie9" class="old-ie9 bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8) | !(IE 9)  ]><!-->
+<html class="bit-html" dir="ltr" lang="zh-CN"  
+	xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<!--<![endif]-->
+	<head th:replace="merchant/common :: head"></head>
+	
+	<style class="column_class qfy_style_class">
+		input:-webkit-autofill { 
+			box-shadow: 0 0 0px 1000px #f5f5f5 inset !important; 
+			text-fill-color: white;
+		}
+		@media only screen and (min-width: 992px) {
+			.qfy-column-1-5d69f40de680c24312>.column_inner {
+				padding: 0 50px 20px;
+			}
+			section.section.qfy-row-1-5d69f40de5fb6871427 {
+				padding: 50px 0;
+			}
+	
+			section.section.qfy-row-1-5d69f40de5fb6871427>.container {
+				max-width: 680px;
+				margin: 0 auto;
+			}
+			.modal-dialog {
+			    width: 680px;
+				margin: 0 auto;
+			}
+			.qfy-column-1-5d69f4042e9bd554753>.column_inner {
+				padding-bottom: 0 0 20px 0;
+			}
+			section.section.qfy-row-1-5d69f4042e196724529 {
+				padding: 20px 15px;
+				min-height: 300px;
+			}
+		}
+		
+		@media only screen and (max-width: 992px) {
+			.qfy-column-1-5d69f40de680c24312>.column_inner {
+				margin: 0 auto 0 !important;
+				padding-left: 33px;
+				padding-right: 28px;
+				padding-top: 56px;
+				padding-bottom: 88px;
+			}
+		
+			.qfy-column-1-5d69f40de680c24312>.column_inner>.background-overlay,
+			.qfy-column-1-5d69f40de680c24312>.column_inner>.background-media {
+				width: 100% !important;
+				left: 0 !important;
+				right: auto !important;
+			}
+			.bit-html section.section.qfy-row-1-5d69f40de5fb6871427 {
+				padding-left: 0;
+				padding-right: 0;
+				padding-top: 1px;
+				padding-bottom: 0;
+				margin-top: 0;
+				min-height: 0;
+			}
+			.bit-html section.section.qfy-row-1-5d69f4042e196724529 {
+				padding: 20px 15px;
+				min-height: 300px;
+			}
+			.qfy-column-1-5d69f4042e9bd554753>.column_inner {
+				margin: 0 auto 0 !important;
+				min-height: 0 !important;
+				padding-left: 0;
+				padding-right: 0;
+				padding-top: 0;
+				padding-bottom: 20px;
+			}
+
+			.qfy-column-1-5d69f4042e9bd554753>.column_inner>.background-overlay,
+			.qfy-column-1-5d69f4042e9bd554753>.column_inner>.background-media {
+				width: 100% !important;
+				left: 0 !important;
+				right: auto !important;
+			}
+		}
+	</style>
+	
+	<body onkeydown="if(event.keyCode==13){$('#form-commit').click();}" class="content-fullwidth">
+		<div class="bodyheader0">
+
+			<!-- !Header -->
+			<header th:replace="merchant/common :: header(3)"></header>
+
+			<section class="qfy-row-1-5d69f4042e196724529 section">
+				<div class="background-media" style="background-image: url('/assets/images/bg-index.jpg');background-repeat:no-repeat;background-size:cover;background-attachment:scroll;"></div>
+
+				<div class="background-overlay" style="background-color: rgba(0,0,0,0.6);"></div>
+
+				<div class="container" style="max-width: 1280px;margin: 0 auto;">
+					<div class="animated fadeInLeft" style="top: 100px;position: absolute;width: 100%;animation-delay: .3s; animation-name: fadeInLeft;">
+						<p class="mobile_fontsize15" style="text-align: center;font-family:verdana;color:#FFFFFF;font-size: 28px;letter-spacing: 1px;">
+							<span>我们将为您提供更<span style="font-size:35px;color:#f1501a;font-family: 微軟正黑體;">优质、高效</span>的服务</span></span>
+						</p>
+						<p class="mobile_fontsize27" style="line-height:1.5em;padding-top:30px;text-align: center;">
+							<span style="color:#FFFFFF;font-family: 微軟正黑體;font-size: 35px;letter-spacing: 1px;">感谢您的选择！</span>
+						</p>
+					</div>
+				</div>
+			</section>
+			
+			<section class="qfy-row-1-5d69f40de5fb6871427 section">
+
+				<div class="container qfy-column-1-5d69f40de680c24312">
+					<div class="column_inner animated fadeInRight" style="position:relative;animation-delay: .2s; animation-name: fadeInRight;box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);border-radius: 4px;background-color: rgba(255, 255, 255, 0.9);">
+						<div style="text-align: center;color:#f0501a;padding: 10px 0;">
+							<span style="font-family: 微软雅黑;font-size: 35px;">商户注册</span>
+						</div>
+						<form id="form-data" class="registry" style="position: relative;z-index: 3;">
+							<input th:if="${uuid != null and uuid != ''}" type="hidden" name="uuid" th:value="${uuid}">
+							<div class="form-group">
+								<label class="lab-title">用户名<span style="color: red;">&nbsp;*</span><span class="icon-help tooltips-bottom" data-tooltips="账号由3-10个英文字母或数字组成"></span></label>
+								<input type="text" name="account" placeholder="请输入用户名" data-rule="{account: [3,10]}" data-rule-msg="账号由3-10个英文字母或数字组成"/>
+							</div>
+							<div class="form-group">
+								<label class="lab-title">用户昵称<span style="color: red;">&nbsp;*</span><span class="icon-help tooltips-bottom" data-tooltips="昵称由2-8个字符组成"></span></label>
+								<input type="text" name="nickname" placeholder="请输入用户昵称" data-rule="{length: [2,8]}" data-rule-msg="昵称由2-8个字符组成" />
+							</div>
+							<div class="form-group">
+								<label class="lab-title">密　码<span style="color: red;">&nbsp;*</span><span class="icon-help tooltips-bottom" data-tooltips="密码由6-20个英文字母、数字或下划线组成"></span></label>
+								<input id="pwd" type="text" name="password" placeholder="请输入密码" data-rule="{pwd: true}" onfocus="this.type = 'password'"/>
+							</div>
+							<div class="form-group">
+								<label class="lab-title">确认密码<span style="color: red;">&nbsp;*</span></label>
+								<input type="password" placeholder="请再一次输入密码" data-rule="{equalto: 'pwd'}" data-rule-msg="两次密码输入不一致！" />
+							</div>
+							<div class="form-group">
+								<label class="lab-title">Q　Q<span style="color: red;">&nbsp;*</span></label>
+								<input type="text" name="qqNumber" maxlength="11" placeholder="请输入QQ号码" data-rule="{qqnumber: true}" data-rule-msg="QQ号码输入有误！" />
+							</div>
+							<div class="form-group">
+								<label class="lab-title">手机号码<span style="color: red;">&nbsp;*</span></label>
+								<input type="text" name="phoneNumber" maxlength="11" placeholder="请输入手机号码" data-rule="{phonenumber: true}" />
+							</div>
+							<div class="form-group" th:if="false">
+								<label class="lab-title">验证码<span style="color: red;">&nbsp;*</span></label>
+								<input type="text" name="code" placeholder="请输入验证码" data-rule="{required: true}" data-rule-msg="请输入验证码！" style="width: 200px;"/>
+								<span id="data_code" class="tooltips-bottom" data-tooltips="点击更换验证码">
+									<img src="/mer/code" style="width: 110px;border-radius: 4px;" onclick="this.src='/mer/code?'+Math.random()">
+								</span>
+							</div>
+							<div class="form-group">
+								<label for="clause" class="switch-box">
+									<input id="clause" type="checkbox" />
+									<i></i>&nbsp;&nbsp;我同意并承诺遵守本站的
+								</label>
+								<a class="clause" href="javascript:;">服务条款和隐私政策</a>
+							</div>
+							<div class="form-group" style="margin: 0;">
+								<button id="form-commit" class="btn btn-success2 disabled required-clause" type="button">注　册</button>
+								<hr style="border-color: #9aa99b;"/>
+								<button class="btn white" type="button" onclick="window.location.href = '/'">已经有帐号了？请登录</button>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</section>
+			
+		</div><!-- #page -->
+		
+		<div th:replace="merchant/common :: footer"></div>
+		
+		<div id="modal-clause" class="modal-shade" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">麒麟兑换平台注册协议</h4>
+						<span class="modal-close clause-close">×</span>
+					</div>
+					<div class="modal-body" style="height: 480px;overflow: auto;padding: 20px 30px;">
+						(1) 无论用户事实上是否在注册之前认真阅读了本服务协议，只要用户点击注册页面的“我同意”选项，并按照网站注册程序成功注册为用户，即视为用户已经全文阅读并接受本服务协议之全部内容，本服务协议即在本公司和用户之间签订，对双方具有约束力。<br>
+						<br>
+						(2) 本协议仅系本公司与本网站用户间因使用本网站而产生的权利义务关系，不涉及本网站用户之间因网上交易而产生的法律关系及法律纠纷。<br>
+						<br>
+						<h3>第一部分 定义</h3>
+						1、 本平台台是国内最大，最专业的从事点卡交易的平台（注：并非担保交易平台）<br>
+						2、 用户及用户注册 用户必须是具备完全民事行为能力的自然人，或者是具有合法经营资格的组织。无民事行为能力人、限制民事行为能力人以及无经营资格或无特定经营资格的组织违反规定以任何方式注册为本网站 用户或超过其民事权利或行为能力范围从事交易，其注册行为及与本公司之间的服务协议均自始无效，本网站一经发现，有权立即注销该用户，并追究其使用本网站“服务”的一切法律责任。用户注册是指用户登录本网站，按要求填写相关信息并确认同意履行相关用户协议的过程。
+						用户因进行交易、获取有偿服务或接触本网站服务器而发生的所有应纳税赋，以及一切硬件、软件、服务及其他方面的费用均由用户自己承担并负责自行支付。 本网站仅作为本公司为注册用户提供的进行虚拟物品交易的网络交易平台，并通过该平台向用户提供在线交易支持服务。
+						<br><br>
+						<h3>第二部分 权利义务</h3>
+						<h4>一、用户权利和义务</h4>
+						1、用户有权利拥有自己在本网站的通行证，包括但不限于用户名、登录密码及交易密码，并有权利使用自己的用户名及密码随时登录本网站交易平台。用户不得以任何形式擅自转让或授权他人使用自己在本网站注册的用户名。<br>
+						2、由于点卡的使用（包含神州行卡）都是一次性使用的，因此用户在销售过程请认真选择卡正确的面值，如因用户自己提交错误面值造成的损失由您自己承担。 <br>
+						3、用户在本网站进行网上交易过程中如与其他用户因交易产生纠纷，可以请求网站从中予以协调。用户如发现其他用户有违法或违反本服务协议的行为，可以向本网站进行反映要求处理。如用户因网上交易与其他用户产生诉讼的，用户有权通过司法部门要求本网站提供相关资料。<br>
+						4、用户有义务在注册时提供自己的真实资料，并保证诸如电子邮件地址、联系电话等内容的真实性、有效性及安全性，保证本网站及其他用户可以通过上述联系方式与自己进行联系。同时，用户也有义务在相关资料实际变更时及时更新有关注册资料。用户保证不以他人资料在本网站进行注册或认证。用户保证当绑定注册信息（包括但不限于电子邮件、银行帐户）丢失或失效时，及时与本网站联系，并注销该帐户。<br>
+						5、用户应当保证在使用本网站网上交易平台进行交易过程中遵守本站交易原则，所有出售点卡的款项是直接划到您交易的用户的帐户中的，因此在请买卖双方确保对对方的充分信任后再进行交易，本站只负责对卡的及时处理，并不参与买卖双方的交易。<br>
+						6、用户在本网站网上交易平台上不得发布各类违法或违规信息。<br>
+						7、用户在本网站网上交易平台上不得买卖国家禁止销售的或限制销售的物品，不得买卖侵犯他人知识产权或其他合法权益的物品，也不得买卖违背社会公共利益或公共道德的或是本网站认为不适合在本网站上销售的物品。<br>
+						8、用户承诺自己在使用本网站时实施的所有行为遵守国家法律、法规和本网站的相关规定以及各种社会公 共利益或公共道德。对于任何法律后果的发生，用户将以自己的名义独立承担所有相应的法律责任。<br>
+						9、不作商业性利用。用户同意，不对本网站及其任何资料作商业性利用，包括但不限于在未经本网站事先书面同意的情况下，以复制、传播等方式使用在本网站上展示的任何资料。<br>
+						10、用户同意接收来自本网站的信息。<br><br>
+						<h4>二、本网站权利和义务</h4>
+						1、本网站有义务在现有技术上维护整个网上交易平台的正常运行，并努力提升和改进技术，使用户网上交易活动能够顺利进行。<br>
+						2、对用户在注册使用本网站网上交易平台中所遇到的与交易或注册有关的问题及反映的情况，本网站将会及时做出回复。<br>
+						3、对于在本网站网上交易平台上的不当行为或其它任何本网站认为应当终止服务的情况，本网站有权随时做出删除相关信息、终止服务提供等处理，而无须征得用户的同意。如用户违反本协议及Eypay相关规则、声明等内容，Eypay有权采取包括但不限于限制订单、锁定用户名、封锁个别IP、终止服务直至永久锁定用户账户等一项或多项处理措施。<br>
+						4、鉴于网上交易平台的特殊性，本网站没有义务对用户的注册资料、所有的交易行为以及与交易有关的其他事项进行事先审查，但如存在下列情况，本网站有权根据不同情况选择保留或删除相关信息以及选择继续或停止对该用户提供服务，并追究相关法律责任：<br>
+						&emsp;（1）用户或其他第三方通知本网站，认为某个具体用户或具体交易事项可能存在重大问题；<br>
+						&emsp;（2）用户或其他第三方向本网站告知交易平台上有违法或不当行为的，本网站以普通非专业交易者的知识水平标准对相关内容进行判别，可以明显认为这些内容或行为具有违法或不当性质的；<br>
+						5、用户在本网站网上交易过程中如与其他用户因交易产生纠纷，请求本网站从中予以调处，经本网站审核后，本网站有权通过电子邮件等联系方式向纠纷双方了解情况，并将所了解的情况通过电子邮件等联系方式互相通知对方。<br>
+						6、用户因在本网站从事网上交易与其他用户产生诉讼的，用户通过司法部门或行政部门依照法定程序要求本网站提供相关资料，本网站应积极配合并提供有关资料。<br>
+						7.、本网站有权对用户的注册资料及交易行为进行查阅，发现注册资料或交易行为中存在任何问题或怀疑，均有权向用户发出询问及要求改正的通知或者直接做出删除等处理。<br>
+						8、经国家生效法律文书或行政处罚决定确认用户存在违法行为，或者本网站有足够事实依据可以认定用户存在违法或违反服务协议行为的，本网站有权选择下列一种或多种处理措施进行处理：<br>
+						&emsp;（1）中止或终止用户网上交易权限；<br>
+						&emsp;（2）注销或删除用户帐户；<br>
+						&emsp;（3）在本网站交易平台及所在网站上以网络发布形式公布用户的违法行为。<br>
+						9、对于用户在本网站交易平台发布的下列各类信息，本网站有权在不通知用户的前提下进行删除或采取其他限制性措施，该类信息包括但不限于：<br>
+						&emsp;（1）以规避费用为目的；<br>
+						&emsp;（2）本网站有理由相信存在欺诈等恶意或虚假内容；<br>
+						&emsp;（3）本网站有理由相信与网上交易无关或不是以交易为目的；<br>
+						&emsp;（4）本网站有理由相信该信息违反公共利益或可能严重损害本网站和其他用户合法利益的；<br>
+						&emsp;（5）其他可能损害本网站、本网站其他用户或公共利益信息。<br>
+						10、许可使用权。用户以此授予本网站独家的、全球通用的、永久的、免费的许可使用权利 (以及对该许可使用权进行再授权的权利)，使本网站有权(全部或部份地)使用、复制、修订、改写、发布、翻译、分发、执行和展示用户公示于网站的各类信息或制作其派生作品和或以现在已知或日后开发的任何形式、媒体或技术，将上述信息纳入其他作品内。<br>
+						11、关于Cookies的限制， 本网站会在用户的电脑上设定或取用cookies。 本网站允许那些在本网站网页上发布广告的公司到用户电脑上设定或取用cookies。在用户登录时获取资料，本网站使用cookies
+						可为您用户提供个性化服务。 如果拒绝所有 cookies，用户将不能使用需要登录的本网站产品及服务内容。<br><br>
+						<h3>第三部分 服务的中断和终止 </h3>
+						1、用户同意，本网站可自行全权决定以任何理由(包括但不限于本网站认为您已违反本协议的字面意义和
+						精神，或以不符合本协议的字面意义和精神的方式行事，或您在超过90天的时间内未以您的帐户及密 码登录网站等) 随时终止用户的“服务”密码、帐户 (或其任何部份)
+						或您对“服务”的使用，并删除（不再保存）用户在使用“服务”中提交的“用户资料”，但已经收取手续费或服务费的，前述“终止”和/或“删除”行为应在交易完成后执行。同时本网站可自行全权决定，在发出通知或不发出通知的情况下，随时停止提供“服务?”或其任何部份。帐户终止后，本网站没有义务为您保留原帐户中或与之相关的任何信息，或转发任何未曾阅读或发送的信息给您或第三方。此外，您同意，本网站不就终止您接入“服务”而对您或任何第三者承担任何责任。<br>
+						2、如用户向本网站提出注销注册用户身份时，经本网站审核同意，由本网站注销该注册用户，用户即解除 与本网站的服务协议关系。但注销该用户帐户后，本网站仍保留下列权利：<br>
+						&emsp;（1）用户注销后，本网站有权保留该用户的注册资料及以前的交易行为记录；<br>
+						&emsp;（2）用户注销后，如用户在注销前在本网站交易平台上存在违法行为或违反合同的行为，本网站仍可行使本服务协议所规定的权利。<br>
+						3、在下列情况下，本网站可不经通知用户并以注销用户的方式终止服务： <br>
+						&emsp;（1）在用户违反本服务协议相关规定时，本网站有权终止向该用户提供服务； <br>
+						&emsp;（2）如该用户在被本网站终止提供服务后，再一次直接或间接或以他人名义注册为本网站用户的，本网站有权再次单方面终止向该用户提供服务；<br>
+						&emsp;（3）如本网站通过用户提供的信息与用户联系时，发现用户在注册时填写的电子邮箱已不存在或无法接收电子邮件的，经本网站以其他联系方式通知用户更改，而用户在三个工作日内仍未能提供新的电子邮箱地址的，本网站有权终止向该用户提供服务；<br>
+						&emsp;（4）一旦本网站发现用户注册资料中主要内容是虚假的，本网站有权随时终止向该用户提供服务；<br>
+						&emsp;（5）本服务协议终止或更新时，用户未确认新的服务协议的；<br>
+						&emsp;（6）其它本网站认为需终止服务的情况。<br>
+						4、服务中断、终止之前用户交易行为的处理。因用户违反法律法规或者违反服务协议规定而致使本网站中断、终止对用户服务的，对于服务中断、终止之前用户交易行为依下列原则处理：<br>
+						&emsp;（1）服务中断、终止之前，用户已经上传至本网站的物品尚未交易或尚未交易完成的，本网站有权在中断、终止服务的同时删除此项物品的相关信息。<br>
+						&emsp;（2）服务中断、终止之前，用户已经就其他用户出售的具体物品作出要约，但交易尚未结束，本网站有权在中断或终止服务的同时删除该用户的相关要约。<br>
+						&emsp;（3）服务中断、终止之前，用户已经与另一用户就具体交易达成一致，本网站可以不删除该项交易，但本网站有权在中断、终止服务的同时将用户被中断或终止服务的情况通知用户的交易对方。<br>
+						5、因网站升级或维护或其他技术需要导致本网站需要中断服务的，本网站将在中断服务时通知用户。但任何原因导致本网站终止或中断服务，本公司及本网站均不承担任何责任，用户因此遭受的各项损失，由用户本人自行承担。<br><br>
+						<h3>第四部分 责任范围</h3>
+						本公司、本公司的关联公司和相关实体在任何情况下均不就因本公司的网站、本公司的服务或本协议而产生的或与之有关的利润损失或任何特别、间接或后果性的损害（无论以何种方式产生，包括疏忽）承担任何责任。用户同意就用户自身行为之合法性单独承担责任。用户同意，本公司和本公司的所有关联公司和相关实体对本公司用户的行为的法性及产生的任何结果不承担责任。
+						用户明确理解和同意，本公司及本网站不对因下述任一情形而发生的任何损害赔偿（包括但不限于利润、商誉、使用、数据等方面的损失或其他无形损失的损害赔偿，且无论本公司和/或本网站是否已被告知该等损害赔偿的可能性)承担任何责任：<br>
+						&emsp;（1）使用或未能使用“服务”。<br>
+						&emsp;（2）用户因通过“服务”购买或获取任何货物、样品、数据、资料或服务，或通过或从“服务”接收任何信息或缔结任何交易所产生的获取替代货物和服务的费用。<br>
+						&emsp;（3）第三方未经批准的接入或第三方更改您的传输资料或数据，第三方对“服务”的声明或关于“服务”的行为；<br>
+						&emsp;（4）因任何原因而引起的与“服务”有关的任何其他事宜，包括但不限于疏忽。<br>
+						5、因网站升级或维护或其他技术需要导致本网站需要中断服务的，本网站将在中断服务时通知用户。但任何原因导致本网站终止或中断服务，本公司及本网站均不承担任何责任，用户因此遭受的各项损失，由用户本人自行承担。<br><br>
+						<h3>第五部分 免责条款</h3>
+						鉴于本公司不参与本网站用户之间的实际交易，用户如与一名或多名其他用户发生争议，用户应就上述争议 产生的或在任何方面与上述争议有关的每一种类和性质的已知或未知、可疑或非可疑、披露或未披露的索赔、要求和损害免除本公司（和本公司的高级职员、董事、代理人、关联公司、母公司、子公司和雇员）的责任，具体免责事项包括但不限于如下情形之规定：<br>
+						1、关于以下事由造成的各项损失，本公司免责： <br>
+						&emsp;（1） 战争、事变、天灾地变等，不可抗力等情况；<br>
+						&emsp;（2） 使用者故意或过失所造成损害；<br>
+						&emsp;（3） 因通信服务提供业者方面造成之通信障碍；<br>
+						&emsp;（4） 游戏开发业者、游戏服务业者提供不良服务者或游戏开发运营者与游戏用户纠纷；<br>
+						&emsp;（5）用户身份之真实性、民事权利能力民事行为能力之适当性、用户信用程度之可靠性；<br>
+						&emsp;（6）交易物品来源合法性、权利归属、真伪性、数量质量性能等各种事项之真实准确完整性；<br>
+						&emsp;（7）其他非本网站所能控制或掌握之事项。 <br>
+						2、本公司所有连结网站皆为独立营运网站，与各用户之间的互动与交易行为本公司免责。<br>
+						3、本网站免责声明规定之事项，本公司免责。<br><br>
+						<h3>第六部分 知识产权保护</h3>
+						本网站所使用之作品（包括但不限于软件、图片或程序）及网站上所有内容（包括但不限于著作、图片、档案、信息、数据、网站画面的安排、网页设计）均由本公司或其它权利人依法拥有其各项知识产权（包括但不限于商标权、专利权、著作权、商业秘密与专有技术等）。任何人未经本公司及权利人授权，不得擅自使用、修改、重制或者公开播送、改作、散布、发行、公开发表，或者进行还原工程解编或反向组绎。如有侵犯第三方版权、专利、商标、商业秘密或其他权利、公共利益和隐私的，除依著作权法及相关法律规定论处，并应对本公司负损害赔偿责任(包括但不限于诉讼费用及律师费用等)。<br><br>
+						<h3>第七部分 通知</h3>
+						除非另行明示载明，任何通知将发往用户在注册过程中向本公司提供的电邮地址。或者，本公司可通过已预付邮资和要求回执的保证航空信，将通知发往用户在注册过程中向本公司提供或您做出相关更新的地址。任何通知应视为于以下时间发出：<br>
+						&emsp;(a)如通过电邮发送，则电邮发送后24个小时，但发送方被告知电邮地址无效的，则属例外；<br>
+						&emsp;(b)如以预付邮资的信件发送，则投邮之日后三个营业日；如寄往或寄自中国，则在投邮后第七个营业日；<br>
+						&emsp;(c)如通过传真发送，则传真发出的该个营业日。（只要发送人收到载明以上传真号码、发送页数和发送日期的确认报告）<br>
+						就本款而言，“营业日”指中国境内除星期六、星期日或公众假期以外的日期。 <br><br>
+						<h3>第八部分 不保证</h3>本公司和本网站合作伙伴以“按现状”的方式提供本公司网站和服务， 而不带有任何保证或条件，无论是明示、默示或法定的。本公司对本网站的合作伙伴向用户提供的服务不提供任何形式的承诺或保证。在法律准许的范围内，本公司和本网站合作伙伴特别否定任何有关所有权、适销性、特定目的之适用性和不侵权的默示保证。此外，本公司不就持续地、不受影响地或安全地接受本公司服务做出任何担保，且本公司网站的经营可能受本公司无法控制的多种外部因素影响。<br><br>
+						<h3>第九部分</h3>协议完整性、可分割性、可转让性及权利保留 本协议取代用户和本公司先前就相同事项订立的任何书面或口头协议，本协议与本网站之任何现在或将来的规则、声明构成完整的统一体。倘若本协议任何规定被裁定为无效或不可强制执行，该项规定应被撤销，而其他规定应予执行。条款标题仅为方便参阅而设，并不以任何方式界定、限制、解释或描述该条款的范围或限度。本协议和所有纳入协议的条款和规则可由本公司自行酌情决定向第三方自动转让。本公司及本网站未就用户或其他人士的某项违约行为采取行动，并不表明本公司及本网站撤回就任何继后或类似的违约事件采取行动的权利。<br><br>
+						<h3>第十部分</h3>争议解决及法律适用 因本协议或本网站服务所引起或与之有关的任何争议应向本公司所在地河南省漯河市的人民法院提起诉讼，本协议各方面均受中华人民共和国大陆地区法律的管辖。
+					</div>
+					<div class="modal-footer">
+						<button data-id="agree" class="btn btn-success2 clause-close" type="button">已阅读，并同意此协议</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(function () {
+				$("#form-data").formvalidate(function(data, render) {
+					$.ajax({
+						url:"/mer/register",
+						type:"post",
+						data : data,
+						success:function(data){
+							$.modalmsg(data.msg);
+							if(data.state){
+								window.location.href="/mer/login";
+							}else {
+								data.ele && $("[name="+data.ele+"]").focus();
+							}
+							render && render();
+						}
+					});
+				});
+				
+				var $commit = $("#form-commit");
+				$("#clause").on("change", function() {
+					if (this.checked) {
+						$commit.removeClass("disabled");
+					} else {
+						$commit.addClass("disabled");
+					}
+				});
+				
+				$(".clause").on("click", function() {
+					$("#modal-clause").css("display", "block");
+				});
+				
+				$(".clause-close").on("click", function() {
+					$("#modal-clause").css("display", "none");
+					if ($(this).attr("data-id")) {
+						$("#clause").attr("checked", true);
+						$commit.removeClass("disabled");
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

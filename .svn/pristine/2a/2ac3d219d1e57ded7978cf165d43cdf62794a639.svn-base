@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>多渠道兑换平台</title>
+
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="Keywords" content="畅游计费系统,SDK接入/渠道接入/运营管理工具/客服管理工具/游戏上线,iwanol,深圳市爱玩在线网络科技有限公司">
+<meta name="description" content="畅游计费系统——深圳市爱玩在线网络科技有限公司，畅游针对游戏研发运营接入提供的一站式接入解决方案，平台以接入、运营工具为业务切入点，向游戏开发者、游戏运营、游戏客服、游戏玩家提供对应的业务支持，平台核心模块包括：SDK接入、渠道接入、运营管理工具、客服管理工具、游戏上线等等。开发者可以通过线上申请、接入、提测的方式，提升游戏上线前的接入效率，以此更好的统一平台用户，拓展平台需求。">
+<meta name="content-type" content="text/html; charset=UTF-8">
+	<link href="/assets/css/common.css" rel="stylesheet">
+	<link href="/assets/css/web/animate.css" rel="stylesheet">
+	<link href="/assets/css/web/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/css/web/style.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/web/register.css" />
+	<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.component.js"></script>
+	<script type="text/javascript" src="/assets/css/web/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="merchant/common/common :: webHeader"></div>
+	<!-- top结束 -->
+	<div
+		style=" background:url(/assets/images/web/register_banner.jpg) no-repeat center; height:280px; margin-top:116px;background-size: 100%;"></div>
+
+	<div class="container" id="normal"
+		style="border: 0px solid #C0C0C0;margin-top: 5px;_margin-top:20px;">
+		<p>
+		<h2 style="color: #1279B4;margin-top: 50px;" class="text-center">商户注册</h2>
+		</p>
+		<form id="form" style="margin: 0 auto;">
+			<input th:if="${uuid != null and uuid != ''}" type="hidden" name="uuid" th:value="${uuid}">
+			<table class="table" style="">
+				<caption class="" style="margin-top: 30px;">
+					<p class="text-center">
+						提示： 如果您已经注册了商户账户，请<a href="index">直接登录</a>
+					</p>
+				</caption>
+				<tbody>
+					<tr>
+						<td class="text-right" style="width: 35%;"><span>登陆账号</span>：</td>
+						<td style="width: 40%;"><input style="_height:20px"
+							id="account" name="account" type="text" class="form-control"
+							placeholder="请输入登陆账号" onkeyup="value=value.replace(/[\W]/g,'') "
+							onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" /></td>
+						<td style="width: 25%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right" style="">&nbsp;</td>
+						<td class="text-left" id="account-error" >登陆账号由3-10个英文字母或数字组成</td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right" style="width: 35%;"><span>商户昵称</span>：</td>
+						<td style="width: 40%;"><input style="_height:20px"
+							id="nickname" name="nickname" type="text" class="form-control"
+							placeholder="请输入商户昵称"/></td>
+						<td style="width: 25%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right" style="">&nbsp;</td>
+						<td class="text-left" id="nickname-error" >商户昵称2-8个字符串</td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr style="_height:60px">
+						<td class="text-right">账户密码：</td>
+						<td><input style="_height:20px"
+							onKeyUp="$.CheckIntensity(this.value)" type="password"
+							id="password" name="password" class="form-control"
+							placeholder="请输入密码" /></td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right" style="">&nbsp;</td>
+						<td class="text-left">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr align="center">
+									<td id="pwd_Weak" class="pwd pwd_c">&nbsp;</td>
+									<td id="pwd_Medium" class="pwd pwd_c pwd_f">无</td>
+									<td id="pwd_Strong" class="pwd pwd_c pwd_c_r">&nbsp;</td>
+									<td class="text-left" id="psw-error">&nbsp;&nbsp;密码由6-20个英文字母、数字或下划线组成</td>
+								</tr>
+							</table>
+						</td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right">确认密码：</td>
+						<td><input style="_height:20px" type="password"
+							id="confirmPwd" class="form-control"
+							placeholder="请再次输入密码" onblur="comfirm(this.value)" /></td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr style="_height:60px">
+						<td class="text-right"><span style="letter-spacing: 2em;">Ｑ</span>Ｑ：</td>
+						<td><input style="_height:20px" type="text" id="QQ" name="qqNumber"
+							class="form-control" placeholder="请输入您的常用QQ"/></td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr style="_height:60px">
+						<td class="text-right"><span style="letter-spacing: 2em;">电</span>话：</td>
+						<td><input style="_height:20px" type="text" id="phoneNumber" name="phoneNumber"
+							class="form-control" placeholder="请输入您的常用手机号码"/></td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr style="_height:60px">
+						<td class="text-right">&nbsp;</td>
+						<td><input type="checkbox" class="" checked="checked" />&nbsp;&nbsp;<a
+							href="protocol" target="_blank">我同意并承诺遵守本站会员的注册条款</a></td>
+						<td style="width: 35%;"></td>
+					</tr>
+					<tr>
+						<td class="text-right">&nbsp;</td>
+						<td><a id="register"
+							style="display: inline-block;width: 60%;font-weight: 700; font-size: 14px; text-align: center; line-height: 32px;background-color: #1279b4; color: #fff; cursor: pointer;">提交注册信息</a></td>
+						<td style="width: 35%;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<footer>
+		<div th:replace="merchant/common/common :: webFooter"></div>
+	</footer>
+	<script>
+		$(function() {
+			$("#clause").click(function() {
+				var clauseTextarea = $(".clause-group textarea");
+				if (clauseTextarea.css("display") == "none") {
+					clauseTextarea.slideDown(300);
+				} else {
+					clauseTextarea.slideUp(300);
+				}
+			});
+		});
+		
+		
+		function comfirm(v){
+			var pwd = $("#password").val();
+			if(v != pwd){
+				alert("\u4e24\u6b21\u5bc6\u7801\u8f93\u5165\u4e0d\u4e00\u81f4");
+			}
+			return false;
+		}
+		
+		$("#register").on("click", function() {
+			if ($._validReg()){
+				var data = $("#form").serialize();
+				$.ajax({
+					url:"/mer/register",
+					type:"post",
+					data : data,
+					success:function(data){
+						if(data.state){
+							alert(data.msg);
+							window.location.href="/mer/login";
+						}else {
+							$.modalmsg(data.msg, "danger");
+							data.ele && $("[name="+data.ele+"]").focus();
+						}
+					}
+				});
+			}
+		})
+	</script>
+</body>
+</html>

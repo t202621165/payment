@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="pay/common/common :: header(true, -1)"></div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="pay-body">
+			<div class="tool-title">
+				<h4>请核对并选择您的充值大区！</h4>
+			</div>
+			<div class="order">
+				<table class="table-cz table-hover">
+					<thead>
+						<tr>
+							<th>服务器名</th>
+							<th>充值</th>
+						</tr>
+					</thead>
+	
+					<tbody th:if="${!#lists.isEmpty(list)}">
+						<tr th:each="item:${list}" th:if="${new java.util.Date() > item.useDate}">
+							<td th:text="${item.name}"></td>
+							<td class="hder">
+								<a class="btn btn-success2" th:href="'/pay/recharge/' + ${item.uuid} + ${guid == null ? '' : guid}" style="padding: 5px 8px;">点击充值</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div th:replace="pay/common/common :: remark"></div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+</body>
+</html>

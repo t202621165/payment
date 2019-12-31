@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">代理管理</span></div>
+			
+			<div class="form-heading">
+				<ul>
+					<li><a href="agent.html" class="tab">下属商户</a></li>
+					<li class="active"><a href="order.html" class="tab">代理订单</a></li>
+					<li><a href="group.html" class="tab">用户分组</a></li>
+				</ul>
+			</div>
+			
+			<form id="search" :controller="/mer/agent/order">
+				<div class="content-body" style="margin-top: 10px;">
+					<div class="search">
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">开始时间</span>
+								<input id="startDate" name="orderDate" class="form-control Wdate" type="text" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 00:00:00')}" placeholder="-年-月-日  --:--:--" readonly>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">结束时间</span>
+								<input id="endDate" name="payDate" class="form-control Wdate" type="text" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" placeholder="-年-月-日  --:--:--" readonly>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">订单号</span>
+								<input name="orderNumber" class="form-control" type="text" placeholder="请输入订单号">
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">游戏账号</span>
+								<input id="input_ie" name="playerAccount" class="form-control" type="text" placeholder="请输入游戏账号" >
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group" id="input-group-ie">
+								<span class="input-group-addon">支付方式</span>
+								<div class="input-group-select">
+									<select id="product" name="product.id" class="form-control">
+										<option value="">-请选择-</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">下属商户</span>
+								<div class="input-group-select">
+									<select name="agent.id" class="form-control">
+										<option value="">-请选择-</option>
+										<option th:each="item:${merchant}" th:value="${item.id}" th:text="${item.nickname}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">订单状态</span>
+								<div class="input-group-select">
+									<select name="state" class="form-control" :change="@change">
+										<option value="">-请选择-</option>
+										<option value="1">成　功</option>
+										<option value="2">待发送</option>
+										<option value="0">待付款</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input-group">
+								<span class="input-group-addon">订单金额</span>
+								<input name="amount" class="form-control input-sub" type="text" placeholder="0">
+								<span class="input-group-addon2">-</span>
+								<input name="payAmount" class="form-control input-sub" type="text" placeholder="999.">
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-1 text-center no-font">
+						<a class="btn btn-success" href="javascript:;" :click="@previousDay">上一天</a>
+						<a class="btn" href="javascript:;" :click="@today">今天</a>
+						<a class="btn btn-success" href="javascript:;" :click="@nextDay">下一天</a>
+						<a class="btn" href="javascript:;" :click="@query">查询</a>
+					</div>
+				</div>
+				
+				<div class="col-xs-1 col-total">
+					<table class="table-total">
+						<tr>
+							<th></th>
+							<th>订单总金额</th>
+							<th>支付金额</th>
+							<th>代理总利润</th>
+							<th>待付款</th>
+						</tr>
+						<tr class="yesterday">
+							<th class="text-right" style="width: 110px;">昨日此时充值：</th>
+							<td :text="@data.yesterday.amount|number(2)">0.00</td>
+							<td :text="@data.yesterday.payAmount|number(2)">0.00</td>
+							<td :text="@data.yesterday.agentProfit|number(2)">0.00</td>
+							<td :text="(@data.yesterday.amount-@data.yesterday.payAmount)|number(2)">0.00</td>
+						</tr>
+						<tr class="terday">
+							<th class="text-right">充值金额统计：</th>
+							<td :text="@data.terday.amount|number(2)">0.00</td>
+							<td :text="@data.terday.payAmount|number(2)">0.00</td>
+							<td class="text-success">+<span :text="@data.yesterday.agentProfit|number(2)">0.00</span></td>
+							<td :text="(@data.terday.amount-@data.terday.payAmount)|number(2)">0.00</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="content-body no-padding" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<div class="progress" data-tooltip-title="订单成功率" :attr="{'data-percent': @data.terday.successRate+'%'}">
+						<div class="progress-bar" :css="{width: @data.terday.successRate+'%'}"></div>
+					</div>
+					<table class="table table-hover">
+						<caption th:replace="merchant/common/common :: table-caption"></caption>
+						<thead :skip='true'>
+							<tr>
+								<th>创建时间</th>
+								<th>订单号</th>
+								<th>充值账号</th>
+								<th>订单金额</th>
+								<th class="text-success">代理利润</th>
+								<th>所属分区</th>
+								<th>充值方式</th>
+								<th>订单状态</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr :for="($index, item) in @data.content">
+								<td>
+									<p class="tab-p-heard" :text="@item.orderDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.orderDate | date('HH:mm:ss')"></p>
+								</td>
+								<td>
+									<a href="javascript:;" data-tooltip-title="点击查看订单详情" :click="@render.detail(@item)" 
+										class="link" :text="@item.orderNumber"></a>
+								</td>
+								<td :text="@item.playerAccount"></td>
+								<td :text="@item.amount|number(2)"></td>
+								<td :text="@item.agentProfit|number(2)" class="text-success"></td>
+								<td :text="@item.partitionName"></td>
+								<td :text="@item.productName"></td>
+								<td>
+									<span :if="@item.state==0" class="lable lable-right danger">待付款</span>
+									<span :if="@item.state==1" class="lable lable-right">成　功</span>
+									<span :if="@item.state==2" class="lable lable-right primary">待发送</span>
+								</td>
+							</tr>
+							<tr :if="@data.totalElements < 1"><td colspan="8">暂无记录！</td></tr>
+						</tbody>
+						<tfoot th:replace="merchant/common/common :: table-tfoot(8)"></tfoot>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<div class="modal-shade" id="detail" :controller="detail" style="display: none;">
+		<div class="modal-box">
+			<div class="modal-box-title">订单详情<span class="modal-close" id="close-detail">×</span></div>
+			<div class="modal-box-body">
+				<div class="modal-box-content">
+					<table>
+						<tbody>
+							<tr>
+								<th>订单号</th>
+								<td :text="@data.orderNumber"></td>
+								<th>支付方式</th>
+								<td :text="@data.productName"></td>
+							</tr>
+							<tr>
+								<th>玩家账号</th>
+								<td :text="@data.playerAccount"></td>
+								<th>游戏分区</th>
+								<td :text="@data.partitionName"></td>
+							</tr>
+							<tr>
+								<th>订单金额</th>
+								<td :text="@data.amount|number(2)"></td>
+								<th>下单时间</th>
+								<td :text="@data.orderDate|date('yyyy-MM-dd HH:mm:ss')"></td>
+							</tr>
+							<tr>
+								<th>付款金额</th>
+								<td :text="@detail.payAmount|number(2)"></td>
+								<th>付款时间</th>
+								<td :text="@detail.payDate|dateNotNull('yyyy-MM-dd HH:mm:ss')"></td>
+							</tr>
+							<tr>
+								<th>赠送金额</th>
+								<td :text="@detail.giveAmount|number(2)"></td>
+								<th>玩家ＱＱ</th>
+								<td :text="@detail.playerQQ|parseNull('--')"></td>
+							</tr>
+							<tr>
+								<th>玩家ＩＰ</th>
+								<td :text="@detail.playerIp"></td>
+								<th>订单状态</th>
+								<td :class="@data.clazz" :text="@data.status"></td>
+							</tr>
+							<tr>
+								<th>下发道具</th>
+								<td colspan="3" :text="@detail.remarks|parseNull('--')"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$("#close-detail").on("click", function() {
+					$("#detail").css("display", "none");
+				});
+			});
+		</script>
+	</div>
+	
+	<script type="text/javascript" src="/assets/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".Wdate").on("click", function() {
+				WdatePicker();
+			});
+			
+			$._tooltip();
+			var detail = avalon.define({
+				$id: "detail",
+				data: null,
+				detail: null
+			});
+			var paging = $.paging("/mer/agent/order", {
+				detail: function(item) {
+					if (item.state == 1) {
+						item.status = "成　功";
+						item.clazz = "text-success";
+					}else if (item.state == 2) {
+						item.status = "待发送";
+						item.clazz = "text-primary";
+					}else {
+						item.status = "待付款";
+						item.clazz = "text-danger";
+					}
+					detail.data = item;
+					$.ajax({
+						load: false,
+						url: "/mer/order/detail",
+						data: {id: item.id},
+						success: function(data) {
+							if (data) {
+								detail.detail = data;
+								$("#detail").css("display", "block");
+							}
+						}
+					});
+				}
+			});
+			
+			$("#product").combobox({
+				url: "/mer/product/list"
+			});
+		});
+	</script>
+</body>
+</html>

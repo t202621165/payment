@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>save.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style type="text/css">
+
+#one {
+	width: 200px;
+	height: 180px;
+	float: left
+}
+
+#two {
+	width: 50px;
+	height: 180px;
+	float: left
+}
+
+#three {
+	width: 200px;
+	height: 180px;
+	float: left
+}
+
+.btn {
+	width: 50px;
+	height: 30px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<form id="form" :controller="user">
+		<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+			th:cellpadding="0" id="main-tab">
+			<tbody th:class="@{active-tb baseInfo}">
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom bggray font-weight}'>用户昵称</td>
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom main-for}'>
+						<input th:class="text-word" type="text" name="nickname" placeholder="用户昵称" th:style="@{width:100%}"></td>
+					
+				</tr>
+				<tr onmouseout="style.backgroundColor='#ffffff'"
+					onMouseOver="this.style.backgroundColor='#edf5ff'">
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom bggray font-weight}'>用户名称</td>
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom main-for}'>
+						<input type="hidden" name="id"/>
+						<input th:class="text-word" type="text" name="username" placeholder="用户名称" th:style="@{width:100%}"></td>
+					
+				</tr>
+				<tr>
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom bggray font-weight}'>用户角色</td>
+					<td th:align='center' th:valign='middle'
+						th:class='@{borderright borderbottom main-for}'>
+						<table width="500" align="center" border="0" cellpadding="0"
+							cellspacing="0" class="newContTab">
+							<tr>
+								<th>&nbsp;</th>
+								<td><div>
+										<div>
+											<select multiple="multiple" id="select1"
+												style="width:150px;height:200px; float:left; border:4px #A0A0A4 outset; padding:4px;">
+												<option  ms-attr="{value:item.id}" :for="($index,item) in @data">{{item.des}}</option>												
+											</select>
+										</div>
+										<div style="float:left">
+											<span id="add"> <input type="button" class="btn"
+												value=">" />
+											</span><br /> <span id="add_all"> <input type="button"
+												class="btn" value=">>" />
+											</span> <br /> <span id="remove"> <input type="button"
+												class="btn" value="<" />
+											</span><br /> <span id="remove_all"> <input type="button"
+												class="btn" value="<<" />
+											</span>
+										</div>
+										<div>
+											<select multiple="multiple" id="select2"
+												style="width: 150px;height:200px; float:lfet;border:4px #A0A0A4 outset; padding:4px;">
+											</select>
+										</div>
+									</div></td>
+							</tr>
+						</table>
+					</td>	
+				</tr>
+				
+			</tbody>
+			<tfoot>
+				<tr
+					th:onmouseout="@{this.style.backgroundColor=&quot;#ffffff&quot;}"
+					th:onmouseover="@{this.style.backgroundColor=&quot;#edf5ff&quot;}"
+					th:style="@{background-color: rgb(255, 255, 255);}">
+					<td th:colspan="2" th:class="@{main-for}"
+						th:style="@{text-align: center;}"><input type="button"
+						th:value="提交" th:class="@{text-but}" :click="@render.add"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script th:inline="javascript">
+		$(function() {
+			//移到右边
+			$('#add').click(function() {
+				//获取选中的选项，删除并追加给对方
+				$('#select1 option:selected').appendTo('#select2');
+			});
+			//移到左边
+			$('#remove').click(function() {
+				$('#select2 option:selected').appendTo('#select1');
+			});
+			//全部移到右边
+			$('#add_all').click(function() {
+				//获取全部的选项,删除并追加给对方
+				$('#select1 option').appendTo('#select2');
+			});
+			//全部移到左边
+			$('#remove_all').click(function() {
+				$('#select2 option').appendTo('#select1');
+			});
+			//双击选项
+			$('#select1').dblclick(function() { //绑定双击事件
+				//获取全部的选项,删除并追加给对方
+				$("option:selected", this).appendTo('#select2'); //追加给对方
+			});
+			//双击选项
+			$('#select2').dblclick(function() {
+				$("option:selected", this).appendTo('#select1');
+			});
+		});
+		
+		if ([[${flag}]]){
+			$("input[name='nickname']").val([[${user.nickname}]]);
+			$("input[name='username']").val([[${user.username}]]);
+		}
+		
+		var options = {
+			id:{
+				id:"user"
+			},
+			render:{
+				add:function(){
+					var roleIds = []; var data = {};var url = "";
+					$("#select2 option:not(selected)").each(function(i, element) {
+						roleIds.push($(this).val());
+					});
+					if (![[${flag}]]){
+						url = "/man/user/save";
+						 data = {
+							"roleIds[]":roleIds,
+							"nickname":$("input[name='nickname']").val(),
+							"username":$("input[name='username']").val()
+						}
+					}else{
+						url = "/man/user/edit";
+						data = {
+							"id":[[${user.id}]],
+							"roleIds[]":roleIds,
+							"nickname":$("input[name='nickname']").val(),
+							"username":$("input[name='username']").val()
+						}
+					}								
+					ajaxSend("post",url,data,function(data){
+						if (data.state){
+							window.parent.success(data.msg,2000);
+						}else{
+							window.parent.error(data.msg,2000);
+						}
+					});
+				}
+			}
+		}
+				
+		var vm = work(options);
+		/**查询角色集合*/
+		ajaxSend("get","/man/role/roles",null,function(data){
+			vm.data = data;
+		});
+	</script>
+</body>
+</html>

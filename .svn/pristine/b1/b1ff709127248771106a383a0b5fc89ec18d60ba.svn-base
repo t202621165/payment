@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">补发记录</span></div>
+			
+			
+			<form id="search" :controller="reissue">
+				<div class="content-body">
+					<div class="search" :skip='true'>
+						<div class="col-xs-3">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">开始时间</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control Wdate" type="text" id="startDate" name="startDate" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 00:00:00')}" placeholder="-年-月-日  --:--:--" readonly>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-3">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">结束时间</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control Wdate" type="text" id="endDate" name="endDate" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" placeholder="-年-月-日  --:--:--" readonly />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-3">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">游戏账号</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control" type="text" name="playerAccount" placeholder="请输入游戏账号" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-3">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">游戏分区</label>
+									</td>
+									<td class="tig-end">
+										<div id="partition" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="partition.id" readonly />
+											<ul class="select-box-list">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-3">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">游戏分区</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control" type="text" name="pName" placeholder="根据分区名模糊查询" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="col-xs-1 text-center no-font">
+						<button type="button" class="btn btn-success" :click="@previousDay">上一天</button>
+						<button type="button" class="btn" :click="@today">今天</button>
+						<button type="button" class="btn btn-success" :click="@nextDay">下一天</button>
+						<button type="button" class="btn" :click="@query">查询</button>
+					</div>
+				</div>
+				
+				<div class="content-body no-padding" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<input type="hidden" name="type" value="">
+					<ul class="nav no-padding">
+						<li><a data-nav-name="type" data-nav-value="" href="javascript:;" :click="@checkNav" class="tab active">全　部</a></li>
+						<li><a data-nav-name="type" data-nav-value="true" href="javascript:;" :click="@checkNav" class="tab">手动充值</a></li>
+						<li><a data-nav-name="type" data-nav-value="false" href="javascript:;" :click="@checkNav" class="tab">整区补发</a></li>
+						<li class="pull-right">
+							<button type="button" class="btn btn-danger" style="margin: 5px 0 0;" :click="@render.clean">清除记录</button>
+						</li>
+					</ul>
+					
+					<table class="table table-hover">
+						<caption th:replace="merchant/common/common :: table-caption"></caption>
+						<thead :skip='true'>
+							<tr>
+								<th>补发时间</th>
+								<th>业务流水</th>
+								<th>所属分区</th>
+								<th>玩家账号</th>
+								<th>付款方式</th>
+								<th>补发金额</th>
+								<th>补发方式</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr :for="($index, item) in @data.content" style="opacity: 0;" :css="{opacity: @opacity}">
+								<td>
+									<p class="tab-p-heard" :text="@item.reissueDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.reissueDate | date('HH:mm:ss')"></p>
+								</td>
+								<td :text="@item.serialNumber"></td>
+								<td :text="@item.partitionName?@item.partitionName:@item.pName" :css="{color: @item.partitionName?'':'red'}"></td>
+								<td :text="@item.playerAccount"></td>
+								<td :text="@item.productName"></td>
+								<td :text="@item.amount|number(2)" class="text-success"></td>
+								<td>
+									<span class="lable lable-right"  :class="@render.types[@item.type?1:0].clazz" :text="@render.types[@item.type?1:0].content"></span>
+								</td>
+							</tr>
+							<tr :if="@data.totalElements < 1"><td colspan="7">暂无记录！</td></tr>
+						</tbody>
+						<tfoot th:replace="merchant/common/common :: table-tfoot(7)"></tfoot>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$(".Wdate").on("click", function() {
+			WdatePicker();
+		});
+		
+		var paging = $.paging("reissue",{
+			types: [
+				{clazz:"primary", content: "整区补发"},
+				{clazz:"", content: "手动充值"}
+			],
+			clean: function() {
+				$.confirm({
+					content: "是否确认清除【"+$("#startDate").val()+"至"+$("#endDate").val()+"】的所有补发记录？",
+					yes: function() {
+						$.ajax({
+							url: "reissue/clean",
+							load: false,
+							data: $("#search").serialize(),
+							success: function(data) {
+								$.modalmsg(data.msg);
+								if (data.state) {
+									paging.query();
+								}
+							}
+						});
+						return true;
+					}
+				});
+			}
+		});
+		
+		
+		$("#partition .select-box-list").combobox({
+			url: "partition/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#partition");
+			}
+		});
+	</script>
+</body>
+</html>

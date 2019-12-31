@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div class="header">
+		<img src="/assets/images/web/logo.png" class="cache" >
+		<img src="/assets/images/server.png" class="cache" >
+		<div class="header-title">
+			<div class="header-title-on">重要提示：本平台禁止用于色情、赌博、毒品、钓鱼、诈骗、套现等违法交易使用。</div>
+		</div>
+		<div class="content fixed-width img-png"></div>
+	</div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="info">
+			<div class="exception">
+	   			<strong th:text="${msg}"><span>！</span></strong>
+	   			<div class="Todo">错误代码：<span th:text="${code}"></span></div>
+	   			<ul class="error">
+			      <li>说明:请回到请求来源地，重新发起请求。若依然出现此错误，请及时联系客服处理！！</li>
+			    </ul>
+			    <ul class="error">
+					<li><b>问题没解决？请联系客服。</b></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+</body>
+</html>
+

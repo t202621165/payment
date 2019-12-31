@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:fragment="head">
+<title th:text="${title}">多渠道兑换平台</title>
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pay.css">
+<link rel="stylesheet" type="text/css" href="/assets/css/common.css">
+<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.component.js"></script>
+<!--[if !IE]><-->
+	<script type="text/javascript">
+// 		console.info("%c \u5b89\u5168\u8b66\u544a\uff01","font-size:50px;color:red;-webkit-text-fill-color:red;-webkit-text-stroke: 1px black;font-weight: bold")
+	</script>
+<!--><![endif]-->
+<script type="text/javascript">
+	$(function() {
+		$._tooltip();
+	});
+</script>
+</head>
+
+<body>
+	<!-- header -->
+	<div th:fragment="header" class="header">
+		<img src="/assets/images/web/logo.png" class="cache" >
+		<img src="/assets/images/server.png" class="cache" >
+		<div class="content fixed-width">
+			<div class="tools no-font">
+				<a th:if="${uuid != null and service.leaveState}" th:href="${'/pay/message' + (type!=null?'_'+type:'_p') + '/' + uuid}" data-tooltip-title="点击前往留言" target="_blank">我要留言</a>
+				<a th:if="${false and uuid != null}" href="javascript:;">&nbsp;|&nbsp;</a>
+				<a th:if="false" th:href="${'/pay/query' + (type!=null?'_'+type:'_p') + (uuid != null?'/'+uuid:'')}" data-tooltip-title="点击前往查询订单信息" target="_blank">订单查询</a>
+			</div>
+		</div>
+	</div>
+	<!-- header End-->
+	<!-- foot -->
+	<div th:fragment="foot" class="foot">
+		<div class="content">
+			<p>抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当</p>
+			<p>合适游戏益脑 沉迷游戏伤身 合理安排时间 享受健康生活</p>
+		</div>
+	</div>
+	<!-- foot End-->
+	
+	<!-- online-server -->
+	<div th:fragment="online-server" class="online-server" th:if="${service != null and service.serviceState}">
+		<div class="float">
+			<a id="check" class="float-tools img-png" title="展开" href="javascript:;" style="z-index: 999;"></a>
+		</div>
+		<div id="server" class="float-info">
+			<div class="online">
+				<h3 class="title">在线客服</h3>
+				<ul>
+					<li th:if="${!#lists.isEmpty(gameQQNumbers)}" th:each="item:${gameQQNumbers}">
+						<span th:text="${item[0]}"></span>
+						<a target="_blank" th:href="${'http://wpa.qq.com/msgrd?v=3&amp;site=qq&amp;menu=yes&amp;uin=' + item[1]}">
+						<img src="/assets/images/online.png" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+					</li>
+					<li th:if="${!#strings.isEmpty(service.servicePhone)}"><span>客服电话：</span><span th:text="${service.servicePhone}"></span></li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function (){
+				$("#check").on("click", function () {
+					var $server = $("#server");
+					if ($server.is(":hidden")) {
+						$(this).addClass("tools-open").attr("title", "收起");
+					}else {
+						$(this).removeClass("tools-open").attr("title", "展开");
+					}
+					$server.animate({width: "toggle"}, 200);
+				});
+			});
+		</script>
+	</div>
+	<!-- online-server End-->
+	
+	<!-- script-IE -->
+	<div th:fragment="script-ie">
+		<!--[if IE 6]>
+			<script type="text/javascript" src="/assets/js/IE6.js"></script>
+			<script type="text/javascript">DD_belatedPNG.fix('.img-png');</script>
+		<![endif]-->
+	</div>
+	<!-- script-IE End-->
+</body>
+</html>

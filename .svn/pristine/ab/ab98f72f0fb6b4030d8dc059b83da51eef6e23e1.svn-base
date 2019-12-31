@@ -1,0 +1,122 @@
+package com.cypay.common.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cypay.common.config.InitialLoader;
+import com.cypay.common.service.impl.SystemSetService;
+import com.cypay.common.util.RegExpUtil;
+import com.cypay.common.vo.Result;
+
+import cn.hutool.core.util.ReUtil;
+
+/**
+ * 路径中转
+ * 
+ * @author iwano
+ *
+ */
+@Controller
+public class TransferController {
+	
+	@Autowired
+	private InitialLoader initialLoader;
+	
+	@Autowired
+	private SystemSetService systemSetService;
+	
+	@GetMapping(value = "/")
+	public String root(HttpServletRequest request) {
+		String domain = request.getServerName();
+		if(initialLoader.checkLine(domain)){
+			Integer type = initialLoader.getTypeByDomain(request);
+			
+			if (type == null){
+				return "manage/line";
+			}
+			/** 充值线路中转 */
+			if (type == 0) {
+				return "pay/query";
+			}
+			
+			/** 商户线路中转 */
+			else if (type == 1) {
+				return "forward:/mer/login";
+			}
+
+			/** 总后台线路中转 */
+			else if (type == 2) {
+				return "manage/login";
+			}
+			
+			return "manage/line";
+		}else{
+			return "manage/login";
+		}
+	}
+	
+	/**
+	 * 线路测试
+	 * @return
+	 */
+	@PostMapping(value = "/test-line")
+	public @ResponseBody Result testLine() {
+		return Result.success();
+	}
+	
+	/**
+	 * 系统授权
+	 * @param token
+	 * @return
+	 */
+	@PostMapping(value = "/authorize")
+	public @ResponseBody Object oAuth(@RequestParam(value = "type") String type, @RequestParam(value = "code") String code, HttpServletRequest request) {
+		String serverName = request.getServerName();
+		// 只允许通过IP方式访问授权
+		if (ReUtil.isMatch(RegExpUtil.IP, serverName)) {
+			if ("1".equals(type) || "2".equals(type)) {
+				int i = systemSetService.updateTokenByMark(code);
+				if (i == 1) {
+					if ("1".equals(type)) {
+						int port = request.getServerPort();
+						if (port != 80) {
+							serverName = serverName + ":" + port;
+						}
+						systemSetService.token(serverName, code);
+						InitialLoader.token = code;
+					}
+					return Result.success("授权成功");
+				}
+			} else if ("0".equals(type)) {
+				return code.equals(InitialLoader.CODE) ? "success" : "failed";
+			}
+		}
+		return Result.error("授权失败");
+	}
+	
+	@GetMapping("/403")
+	public String error403() {
+		return "error/403";
+	}
+
+	@GetMapping("/{type}/{uuid}")
+	public String pay(@PathVariable(value = "type") String type, @PathVariable(value = "uuid") String uuid,
+			HttpServletRequest request) {
+		if (initialLoader.getTypeByDomain(request) == 0) {
+			if (type.equals("partition_m")) { // 按商户-选中分区
+				return "redirect:/pay/partition?type=m&uuid=" + uuid;
+			} else if (type.equals("partition_g")) { // 按分组
+				return "redirect:/pay/partition?type=g&uuid=" + uuid;
+			}
+		}
+		return "manage/line";
+	}
+	
+}

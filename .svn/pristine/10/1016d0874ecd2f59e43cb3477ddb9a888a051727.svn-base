@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<img src="/assets/images/title.png" class="cache" >
+	<!-- header -->
+	<div th:replace="pay/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- container -->
+	<div class="container center">
+		<div class="center-left">
+			<ul>
+				<li>
+					<div class="left-title img-png">注意事项</div>
+					<ul class="careful">
+						<li>
+							<span>1.游戏内卖元宝的都是骗子，请不要相信，以免上当受骗。</span>
+						</li>
+						<li>
+							<span>2.为了保证您的资金安全，充值前请关掉外挂，以免被病毒劫持导致资金被转移。</span>
+						</li>
+						<li>
+							<span>3.充值结束后如果对订单结果有疑问请记住订单ID，咨询平台客服。</span>
+						</li>
+						<li
+							style="font-size:14px;line-height:24px;margin-left:10px;margin-right:10px;margin-top:10px;">
+							<span>4.如果出现杀毒软件误报，请退出杀毒软件后再充值。</span>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="center-right">
+			<div class="content">
+				<fieldset>
+					<legend>速度测试中……如果无法自动选择线路,或速度比较慢 请手动选择路线</legend>
+					<ul th:if="${!#lists.isEmpty(list)}">
+						<li th:each="item:${list}" th:if="${item.state}">
+							<a th:href="${item.domainName}" th:text="${item.name}" title="点击前往充值"></a>
+						</li>
+					</ul>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<!-- container End-->
+
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+
+	<!-- online-server -->
+	<div th:replace="pay/common/common :: online-server"></div>
+	<!-- online-server End-->
+
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+</body>
+</html>

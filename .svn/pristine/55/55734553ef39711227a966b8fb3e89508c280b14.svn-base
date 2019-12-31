@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>list.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<form id="form" :controller="role">
+	<!--main_top-->
+	<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" id="searchmain">
+		<tr>
+			<td th:width="99+'%'" th:align="left" th:valign="top">您的位置：<span
+				th:text="角色列表"></span>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+				
+					<div th:class="searchDiv" th:align="left">
+						<div th:class="search-input">
+							<div th:class="search-input-top">
+								<span id="paging">每页数量：</span>
+								<div th:replace="manage/common/common_js :: pageSize"></div>
+							</div>
+						</div>						
+
+						<div th:class="search-input">
+							<div th:class="search-input-top">
+								<div>
+									<input :click="@render.add()"
+										type="button" th:value="添加"
+										th:class="@{btn-check btn-default btn-query}">
+								</div>
+							</div>
+						</div>
+					</div>
+		
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+
+				<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+					th:cellpadding="0" id="main-tab">
+					<thead id="tableTitle">
+						<tr>						
+							<th th:align="center" th:valign="middle" th:class="borderright">编号</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">角色标识</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">角色描述</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">角色状态</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">操作</th>
+						</tr>
+					</thead>
+					<tbody id="dataBody" :for="($index,item) in @data.content">
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+							th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">							
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}"
+								:text="$index + 1"></td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}" :text="@item.mark"></td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}">
+								<span :text="@item.des"></span>
+							</td>
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}">
+								<div th:class="@{tag success}" :if="@item.state">启用</div>
+								<div th:class="@{tag default}" :if="!@item.state">禁用</div>
+							</td>													
+							<td th:align="center" th:valign="middle"
+								th:class="@{borderright borderbottom}">
+								<input type="button" th:value="编辑" :click="@render.add(item.id)" th:class="@{btn-check btn-default}">
+								<input type="button" th:value="禁用" :if="@item.state" :click="@render.enable(item)" th:class="@{btn-check btn-blue}" style="margin-left:5px;">
+								<input type="button" th:value="启用" :if="!@item.state" :click="@render.enable(item)" th:class="@{btn-check btn-blue}" style="margin-left:5px;">
+								<input type="button" th:value="权限设置" th:class="@{btn-check btn-green}" th:style="@{margin-left:5px;}">					
+		        				<input type="button" th:value="删除" :click="@render.del(item.id);" th:class="@{btn-check btn-red}" th:style="@{margin-left:5px;}">
+							</td>
+						</tr>
+					</tbody>					
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top" th:class="fenye"
+				th:style="@{text-align: left;}">
+				<div th:replace="manage/common/common_js :: fenye"></div>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script>
+		var options = {
+			enable : function(e) {
+				window.parent.ajaxSend("post", "/man/role/state", {
+					_method:"PUT",
+					id : e.id
+				}, function(data) {
+					result(data);
+				});
+			},
+			add : function(e){
+				window.parent.role(e);
+			},
+			del : function(e){
+				window.parent.del("/man/role/delete",e,"是否确定删除该角色?");
+			}
+		}
+		var paging = $.paging("role",options,"#form");
+		function result(data) {
+			if (data.state) {
+				window.parent.success(data.msg,1000,function(){
+					window.location.reload();
+				});
+			} else {
+				window.parent.error(data.msg,1000);
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" class="ancient-ie old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" class="ancient-ie old-ie  bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" class="old-ie bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if IE 9]>
+<html id="ie9" class="old-ie9 bit-html" dir="ltr" lang="zh-CN">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8) | !(IE 9)  ]><!-->
+<html class="bit-html" dir="ltr" lang="zh-CN"  
+	xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<!--<![endif]-->
+	<head th:replace="merchant/common :: head"></head>
+	
+	<body onkeydown="if(event.keyCode==13){$('#form-commit').click();}" class="home page page-id-18352 page-template-default logged-in admin-bar no-customize-support image-blur free_public btn-flat content-fullwidth qfe-js-composer js-comp-ver-4.0.1 vc_responsive"
+	 data-pid="18352" data-pkey="d704aeb2666b69e16146445d4f1930f8">
+		<div id="page" class="bodyheader0 breackall wide">
+
+			<!-- !Header -->
+			<header th:replace="merchant/common :: header(0)"></header>
+
+			<div id="main" class="bit_main_content">
+
+				<div class="main-gradient"></div>
+
+				<div class="wf-wrap">
+					<div class="wf-container-main">
+
+						<div id="content" class="content" role="main">
+
+							<div class="main-outer-wrapper ">
+								<div class="bit_row">
+
+									<div class="twelve columns no-sidebar-content ">
+
+										<div class="bit_row">
+
+											<div class="content-wrapper twelve columns ">
+												<section data-fixheight="" class="qfy-row-1-5d69f4042e196724529 section"
+												 id="bit_fmsyp" style='margin-bottom:0;border-radius:0px;color:#000000;'>
+													<style class="row_class qfy_style_class">
+														@media only screen and (min-width: 992px) {
+															section.section.qfy-row-1-5d69f4042e196724529 {
+																padding-left: 0;
+																padding-right: 0;
+																padding-top: 20px;
+																padding-bottom: 162px;
+																margin-top: 0;
+																min-height: 600px;
+															}
+															.modal-dialog {
+															    max-width: 480px;
+															    margin: auto;
+															}
+														}
+
+														@media only screen and (max-width: 992px) {
+															.bit-html section.section.qfy-row-1-5d69f4042e196724529 {
+																padding-left: 15px;
+																padding-right: 15px;
+																padding-top: 20px;
+																padding-bottom: 162px;
+																margin-top: 0;
+																min-height: 400px;
+															}
+														}
+													</style>
+													<div data-time="3" class="background-media" style="background-image: url('/assets/images/bg-index.jpg'); background-repeat:no-repeat; background-size:cover; background-attachment:scroll; background-position:Array;">
+													</div>
+
+													<div class="section-background-overlay background-overlay grid-overlay-0 " style="background-color: rgba(0,0,0,0.6);"></div>
+
+													<div class="container" style="max-width: 1280px;margin: 0 auto;">
+														<div class="logger">
+															<div class="wechat"></div>
+															<form id="form-data" style="width: 322px;">
+																<input type="hidden" id="appid" th:value="${appid}" />
+																<input type="hidden" id="state" th:value="${state}" />
+																<input type="hidden" id="redirect_uri" th:value="${redirect_uri}" />
+																<div class="form-group">
+																	<input class="i-login" type="text" name="account" placeholder="用户名" data-rule="{required: true}" data-rule-msg="请输入用户名" />
+																	<i class="icon-login user"></i>
+																</div>
+																<div class="form-group">
+																	<input class="i-login" type="password" name="password" placeholder="密码" data-rule="{required: true}" data-rule-msg="请输入密码" />
+																	<i class="icon-login pwd"></i>
+																</div>
+																<div class="form-group" id="code">
+																	<input class="i-login" type="text" name="code" maxlength="4" placeholder="验证码" data-rule="{required: true}" data-rule-msg="请输入验证码" style="width: 160px;"/>
+																	<i class="icon-login"></i>
+																	<span id="data_code" class="tooltips-bottom" data-tooltips="点击更换验证码">
+																		<img src="/mer/code" style="width: 110px;border-radius: 4px;" onclick="this.src='/mer/code?'+Math.random()">
+																	</span>
+																</div>
+																<div class="form-group" style="margin-bottom: 0">
+																	<button id="form-commit" class="btn btn-success2" type="button">登　录</button>
+																	<p style="text-align: center;color: red;margin: 10px 0;">账号审核QQ：1836222261</p>
+																</div>
+																<div th:if=${!#strings.isEmpty(appid)}>
+																	<div class="divider"><span class="divider-content">其他方式登录</span></div>
+																	<div class="login-menu">
+																		<div class="item icon-wx" id="wx-login"></div>
+																	</div>
+																</div>
+															</form>
+														</div>
+														<div class="row qfe_row in-ico" style="top: 220px;position: absolute;width: 80%;padding: 0;">
+															<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0 0px" css_animation_delay="0" qfyuuid="qfy_column_text_fnxk8"
+															 class="qfy-element qfy-text qfy-text-3791 qfe_text_column qfe_content_element mobile_fontsize15 animated fadeInDown"
+															 style="position: relative;line-height:1.5em;background-repeat: no-repeat;padding-bottom:0;animation-delay: .3s; animation-name: fadeInDown;">
+																 <div class="qfe_wrapper">
+																	<p style="text-align: center;font-family:verdana;color:#FFFFFF;font-size: 28px;letter-spacing: 1px;">SOFTWARE OF 70PAY</p>
+																</div>
+															</div>
+															<div m-padding="38px 0px 8px 0px" p-padding="38px 0px 8px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_hunk4"
+															 class="qfy-element qfy-text qfy-text-84198 qfe_text_column qfe_content_element mobile_fontsize27 animated fadeInUp"
+															 style="position: relative;line-height:1.5em;background-repeat: no-repeat;;padding-top:38px;padding-bottom:8px;animation-delay: .3s; animation-name: fadeInUp;">
+																<div class="qfe_wrapper">
+																	<p style="text-align: center;">
+																		<span style="color:#FFFFFF;font-family: 微軟正黑體;font-size: 48px;letter-spacing: 1px;">提供更</span>
+																		<span style="font-size:72px;color:#f1501a;font-family: 微軟正黑體;letter-spacing: 1px;">便捷</span>
+																		<span style="color:#FFFFFF;font-family: 微軟正黑體;font-size: 48px;letter-spacing: 1px;">的解决方案</span>
+																	</p>
+																</div>
+															</div>
+															<section data-fixheight="" class="qfy-row-2-5d69f4042ef85467786 section     bothfull  section-text-no-shadow section-inner-no-shadow section-normal section-orgi display_entire"
+															 style='margin-bottom:0;border-radius:0px;color:#000000;'>
+																<style class="row_class qfy_style_class">
+																	@media only screen and (min-width: 992px) {
+																		section.section.qfy-row-2-5d69f4042ef85467786 {
+																			padding-left: 0;
+																			padding-right: 0;
+																			padding-top: 0;
+																			padding-bottom: 0;
+																			margin-top: 28px;
+																		}
+															
+																		section.section.qfy-row-2-5d69f4042ef85467786>.container {
+																			max-width: 520px;
+																			margin: 0 auto;
+																		}
+																	}
+															
+																	@media only screen and (max-width: 992px) {
+																		.bit-html section.section.qfy-row-2-5d69f4042ef85467786 {
+																			padding-left: 15px;
+																			padding-right: 15px;
+																			padding-top: 0;
+																			padding-bottom: 0;
+																			margin-top: 0;
+																		}
+																	}
+																</style>
+																<div class="section-background-overlay background-overlay grid-overlay-0 " style="background-color: transparent;"></div>
+															
+																<div class="container">
+																	<div class="row qfe_row">
+																		<div data-animaleinbegin="bottom-in-view" data-animalename="qfyfadeInUp" 
+																			class="qfyanimate qfy-column-2-5d69f404325cc773542 qfy-column-inner vc_span_class vc_span4 text-Default small-screen-undefined notfullrow" data-dw="1/3">
+																			<div style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;border-radius:0px;border-top:0px solid #dddddd;border-bottom:0px solid #dddddd;border-left:0px solid #dddddd;border-right:1px dotted #cccccc;;position:relative;"
+																			 class="column_inner ">
+																				<div class=" background-overlay grid-overlay-0" style="background-color:transparent;width:100%;"></div>
+																				<div class="column_containter" style="z-index:3;position:relative;">
+																					<div id="icon-5d69f4042ff63897269" style="margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+																					 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_icon_48kgg"
+																					 data-anitime='0.7' data-ani_iteration_count='1' class="qfy-element vc_icon_element vc_icon_element-outer delay0 vc_icon_element-align-center vc_icon_element-have-style icon-image">
+																						<style>
+																							#icon-5d69f4042ff63897269 .vc_icon_element-inner:hover .vc_icon_element-icon,
+																							.hover #icon-5d69f4042ff63897269 .vc_icon_element-inner .vc_icon_element-icon {
+																								color: #ffffff !important
+																							}
+																						</style>
+																						<div class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-have-style-inner vc_icon_element-size-lg vc_icon_element-style- vc_icon_element-background-color-">
+																							<img style="max-width:100%;" class="vc_icon_element-icon" src="/assets/images/xin.png" />
+																							<a class="vc_icon_element-link" href="javascript:;"></a></div>
+															
+															
+																					</div>
+															
+																					<div m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_column_text_kxpym"
+																					 class="qfy-element qfy-text qfy-text-60270 qfe_text_column qfe_content_element  mobile_fontsize12 "
+																					 style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border-radius:0px;">
+																						<div class="qfe_wrapper">
+																							<p style="text-align: center;"><font color="#ffffff" face="arial">24小时不间断服务</font></p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<style class="column_class qfy_style_class">
+																			@media only screen and (min-width: 992px) {
+																				.qfy-column-2-5d69f4042f26983601>.column_inner {
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: 0;
+																					padding-bottom: 0;
+																				}
+															
+																				.qfe_row .vc_span_class.qfy-column-2-5d69f4042f26983601 {}
+															
+																				;
+																			}
+															
+																			@media only screen and (max-width: 992px) {
+																				.qfy-column-2-5d69f4042f26983601>.column_inner {
+																					margin: 0 auto 0 !important;
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: 0;
+																					padding-bottom: 0;
+																				}
+															
+																				.display_entire .qfe_row .vc_span_class.qfy-column-2-5d69f4042f26983601 {}
+															
+																				.qfy-column-2-5d69f4042f26983601>.column_inner>.background-overlay,
+																				.qfy-column-2-5d69f4042f26983601>.column_inner>.background-media {
+																					width: 100% !important;
+																					left: 0 !important;
+																					right: auto !important;
+																				}
+																			}
+																		</style>
+																		<div data-animaleinbegin="bottom-in-view" data-animalename="qfyfadeInUp" 
+																			class="qfyanimate qfy-column-2-5d69f404325cc773542 qfy-column-inner vc_span_class vc_span4 text-Default small-screen-undefined notfullrow" data-dw="1/3">
+																			<div style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;border-radius:0px;border-top:0px solid #ffffff;border-bottom:0px solid #ffffff;border-left:0px solid #ffffff;border-right:1px dotted #cccccc;;position:relative;"
+																			 class="column_inner ">
+																				<div class=" background-overlay grid-overlay-0" style="background-color:transparent;width:100%;"></div>
+																				<div class="column_containter" style="z-index:3;position:relative;">
+																					<div id="icon-5d69f40430c49883678" style="margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+																					 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_icon_48kgg"
+																					 data-anitime='0.7' data-ani_iteration_count='1' class="qfy-element vc_icon_element vc_icon_element-outer delay0 vc_icon_element-align-center vc_icon_element-have-style icon-image">
+																						<style>
+																							#icon-5d69f40430c49883678 .vc_icon_element-inner:hover .vc_icon_element-icon,
+																							.hover #icon-5d69f40430c49883678 .vc_icon_element-inner .vc_icon_element-icon {
+																								color: #ffffff !important
+																							}
+																						</style>
+																						<div class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-have-style-inner vc_icon_element-size-lg vc_icon_element-style- vc_icon_element-background-color-">
+																							<img style="max-width:100%;" class="vc_icon_element-icon" src="/assets/images/dun.png" />
+																							<a class="vc_icon_element-link" href="javascript:;"></a></div>
+															
+															
+																					</div>
+															
+																					<div m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_column_text_44cpo"
+																					 class="qfy-element qfy-text qfy-text-48273 qfe_text_column qfe_content_element  mobile_fontsize12 "
+																					 style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border-radius:0px;">
+																						<div class="qfe_wrapper">
+																							<p style="text-align: center;"><font color="#ffffff" face="arial">更安全的帐户管理</font></p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<style class="column_class qfy_style_class">
+																			@media only screen and (min-width: 992px) {
+																				.qfy-column-3-5d69f40430431656889>.column_inner {
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: 0;
+																					padding-bottom: 0;
+																				}
+															
+																				.qfe_row .vc_span_class.qfy-column-3-5d69f40430431656889 {}
+															
+																				;
+																			}
+															
+																			@media only screen and (max-width: 992px) {
+																				.qfy-column-3-5d69f40430431656889>.column_inner {
+																					margin: 0 auto 0 !important;
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: 0;
+																					padding-bottom: 0;
+																				}
+															
+																				.display_entire .qfe_row .vc_span_class.qfy-column-3-5d69f40430431656889 {}
+															
+																				.qfy-column-3-5d69f40430431656889>.column_inner>.background-overlay,
+																				.qfy-column-3-5d69f40430431656889>.column_inner>.background-media {
+																					width: 100% !important;
+																					left: 0 !important;
+																					right: auto !important;
+																				}
+																			}
+																		</style>
+																		<div data-animaleinbegin="bottom-in-view" data-animalename="qfyfadeInUp" 
+																			class="qfyanimate qfy-column-2-5d69f404325cc773542 qfy-column-inner vc_span_class vc_span4 text-Default small-screen-undefined notfullrow" data-dw="1/3">
+																			<div style=";position:relative;" class="column_inner ">
+																				<div class=" background-overlay grid-overlay-" style="background-color:transparent;width:100%;"></div>
+																				<div class="column_containter" style="z-index:3;position:relative;">
+																					<div id="icon-5d69f40431889745998" style="margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+																					 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_icon_48kgg"
+																					 data-anitime='0.7' data-ani_iteration_count='1' class="qfy-element vc_icon_element vc_icon_element-outer delay0 vc_icon_element-align-center vc_icon_element-have-style icon-image">
+																						<style>
+																							#icon-5d69f40431889745998 .vc_icon_element-inner:hover .vc_icon_element-icon,
+																							.hover #icon-5d69f40431889745998 .vc_icon_element-inner .vc_icon_element-icon {
+																								color: #ffffff !important
+																							}
+																						</style>
+																						<div class=" vc_icon_element-inner vc_icon_element-color- vc_icon_element-have-style-inner vc_icon_element-size-lg vc_icon_element-style- vc_icon_element-background-color-">
+																							<img style='max-width:100%;' class='vc_icon_element-icon' src="/assets/images/charts.png" />
+																							<a class="vc_icon_element-link" href="javascript:;"></a></div>
+															
+															
+																					</div>
+															
+																					<div m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_column_text_ah1uw"
+																					 class="qfy-element qfy-text qfy-text-70314 qfe_text_column qfe_content_element  mobile_fontsize12 "
+																					 style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border-radius:0px;">
+																						<div class="qfe_wrapper">
+																							<p style="text-align: center;"><font color="#ffffff" face="arial">交易数据实时统计</font></p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<style class="column_class qfy_style_class">
+																			@media only screen and (min-width: 992px) {
+																				.qfy-column-4-5d69f40431154816120>.column_inner {
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: 0;
+																					padding-bottom: 0;
+																				}
+															
+																				.qfe_row .vc_span_class.qfy-column-4-5d69f40431154816120 {}
+															
+																				;
+																			}
+															
+																			@media only screen and (max-width: 992px) {
+																				.qfy-column-4-5d69f40431154816120>.column_inner {
+																					margin: 0 auto 0 !important;
+																					padding-left: 0;
+																					padding-right: 0;
+																					padding-top: ;
+																					padding-bottom: ;
+																				}
+															
+																				.display_entire .qfe_row .vc_span_class.qfy-column-4-5d69f40431154816120 {}
+															
+																				.qfy-column-4-5d69f40431154816120>.column_inner>.background-overlay,
+																				.qfy-column-4-5d69f40431154816120>.column_inner>.background-media {
+																					width: 100% !important;
+																					left: 0 !important;
+																					right: auto !important;
+																				}
+																			}
+																		</style>
+																		<div class="wf-mobile-hidden qfy-clumn-clear" style="clear:both;"></div>
+																	</div>
+																</div>
+															
+															</section>
+															<style class="column_class qfy_style_class">
+																@media only screen and (min-width: 992px) {
+																	.qfy-column-1-5d69f4042e9bd554753>.column_inner {
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 20px;
+																	}
+
+																	.qfe_row .vc_span_class.qfy-column-1-5d69f4042e9bd554753 {}
+
+																	;
+																}
+
+																@media only screen and (max-width: 992px) {
+																	.qfy-column-1-5d69f4042e9bd554753>.column_inner {
+																		margin: 0 auto 0 !important;
+																		min-height: 0 !important;
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 20px;
+																	}
+
+																	.display_entire .qfe_row .vc_span_class.qfy-column-1-5d69f4042e9bd554753 {}
+
+																	.qfy-column-1-5d69f4042e9bd554753>.column_inner>.background-overlay,
+																	.qfy-column-1-5d69f4042e9bd554753>.column_inner>.background-media {
+																		width: 100% !important;
+																		left: 0 !important;
+																		right: auto !important;
+																	}
+																}
+															</style>
+														</div>
+													</div>
+
+												</section>
+												<section data-fixheight="" class="qfy-row-3-5d69f40431f2a189997 section     no  section-text-no-shadow section-inner-no-shadow section-normal section-orgi"
+												 id="bit_bypse" style='margin-bottom:0;border-radius:0px;color:#383838;'>
+													<style class="row_class qfy_style_class">
+														@media only screen and (min-width: 992px) {
+															section.section.qfy-row-3-5d69f40431f2a189997 {
+																padding-left: 0;
+																padding-right: 0;
+																padding-top: 20px;
+																padding-bottom: 100px;
+																margin-top: 0;
+															}
+														}
+
+														@media only screen and (max-width: 992px) {
+															.bit-html section.section.qfy-row-3-5d69f40431f2a189997 {
+																padding-left: 15px;
+																padding-right: 15px;
+																padding-top: 20px;
+																padding-bottom: 100px;
+																margin-top: 0;
+																min-height: 0;
+															}
+														}
+													</style>
+													<div data-time="3" data-imagebgs="" class="background-media"></div>
+
+													<div class="section-background-overlay background-overlay grid-overlay-0 " style="background-color: transparent;"></div>
+
+													<div class="container">
+														<div class="row qfe_row">
+															<div data-animaleinbegin="90%" data-animalename="qfyfadeInUp" class="qfyanimate qfy-column-5-5d69f404325cc773542 qfy-column-inner vc_span_class vc_span3 text-Default small-screen-undefined notfullrow" data-dw="1/4">
+																<div class="column_inner ">
+																	<div class=" background-overlay grid-overlay-0"></div>
+																	<div class="column_containter">
+																		<a class="bitImageAhover">
+																			<div class="bitImageParentDiv qfe_single_image qfe_content_element qfe_animate_when_almost_visible qfe_appear vc_align_center">
+																					<img class="front_image ag_image" src="/assets/images/j01.png" />
+																			</div>
+																		</a>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_128co"
+																		 class="qfy-element qfy-text qfy-text-23845 qfe_text_column qfe_content_element  " style="position: relative;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<p style="text-align: center;"><span style="color:#3D444F;"><span style="font-size: 20px;"><span
+																							 style="font-family: 微软雅黑;">实时结算</span></span></span></p>
+																			</div>
+																		</div>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_1x167"
+																		 class="qfy-element qfy-text qfy-text-43297 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<div style="text-align: center;">提供安全有效的实时结算方案，支持多种支付方式</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<style class="column_class qfy_style_class">
+																@media only screen and (min-width: 992px) {
+																	.qfy-column-5-5d69f404325cc773542>.column_inner {
+																		padding-left: 10px;
+																		padding-right: 10px;
+																		padding-top: 30px;
+																		padding-bottom: 30px;
+																	}
+
+																	.qfe_row .vc_span_class.qfy-column-5-5d69f404325cc773542 {}
+
+																	;
+																}
+
+																@media only screen and (max-width: 992px) {
+																	.qfy-column-5-5d69f404325cc773542>.column_inner {
+																		margin: 0 auto 0 !important;
+																		min-height: 0 !important;
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 38px;
+																	}
+
+																	.display_entire .qfe_row .vc_span_class.qfy-column-5-5d69f404325cc773542 {}
+
+																	.qfy-column-5-5d69f404325cc773542>.column_inner>.background-overlay,
+																	.qfy-column-5-5d69f404325cc773542>.column_inner>.background-media {
+																		width: 100% !important;
+																		left: 0 !important;
+																		right: auto !important;
+																	}
+																}
+															</style>
+															<div data-animaleinbegin="90%" data-animalename="qfyfadeInUp" data-duration="" data-delay="" class="qfyanimate qfy-column-6-5d69f404331fd493439 qfy-column-inner  vc_span_class  vc_span3  text-Default small-screen-undefined notfullrow"
+															 data-dw="1/4" data-fixheight="">
+																<div style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;border-radius:0px;;position:relative;"
+																 class="column_inner ">
+																	<div class=" background-overlay grid-overlay-0" style="background-color:transparent;width:100%;"></div>
+																	<div class="column_containter" style="z-index:3;position:relative;">
+																		<div id="vc_img_5d69f40433863714" style="padding:0px;margin:0px;clear:both;position:relative;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-position:0 0;background-repeat: no-repeat;"
+																		 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_single_image_sv8nq"
+																		 class="qfy-element bitImageControlDiv ">
+																			<style>
+																				@media only screen and (max-width: 768px) {
+																					.single_image_text-5d69f4043393a698 .head {
+																						font-size: 16px !important;
+																					}
+
+																					.single_image_text-5d69f4043393a698 .content {
+																						font-size: 16px !important;
+																					}
+																				}
+																			</style><a class="bitImageAhover  ">
+																				<div class="bitImageParentDiv qfe_single_image qfe_content_element qfe_animate_when_almost_visible qfe_appear vc_align_center">
+																					<div class="qfe_wrapper"><span></span><img class="front_image   ag_image" src="/assets/images/j02.png"
+																						 alt="icon0001" description="" data-attach-id="17341" data-title="icon0001" title="" src-img=""
+																						 style='' /></div>
+																				</div>
+																		</div> </a>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_lg5ub"
+																		 class="qfy-element qfy-text qfy-text-40328 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<p style="text-align: center;"><span style="color:#3D444F;"><span style="font-family: 微软雅黑;"><span
+																							 style="font-size: 20px;">多渠道计费</span></span></span></p>
+																			</div>
+																		</div>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_utnwd"
+																		 class="qfy-element qfy-text qfy-text-67728 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<div style="text-align: center;"><span style="color:#646A75;"><span style="font-size: 14px;"><span
+																							 style="font-family: 微软雅黑;">多渠道计费完美实现，提供有效便捷、安全的支付解决方案</span></span></span></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<style class="column_class qfy_style_class">
+																@media only screen and (min-width: 992px) {
+																	.qfy-column-6-5d69f404331fd493439>.column_inner {
+																		padding-left: 10px;
+																		padding-right: 10px;
+																		padding-top: 30px;
+																		padding-bottom: 30px;
+																	}
+
+																	.qfe_row .vc_span_class.qfy-column-6-5d69f404331fd493439 {}
+
+																	;
+																}
+
+																@media only screen and (max-width: 992px) {
+																	.qfy-column-6-5d69f404331fd493439>.column_inner {
+																		margin: 0 auto 0 !important;
+																		min-height: 0 !important;
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 38px;
+																	}
+
+																	.display_entire .qfe_row .vc_span_class.qfy-column-6-5d69f404331fd493439 {}
+
+																	.qfy-column-6-5d69f404331fd493439>.column_inner>.background-overlay,
+																	.qfy-column-6-5d69f404331fd493439>.column_inner>.background-media {
+																		width: 100% !important;
+																		left: 0 !important;
+																		right: auto !important;
+																	}
+																}
+															</style>
+															<div data-animaleinbegin="90%" data-animalename="qfyfadeInUp" data-duration="" data-delay="" class="qfyanimate qfy-column-7-5d69f40433e94522767 qfy-column-inner  vc_span_class  vc_span3  text-Default small-screen-undefined notfullrow"
+															 data-dw="1/4" data-fixheight="">
+																<div style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;border-radius:0px;;position:relative;"
+																 class="column_inner ">
+																	<div class=" background-overlay grid-overlay-0" style="background-color:transparent;width:100%;"></div>
+																	<div class="column_containter" style="z-index:3;position:relative;">
+																		<div id="vc_img_5d69f40434477144" style="padding:0px;margin:0px;clear:both;position:relative;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-position:0 0;background-repeat: no-repeat;"
+																		 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_single_image_sv8nq"
+																		 data-anitime='0.7' class="qfy-element bitImageControlDiv ">
+																			<style>
+																				@media only screen and (max-width: 768px) {
+																					.single_image_text-5d69f4043453e127 .head {
+																						font-size: 16px !important;
+																					}
+
+																					.single_image_text-5d69f4043453e127 .content {
+																						font-size: 16px !important;
+																					}
+																				}
+																			</style><a class="bitImageAhover  ">
+																				<div class="bitImageParentDiv qfe_single_image qfe_content_element qfe_animate_when_almost_visible qfe_appear vc_align_center">
+																					<div class="qfe_wrapper"><span></span><img class="front_image   ag_image" src="/assets/images/j03.png"
+																						 alt="icon0003" description="" data-attach-id="17343" data-title="icon0003" title="" src-img=""
+																						 style='' /></div>
+																				</div>
+																		</div> </a>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_de6e3"
+																		 class="qfy-element qfy-text qfy-text-85610 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<p style="text-align: center;"><span style="color:#3D444F;"><span style="font-size: 20px;"><span
+																							 style="font-family: 微软雅黑;">在线客服</span></span></span></p>
+
+																			</div>
+																		</div>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_56g1h"
+																		 class="qfy-element qfy-text qfy-text-79857 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<div style="text-align: center;"><span style="color:#646A75;"><span style="font-size: 14px;"><span
+																							 style="font-family: 微软雅黑;">利用企业QQ提供在线解答，帮助企业快速准确解决问题和故障</span></span></span></div>
+
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<style class="column_class qfy_style_class">
+																@media only screen and (min-width: 992px) {
+																	.qfy-column-7-5d69f40433e94522767>.column_inner {
+																		padding-left: 10px;
+																		padding-right: 10px;
+																		padding-top: 30px;
+																		padding-bottom: 30px;
+																	}
+
+																	.qfe_row .vc_span_class.qfy-column-7-5d69f40433e94522767 {}
+
+																	;
+																}
+
+																@media only screen and (max-width: 992px) {
+																	.qfy-column-7-5d69f40433e94522767>.column_inner {
+																		margin: 0 auto 0 !important;
+																		min-height: 0 !important;
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 38px;
+																	}
+
+																	.display_entire .qfe_row .vc_span_class.qfy-column-7-5d69f40433e94522767 {}
+
+																	.qfy-column-7-5d69f40433e94522767>.column_inner>.background-overlay,
+																	.qfy-column-7-5d69f40433e94522767>.column_inner>.background-media {
+																		width: 100% !important;
+																		left: 0 !important;
+																		right: auto !important;
+																	}
+																}
+															</style>
+															<div data-animaleinbegin="90%" data-animalename="qfyfadeInUp" data-duration="" data-delay="" class="qfyanimate qfy-column-8-5d69f404349a8856137 qfy-column-inner  vc_span_class  vc_span3  text-Default small-screen-undefined notfullrow"
+															 data-dw="1/4" data-fixheight="">
+																<div style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;border-radius:0px;;position:relative;"
+																 class="column_inner ">
+																	<div class=" background-overlay grid-overlay-0" style="background-color:transparent;width:100%;"></div>
+																	<div class="column_containter" style="z-index:3;position:relative;">
+																		<div id="vc_img_5d69f40434f71581" style="padding:0px;margin:0px;clear:both;position:relative;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;background-position:0 0;background-repeat: no-repeat;"
+																		 m-padding="0px 0px 0px 0px" p-padding="0 0 0 0" css_animation_delay="0" qfyuuid="qfy_single_image_sv8nq"
+																		 data-anitime='0.7' class="qfy-element bitImageControlDiv ">
+																			<style>
+																				@media only screen and (max-width: 768px) {
+																					.single_image_text-5d69f40435049353 .head {
+																						font-size: 16px !important;
+																					}
+
+																					.single_image_text-5d69f40435049353 .content {
+																						font-size: 16px !important;
+																					}
+																				}
+																			</style><a class="bitImageAhover  ">
+																				<div class="bitImageParentDiv qfe_single_image qfe_content_element qfe_animate_when_almost_visible qfe_appear vc_align_center">
+																					<div class="qfe_wrapper">
+																						<span></span>
+																						<img class="front_image ag_image" src="/assets/images/j04.png" alt="icon0004" data-attach-id="17344" data-title="icon0004" />
+																					</div>
+																				</div>
+																		</div> </a>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_urcbd"
+																		 class="qfy-element qfy-text qfy-text-89405 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<p style="text-align: center;"><span style="color:#3D444F;"><span style="font-family: 微软雅黑;"><span
+																							 style="font-size: 20px;">技术反馈</span></span></span></p>
+
+																			</div>
+																		</div>
+																		<div m-padding="0px 0px 0px 0px" p-padding="0px 0px 0px 0px" css_animation_delay="0" qfyuuid="qfy_column_text_ldp4h"
+																		 class="qfy-element qfy-text qfy-text-42260 qfe_text_column qfe_content_element  " style="position: relative;;;line-height:1.5em;;background-repeat: no-repeat;;margin-top:10px;">
+																			<div class="qfe_wrapper">
+																				<div style="text-align: center;"><span style="color:#646A75;"><span style="font-size: 14px;"><span
+																							 style="font-family: 微软雅黑;">由技术支持工程师，负责问题解答、需求受理及故障受理。</span></span></span></div>
+
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<style class="column_class qfy_style_class">
+																@media only screen and (min-width: 992px) {
+																	.qfy-column-8-5d69f404349a8856137>.column_inner {
+																		padding-left: 10px;
+																		padding-right: 10px;
+																		padding-top: 30px;
+																		padding-bottom: 30px;
+																	}
+
+																	.qfe_row .vc_span_class.qfy-column-8-5d69f404349a8856137 {}
+
+																	;
+																}
+
+																@media only screen and (max-width: 992px) {
+																	.qfy-column-8-5d69f404349a8856137>.column_inner {
+																		margin: 0 auto 0 !important;
+																		min-height: 0 !important;
+																		padding-left: 0;
+																		padding-right: 0;
+																		padding-top: 0;
+																		padding-bottom: 38px;
+																	}
+
+																	.display_entire .qfe_row .vc_span_class.qfy-column-8-5d69f404349a8856137 {}
+
+																	.qfy-column-8-5d69f404349a8856137>.column_inner>.background-overlay,
+																	.qfy-column-8-5d69f404349a8856137>.column_inner>.background-media {
+																		width: 100% !important;
+																		left: 0 !important;
+																		right: auto !important;
+																	}
+																}
+															</style>
+															<div class="wf-mobile-hidden qfy-clumn-clear" style="clear:both;"></div>
+														</div>
+													</div>
+
+												</section>
+											</div>
+
+										</div>
+									</div>
+								</div><!-- END .page-wrapper -->
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+
+
+						</div>
+
+					</div><!-- .wf-container -->
+				</div><!-- .wf-wrap -->
+			</div><!-- #main -->
+			
+			<div th:replace="merchant/common :: footer"></div>
+		</div><!-- #page -->
+		<div id="modal-clause" class="modal-shade" th:if=${!#strings.isEmpty(appid)}>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title"><span class="icon-wx" style="margin-right: 15px;"></span>微信扫码登录</h4>
+					</div>
+					<span class="modal-close clause-close">×</span>
+					<div class="modal-body" id="wx_qr" style="height: 400px;padding: 20px;">
+						<iframe frameborder="0" scrolling="no"></iframe>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$("#wx-login").click(function() {
+					new WxLogin({
+						id:"wx_qr", 
+						appid: $("#appid").val(),
+						scope: "snsapi_login",
+						redirect_uri: $("#redirect_uri").val() + "/mer/wechat-login",
+						state: $("#state").val()
+					});
+					$("#modal-clause").css("display", "block");
+					$("body").css("overflow","hidden")
+				});
+				$(".clause-close").click(function() {
+					$("#modal-clause").css("display", "none");
+					$("body").css("overflow","auto")
+				});
+			</script>
+		</div>
+		
+		<script type="text/javascript" src="/assets/js/wxLogin.js"></script>
+		<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan style='display:block;text-align:center;' id='cnzz_stat_icon_1278199412'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s9.cnzz.com/stat.php%3Fid%3D1278199412%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+		<script type="text/javascript">
+			$(function() {
+				$("#form-data").formvalidate(function(data, render) {
+					$.ajax({
+						type : "post",
+						url : "/mer/login",
+						data : data,
+						success : function(data) {
+							if (data.state) {
+								window.location.href = "/mer/index.html";
+							} else {
+								if (data.ele) $("#" + data.ele).focus();
+								$.modalmsg(data.msg, "danger");
+							}
+							render && render();
+						}
+					});
+				}, "danger top-200");
+			});
+		</script>
+	</body>
+
+</html>

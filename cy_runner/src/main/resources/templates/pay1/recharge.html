@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+<script type="text/javascript">
+	function check(isRecharge) {
+		$("#content-des,#pay-body1").css("display", isRecharge?"none":"block");
+		if (isRecharge) {
+			$(".pay-li.first").addClass("active");
+			$("#pay-body2").css("display", "block");
+		} else {
+			$(".pay-li").removeClass("active");
+			$("#pay-body2,#pay-body3").css("display", "none");
+		}
+	}
+</script>
+
+<!--[if (gte IE 6) & (lte IE 8)]>
+<style type="text/css">
+	#code-box {
+		height: 233px;
+		overflow: hidden;
+	}
+	#qrcode {
+		width: 235px;
+	}
+</style>
+<![endif]-->
+<body th:object="${template}" style="_position: relative;height: 100%">
+	<!-- header -->
+	<div th:replace="pay/common/common :: header(true, -1)"></div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<!-- content-title -->
+		<marquee class="font-red" style="font-size: 15px;font-weight: bold;" scrollamount="5" th:text="*{notice}"></marquee>
+		<div class="content-title">
+			<span class="pull-left" style="margin-right: 30px;">
+				服务器名称：<span class="font-name" th:text="*{name}"></span>
+			</span>
+			<span class="pull-left">
+				兑换比例：<span class="font-default">1元人民币可兑换：<strong class="font-red" th:text="*{ratio}"></strong> <span th:text="*{currencyName}"></span></span>
+			</span>
+			<div class="clear"></div>
+		</div>
+		<!-- content-title End-->
+		
+		<!-- content-des -->
+		<div id="content-des">
+			<div class="content-des des-1" th:if="*{!#lists.isEmpty(incentives)}">
+				<div class="remark"><strong>激励赠送说明：</strong>单笔充值达到一定金额，可获得相应赠送金额(不叠加)。</div>
+				<ul>
+	       			<li th:each="item:*{incentives}">
+	       				满<b th:text="${item.amount}"></b>元赠送<b th:text="${item.giveAmount}"></b>元
+	       			</li>
+	           	</ul>
+			</div>
+			
+			<div class="content-des des-2" th:if="*{!#lists.isEmpty(additionals) and showAdditional}">
+				<div class="remark"><strong>附加赠送说明：</strong>单笔充值成功，可获得 ‘充值金额 x 赠送比例’ 的附加赠送奖励。</div>
+				<ul>
+	       			<li th:each="item:*{additionals}" th:if="${item.show and item.type!=0}">
+	       				<span th:text="${item.name}"></span><b id="ratio" th:text="${'1:'+item.ratio}"></b>
+	       			</li>
+	           	</ul>
+			</div>
+			
+			<div class="content-des des-3" th:if="*{!#lists.isEmpty(integrals) and showIntegral}">
+				<div class="remark"><strong>积分赠送说明：</strong>单笔充值成功，可获得 ‘充值金额 x 赠送比例’ 的积分赠送奖励。</div>
+				<ul>
+	       			<li th:each="item:*{integrals}" th:if="${item.show and item.type!=0}">
+	       				<span th:text="${item.name}"></span><b id="ratio" th:text="${'1:'+item.ratio}"></b>
+	       			</li>
+	           	</ul>
+			</div>
+			
+			<div class="content-des des-4" th:if="*{!#lists.isEmpty(equips) and showEquip and equipType != 0}">
+				<div class="remark"><strong>装备赠送说明：</strong>单笔充值达到一定金额，可获得相应金额的装备(可叠加)。</div>
+				<ul>
+	       			<li th:each="item:*{equips}">
+	       				满<b th:text="${item.amount}"></b>元赠送<b th:text="${item.name}"></b>
+	       			</li>
+	           	</ul>
+			</div>
+		</div>
+		<!-- content-des End-->
+	
+		<ul class="pay_ul">
+			<li class="active"><b>1.&nbsp;</b>选择充值方式<i class="next"></i></li>
+			<li class="pay-li first"><i class="prev"></i><b>2.&nbsp;</b>完善充值信息<i class="next"></i></li>
+			<li class="pay-li last"><i class="prev"></i><b>3.&nbsp;</b>完成支付</li>
+		</ul>
+		<div class="pay-body" style="margin-top: 5px;">
+			<!-- pay-bodys -->
+			<div class="pay-bodys" th:if="${!#lists.isEmpty(products0) or !#lists.isEmpty(products1)}">
+				<!-- pay-body -->
+				<div id="pay-body1">
+					<div class="pay-body-content" th:if="${!#lists.isEmpty(products0)}">
+						<ul class="products">
+							<li th:each="item:${products0}" th:title="${item.name}" th:attr="data-title=${item.name},data-product=${item.id},data-rate=${item.rate},data-mark=${item.typeMark}">
+								<a class="product-list" href="javascript:;">
+									<span class="logo" th:classappend="${'logo-'+item.typeMark}"></span>
+									<span class="des" th:with="showRatio=*{giveState and !giveWay} and ${item.rate gt 0}">
+										<span class="weight-font" th:classappend="${showRatio?'':'line-height-45'}" th:text="${item.name}"></span>
+										<span class="ratio" th:if="${showRatio}" th:text="${'赠送' + item.rate + '%'}"></span>
+									</span>
+								</a>
+								<div th:if="*{giveState and giveWay}" class="info-hide">
+									<table class="text-right">
+										<tbody>
+											<tr class="text-center"><th colspan="2">充值赠送</th></tr>
+											<tr th:each="ar:${item.amountRates}" class="amountRate">
+												<td th:utext="${(arStat.index == 0?'不足':'满')+'<span id=''amount''>'+ar.amount+'</span>元：'}"></td>
+												<td class="text-left"><i th:text="${ar.rate}" id="rate"></i>%</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</li>
+						</ul>
+					</div>
+					
+					<div th:if="${!#lists.isEmpty(products1)}">
+						<h3>网银支付</h3>
+						<div class="pay-body-content">
+							<ul id="ebank" class="products">
+								<li th:each="item:${products1}" th:title="${item.name}" th:attr="data-title=${item.name},data-product=${item.id},data-rate=${item.rate},data-mark=${item.mark}">
+								<a class="product-list" href="javascript:;">
+									<span class="logo" th:classappend="${'logo-'+#strings.toLowerCase(item.mark)}"></span>
+									<span class="des" th:with="showRatio=*{giveState and !giveWay} and ${item.rate gt 0}">
+										<span class="weight-font" th:classappend="${showRatio?'':'line-height-45'}" th:text="${item.name}"></span>
+										<span class="ratio" th:if="${showRatio}" th:text="${'赠送' + item.rate + '%'}"></span>
+									</span>
+								</a>
+								<div th:if="*{giveState and giveWay}" class="info-hide">
+									<table class="text-right">
+										<tbody>
+											<tr class="text-center"><th colspan="2">充值赠送</th></tr>
+											<tr th:each="ar:${item.amountRates}" class="amountRate">
+												<td th:utext="${(arStat.index == 0?'不足':'满')+'<span id=''amount''>'+ar.amount+'</span>元：'}"></td>
+												<td class="text-left"><i th:text="${ar.rate}" id="rate"></i>%</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- pay-body End-->
+				
+				<!-- pay-body -->
+				<div id="pay-body2" style="display: none;">
+					<h3><span class="productName"></span><span th:if="*{!giveWay}" class="h3-info font-red">&nbsp;赠送 <b class="rate"></b>%</span></h3>
+					<div class="pay-body-content">
+						<form id="form-data" class="registry">
+							<input type="hidden" name="productId">
+							<input type="hidden" name="token" th:value="${token}">
+							<input type="hidden" name="uuid" id="uuid" th:value="${uuid}">
+							<input type="hidden" name="guid" th:value="${guid}">
+							<div id="player-info" class="col-cz-2" style="border-right: 1px #009f7f dashed;">
+								<div class="form-group">
+									<label class="lab-title">
+										<span th:text="*{rechargeWay}"></span><span style="color: red;">&nbsp;*</span>
+										<span class="pull-right lab-title-tip" th:text="*{rechargeWay}+'为1-30个字符'"></span>
+									</label>
+									<input id="pa" type="text" name="playerAccount" th:placeholder="${'请输入' + template.rechargeWay}" data-rule="{required: true}" th:attr="data-rule-msg=*{rechargeWay}+'不能为空！'" />
+								</div>
+								<div class="form-group">
+									<label class="lab-title">确认输入<span style="color: red;">&nbsp;*</span>
+										<span class="pull-right lab-title-tip" th:text="'为保证充值安全到账，需确认您的'+*{rechargeWay}"></span>
+									</label>
+									<input type="text" th:placeholder="${'请确认您的' + template.rechargeWay}" data-rule="{equalto: 'pa'}" th:attr="data-rule-msg='两次'+*{rechargeWay}+'输入不一致！'" />
+								</div>
+								<div class="form-group">
+									<label class="lab-title">联系ＱＱ</label>
+									<input type="text" name="playerQQ" maxlength="11" placeholder="请输入QQ号码(可不填)" data-rule="{qqnumber: false}" data-rule-msg="QQ号码输入有误！" />
+								</div>
+								<div class="form-group" th:if="${service != null and service.phoneState}">
+									<label class="lab-title">手机号码</label>
+									<input type="text" name="playerPhone" maxlength="11" placeholder="请输入手机号码(可不填)" data-rule="{phonenumber: false}" />
+								</div>
+								<div class="form-group">
+									<label class="lab-title">
+										充值金额<span style="color: red;">&nbsp;*</span>
+										<span class="pull-right lab-title-tip" th:text="${#numbers.formatDecimal(template.minAmount,0,0)+'-'+#numbers.formatDecimal(template.maxAmount,0,0)+'元'}"></span>
+									</label>
+									<input type="text" name="amount" placeholder="请输入充值金额" />
+<!-- 									<input type="text" id="payAmount" name="amount" placeholder="请输入充值金额" th:attr="data-rule='{digits: ['+*{minAmount}+', '+*{maxAmount}+']}'" data-rule-msg="请输入有效的充值金额！" /> -->
+								</div>
+							</div>
+							<div id="bonus" class="col-cz-2-4 font-red" style="display: none;">
+								<h4 class="no-padding" id="giveAmount"></h4>
+								<h4 class="no-padding">使用[<span class="productName"></span>]支付赠送：<span id="proGiveAmount"></span> 元</h4>
+								<h3 class="no-padding" style="border: 0;">本次充值将获得以下奖励：</h3>
+								<div id="bonus-content" class="col-cz-1" style="_width:96%"></div>
+							</div>
+							<div class="col-cz-2">
+								<div class="form-group" style="margin: 0;">
+									<button class="btn btn-danger backed" type="button" onclick="check(false)">返　回</button>
+									<button id="form-commit" class="btn btn-success2 recharge" type="button">充　值</button>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</form>
+					</div>
+				</div>
+				<!-- pay-body End-->
+				
+				<!-- pay-body -->
+				<div id="pay-body3" style="display: none;">
+					<h3><span class="productName"></span><span class="h3-info font-red">&nbsp;赠送 <b class="rate"></b>%</span></h3>
+					<div class="pay-body-content">
+						<div style="text-align: center;width: 420px;margin: 0 auto;">
+							<h4 style="font-size: 17px;">订单号：<span id="orderNumber" style="color: #e60013"></span></h4>
+							<h4 style="font-size: 17px;">支付金额：￥&nbsp;<span id="orderAmount" style="color: #61c411;font-size: 23px;"></span></h4>
+							<h4 id="tip" style="color:red;margin: 5px 0;display: none;"></h4>
+							<div id="window"></div>
+							<div style="overflow: hidden;width: 100%;position: relative;top: -7px;">
+								<div id="qrcode-box">
+									<div id="window-top"></div>
+									<div style="padding: 10px;">
+										<div style="height: 60px;margin-bottom: 10px;">
+											<span id="qrcode-type"></span>
+										</div>
+										<div id="code-box"></div>
+									</div>
+									<hr style="height: 1px;border: none;border-top: 1px dashed #ccc;margin-top: 15px;">
+									<div id="box_left"></div>
+									<div id="box_right"></div>
+									<p style="padding: 15px 0;font-size: 20px;color: #999999;">请扫描上方二维码进行支付</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- pay-body End-->
+			</div>
+			<!-- pay-bodys End-->
+			
+			<div th:replace="pay/common/common :: remark"></div>
+		</div>
+	</div>
+	<!-- container End-->
+	<div id="waiting" class="modal-shade img-png" style="display: none;">
+		<div id="waiting-box">请稍等...</div>
+	</div>
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+	<script type="text/javascript" src="/assets/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" th:if="*{giveWay}">
+		$(function (){
+			$(".products").tooltip({
+				items: ".products li",
+				hide: false,
+				content: function() {
+					return $(this).find(".info-hide").html();
+				},
+				position: {
+					my: "center top+15",
+					at: "center bottom",
+					using: function(position, feedback) {
+						$(this).css(position);
+						$("<div>").addClass("arrow").
+						addClass(feedback.vertical).
+						appendTo(this);
+		          }
+		     	}
+			});
+		});
+	</script>
+	<script type="text/javascript" src="/assets/js/recharge.js"></script>
+	<script id="temp" type="text/javascript" th:inline="javascript">
+		$.template_data = [[${template}]];
+		$("#temp").remove();
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			$.recharge();
+		});
+	</script>
+</body>
+</html>

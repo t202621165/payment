@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">分组管理</span></div>
+			
+			<form id="search" :controller="group">
+				<div class="content-body" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<input type="hidden" id="line" th:value="${line}">
+					<a class="btn btn-success pull-right" href="javascript:;" style="margin: 0 0 5px;" :click="@render.merge(false)">添加</a>
+					<table class="table table-hover">
+						<caption th:replace="merchant/common/common :: table-caption"></caption>
+						<thead :skip='true'>
+							<tr>
+								<th>创建时间</th>
+								<th>分组名称</th>
+								<th>分区个数</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody :if="@data.totalElements > 0">
+							<tr :for="($index, item) in @data.content">
+								<td>
+									<p class="tab-p-heard" :text="@item.createDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.createDate | date('HH:mm:ss')"></p>
+								</td>
+								<td :text="@item.name"></td>
+								<td :text="@item.partitionGroups.length"></td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-min" type="button" :click="@merge(@item)">编辑</button>
+										<button class="btn btn-min" type="button" :attr="{'data-uuid': @item.uuid}" :click="@render.recharge">充值</button>
+										<button class="btn btn-min btn-danger" type="button" :attr="{disabled:false}" 
+											:click="@render.dele(@item.id)">删除</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tr :if="@data.totalElements < 1"><td colspan="6">暂无记录！</td></tr>
+						<tfoot th:replace="merchant/common/common :: table-tfoot(6)"></tfoot>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		var paging = $.paging("group", {
+			merge: function(item) {
+				var forms = [];
+				if (item)
+					forms.push({hide: true,type: 0, name: "id",value: item.id||""});
+				
+				forms.push({type: 0, title: "分组名称", name: "name",value: item.name||""});
+				$._merge({
+					title: (item?"编辑":"添加")+"游戏分组",
+					forms: forms,
+					url: "group/add",
+					render: this.callback
+				});
+			},
+			dele: $.render.dele({
+				url: "group/delete"
+			}),
+			recharge: function(e) {
+				window.open($("#line").val() + "/pay/partition_g/" + $(e.target).attr("data-uuid"));
+			}
+		});
+	</script>
+</body>
+</html>

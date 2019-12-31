@@ -1,0 +1,29 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="commonHeader(title)">
+<title th:text="${title}">header</title>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+<meta name="content-type" content="text/html; charset=UTF-8"/>
+<!-- basic styles -->
+<link th:href="@{/assets/layui/css/modules/layer/default/layer.css}" rel="stylesheet" type="text/css">	    
+<link th:href="@{/assets/layui/css/layui.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/js/ztree/css/zTreeStyle.css}" type="text/css" rel="stylesheet" />
+<style th:inline="css">
+#myModal td {
+	line-height: 25px;
+}
+</style>
+ <!--[if lte IE 7]>
+ 	<script type="text/javascript">
+		$(document).ready(function(){
+	 		$("#left,#swich,#mainDiv").css("height",($(document.body).height()-117)+"px");
+		});
+	</script>
+ <![endif]-->
+</head>
+
+<body>
+</body>
+</html>

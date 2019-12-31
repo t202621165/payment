@@ -1,0 +1,33 @@
+package com.cypay.common.repository.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.cypay.common.entity.Merchant;
+import com.cypay.common.entity.Message;
+import com.cypay.common.repository.BaseRepository;
+
+@Repository
+public interface MessageRepository extends BaseRepository<Message, Long> {
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM Message m WHERE m.id = ?1 AND m.merchant = ?2")
+	int deleteByIdAndMerchant(Long id, Merchant merchant);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM Message m WHERE m.id IN(?1) AND m.merchant = ?2")
+	int deleteByIdsAndMerchant(List<Long> ids, Merchant merchant);
+
+	@Transactional
+	@Query(value = "UPDATE Message m SET m.state = true WHERE m.id=?1 AND m.merchant = ?2")
+	@Modifying
+	int updateMessageState(Long id, Merchant merchant);
+
+}

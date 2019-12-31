@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">个人中心</span></div>
+			
+			<div class="content-body no-padding">
+				<div class="col-xs-1" th:object="${merchant}">
+					<h3 class="text-aqua block">
+						基本信息
+					</h3>
+					<div class="profile-body">
+						<div class="profile-row">
+							<div class="profile-title no-border">
+								昵　称
+							</div>
+							<div class="profile-content no-border" th:text="*{nickname}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								账　号
+							</div>
+							<div class="profile-content" th:text="*{account}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								结算类型
+							</div>
+							<div class="profile-content" th:text="*{settlementType==1?'T+1':'T+0'}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								联系ＱＱ
+							</div>
+							<div class="profile-content" th:text=*{qqNumber}></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								联系电话
+							</div>
+							<div class="profile-content" th:text="*{phoneNumber==null?'--':phoneNumber}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								注册时间
+							</div>
+							<div class="profile-content" 
+								th:text="*{#dates.format(joinDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								最后登录
+							</div>
+							<div class="profile-content" 
+								th:text="*{finalDate==null?'--':#dates.format(finalDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								商户标识
+							</div>
+							<div class="profile-content" th:text="*{uuid}"></div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								通讯密钥
+							</div>
+							<div class="profile-content text-right">
+								<span id="secret-key" class="pull-left" th:text="*{secretKey}"></span>
+								<button id="secretKey" class="btn btn-min btn-primary no-margin" data-tooltip-title="点击更换网关通讯密钥">更换</button>
+							</div>
+						</div>
+						<div class="profile-row">
+							<div class="profile-title">
+								授权IP
+							</div>
+							<div class="profile-content text-right">
+								<span id="authorize-Ip" class="pull-left" th:text="*{authorizeIp}"></span>
+								<button class="btn btn-min btn-primary no-margin authorizeIp" data-tooltip-title="点击添加授权IP">添加</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xs-1">
+				<div style="font-size: 0;">
+					<h3 class="text-aqua" style="display: inline-block;">在线客服</h3>
+					<label for="serviceState" class="label-box" style="margin-left: 10px;">
+						<input id="serviceState" type="checkbox" data-type="1" th:checked="${merchant.serviceState}"/>
+						<span class="box-switch" data-tooltip-title="开启/关闭在线客服"><i></i></span>
+					</label>
+					<button class="btn btn-min btn-primary no-margin pull-right service-modal" style="*margin-top: -15px;position: absolute;top: 17px;right: 5px;" data-tooltip-title="点击编辑客服信息">编辑</button>
+				</div>
+				<div class="profile-body">
+					<div class="profile-row">
+						<div class="profile-title no-border">
+							客服电话
+						</div>
+						<div class="profile-content no-border" th:text="${#strings.isEmpty(merchant.servicePhone)?'--':merchant.servicePhone}"></div>
+					</div>
+					<div class="profile-row">
+						<div class="profile-title">
+							客服ＱＱ
+						</div>
+						<div class="profile-content">
+							<span th:each="item,itemStae:${qqNumbers}" th:text="${item[0]+': '+item[1]}+' '"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xs-1" shiro:hasPermission="payee_wechat">
+				<h3 class="text-aqua">服务绑定</h3>
+				<div class="profile-body">
+					<div class="profile-row">
+						<div class="profile-title no-border no-padding">
+							<div class="binding-title">
+								<img alt="微信" src="/assets/images/bind_weixin.png">
+							</div>
+							<span style="line-height: 40px;margin-right: 10px;">微信</span>
+						</div>
+						<div class="profile-content no-border binding-info">
+							<span class="text-success" th:text="${merchant.wechatInfo==null?'未绑定':merchant.wechatInfo.nickname}"></span>
+							<span class="text-danger"> (绑定微信可直接结算到微信钱包)</span>
+							<img th:if="${merchant.wechatInfo != null}" class="pull-right wechat-icon" 
+								th:src="${merchant.wechatInfo.headimgurl}" th:attr="data-tooltip-title=${'绑定时间：'+#dates.format(merchant.wechatInfo.joinDate, 'yyyy-MM-dd HH:mm:ss')}"/>
+							<a th:if="${merchant.wechatInfo == null}" id="binding" class="line link pull-right" href="javascript:;" data-tooltip-title="点击绑定微信账号">绑定</a>
+						</div>
+					</div>
+				</div>
+				<p>注：更多精彩内容请关注平台 <a id="subscription" class="line link" href="javascript:;">微信公众号</a>，我们将在第一时间为您推送平台最新消息！</p>
+			</div>
+			
+			<div class="col-xs-1">
+				<h3 class="text-aqua">
+					账户信息<button th:if="${bank.activated and bank.state}" onclick="window.location.href='takemoney.html'" class="btn btn-min btn-danger no-margin pull-right">提现</button>
+				</h3>
+				<div class="bank-info" th:classappend="${bank.state?'':'frozen'}">
+					<span th:if="${!bank.state}" class="frozen-icon"></span>
+					<div th:if="${bank.activated}">
+						<div>
+							<img th:src="'/assets/images/mark/'+${bank.bankMark}+'.png'">
+							<span style="float: right;margin-top: 30px;">开户地区/分行：<b class="font-default" style="font-size: 18px;" th:text="${bank.bankBranch}"></b></span>
+						</div>
+						<div class="bank-number">
+							<span th:text="${#strings.substring(bank.bankNumber,0,4)}"></span>
+							<span class="bank-important"> **** **** **** </span>
+							<span th:text="${#strings.substring(bank.bankNumber,#strings.length(bank.bankNumber)-3)}"></span>
+						</div>
+						<div class="bank-content">
+							<table class="col-xs-1">
+								<tr>
+									<td>
+										可用余额(元)
+										<span class="bank-amount" th:text="${bank.overMoney}"></span>
+									</td>
+									<td>
+										总收入(元)
+										<span class="bank-amount text-aqua" th:text="${'+'+bank.allDeposit}"></span>
+									</td>
+									<td>
+										总支出(元)
+										<span class="bank-amount text-red" th:text="${'-'+bank.allPay}"></span>
+									</td>
+									<td>
+										开户人：
+										<span th:text="${bank.realName}"></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					
+					<div th:if="${!bank.activated}">
+						<form id="form-bank" th:object="${bank}">
+							<input type="hidden" th:field="*{id}">
+							<div class="node-info">
+								<div class="node-info-name">开户银行：</div>
+								<div class="node-info-value form">
+									<select class="form-control" name="bankMark" th:field="*{bankMark}" data-rule="{required: true}">
+										<option value="">-请选择-</option>
+										<option th:each="item:${banks}" th:value="${item.mark}" th:text=${item.name}></option>
+									</select>
+									<p>其他银行，请联系管理员添加</p>
+								</div>
+							</div>
+							<div class="node-info">
+								<div class="node-info-name">　开户人：</div>
+								<div class="node-info-value form">
+									<input class="form-control" th:field="*{realName}" data-rule="{required: true}" placeholder="请输入开户人姓名">
+								</div>
+							</div>
+							<div class="node-info">
+								<div class="node-info-name">银行卡号：</div>
+								<div class="node-info-value form">
+									<input class="form-control" th:field="*{bankNumber}" data-rule="{required: true}" placeholder="请输入银行卡号">
+									<p>如果开户银行是支付宝请填写您的支付宝账号</p>
+								</div>								
+							</div>
+							<div class="node-info">
+								<div class="node-info-name">所在地区：</div>
+								<div class="node-info-value form">
+									<input class="form-control" th:field="*{bankBranch}" data-rule="{required: true}" placeholder="请输入开户银行所在地区">
+									<p>开户银行所在地区、分行</p>
+								</div>
+							</div>
+							<div class="node-info">
+								<div class="node-info-name">&nbsp;</div>
+								<div class="node-info-value no-font">
+									<button id="form-commit" type="button" class="btn btn-large">保　存</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<div id="authorizeIp" class="modal-shade"  th:style="${param.isShowIps != null?'':'display: none'}">
+		<div class="modal-box" style="width: 570px;top: 300px;">
+			<div class="modal-box-title">
+				<span class="title">设置授权IP</span><span class="modal-close authorizeIp">×</span>
+			</div>
+			<div class="modal-box-body">
+				<div class="modal-box-content">
+					<form id="service-form">
+						<div class="form-line">
+							<p style="color: red;">请确保你的计算机在公网拥有固定输入的IP，而不是动态分配的，如ADSL</p>
+						</div>
+						<div class="form-line">
+							<span class="form-title pull-left">授权IP：</span>
+							<input class="form-control"type="text" id="ips" placeholder="如：192.168.56.1,192.168.137.1" th:value="${merchant.authorizeIp}" style="width: 380px;">
+							<p style="padding: 3px 0 0 85px;color: #737373;text-align: left;">多个IP请用","分割</p>
+						</div>
+					</form>
+				</div>
+				<div class="modal-box-footer">
+					<button id="ip-edit" class="btn">确定</button>
+					<button class="btn btn-danger authorizeIp">取消</button>
+				</div>
+				<script type="text/javascript">
+					$("#ip-edit").on("click", function() {
+						var ips = document.getElementById("ips");
+						var ipsContent = document.getElementById("authorize-Ip");
+						console.log(ipsContent.textContent)
+						$.ajax({
+							url: "/mer/authorize_ip",
+							data: {ips: ips.value},
+							success: function(data) {
+								$.modalmsg(data.msg, data.state?"":"danger");
+								if (data.state) {
+									$("#authorizeIp").hide();
+									ipsContent.textContent = ips.value ? ips.value : '--';
+								}
+							}
+						});
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+	
+	<div id="service-modal" class="modal-shade" th:style="${param.isShowService != null?'':'display: none'}">
+		<div class="modal-box" style="width: 420px;top: 300px;">
+			<div class="modal-box-title">
+				<span class="title">编辑客服信息</span><span class="modal-close service-modal">×</span>
+			</div>
+			<div class="modal-box-body">
+				<div class="modal-box-content">
+					<form id="service-form">
+						<div class="form-line">
+							<span class="form-title pull-left">客服电话：</span><input class="form-control "
+								type="text" id="servicePhone" name="servicePhone" placeholder="请输入客服电话" th:value="${merchant.servicePhone}">
+						</div>
+						<div class="form-line">
+							<span class="form-title pull-left">客服QQ：</span>
+							<button type="button" id="serviceInfo" class="btn btn-success btn-min pull-right">添加</button>
+							<div style="clear: both;"></div>
+						</div>
+						<div class="form-line" style="padding: 0 25px;">
+							<div id="service-box" class="pull-left">
+								<div class="service-box" th:each="item,itemStae:${qqNumbers}">
+									<div class="service-name" th:text="${item[0]}"></div>
+									<div class="service-number" th:text="${item[1]}"></div>
+									<input type="hidden" name="serviceQQ" th:value="${item}">
+									<div class="service-shade">删除</div>
+								</div>
+							</div>
+							<div style="clear: both;"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-box-footer">
+					<button id="service-edit" class="btn">确定</button>
+					<button class="btn btn-danger service-modal">取消</button>
+				</div>
+				<script type="text/javascript">
+					$("#service-edit").on("click", function() {
+						$.ajax({
+							url: "profile/service-info",
+							data: $("#service-form").serialize(),
+							success: function(data) {
+								$.modalmsg(data.msg, data.state?"":"danger");
+								if (data.state) {
+									window.location.reload();
+								}
+							}
+						});
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+	
+	<div id="qrcode" class="modal-shade" style="display: none;">
+		<div class="modal-box modal-qrcode">
+			<div class="modal-qrcode-title">
+				<strong>使用微信扫一扫</strong>
+				<a id="qrcode-close" href="javascript:;" data-tooltip-title="点击关闭"></a>
+			</div>
+			<img src="/assets/images/web/gzh_ewm.jpg">
+		</div>
+		<script type="text/javascript">
+			$("#subscription").on("click", function() {
+				$("#qrcode").css("display", "block").find("img").attr("src", "/assets/images/web/gzh_ewm.jpg");
+				
+				$("#qrcode-close").off().on("click", function() {
+					$('#qrcode').css('display', 'none');
+				});
+			});
+		</script>
+		<script th:if="${merchant.wechatInfo == mull}" type="text/javascript">
+			$("#binding").on("click", function() {
+				$("#qrcode").css("display", "block").find("img").attr("src", "/mer/qrcode-wechat");
+				var i = 0;
+				var interval = setInterval(function() {
+					$.ajax({
+						url: "/mer/wechatInfo",
+						success: function(data) {
+							if (data) {
+								$('#qrcode').css('display', 'none');
+								$.modalload("微信账号绑定成功！", 1000, function() {
+									window.location.reload();
+								});
+								clearInterval(interval);
+							}
+						}
+					});
+				}, 5000);
+				
+				$("#qrcode-close").off().on("click", function() {
+					$('#qrcode').css('display', 'none');
+					clearInterval(interval);
+				});
+			});
+		</script>
+	</div>
+	
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$._tooltip();
+			
+			$(".service-modal").on("click",function() {
+				$("#service-modal").slideToggle(0);
+			});
+			
+			$(".authorizeIp").on("click",function() {
+				$("#authorizeIp").slideToggle(0);
+			});
+			
+			$("#serviceInfo").on("click", function() {
+				$._merge({
+					title: "添加客服QQ",
+					forms: [
+						{type: 0, title: "客服名称", name: "sname"},
+						{type: 0, title: "QQ号码", name: "sqq"}
+					],
+					render: function() {
+						var $box = $("<div>").addClass("service-box"),
+							$shade = $("<div>").addClass("service-shade").text("删除");
+						$shade.on("click", function() {
+							$box.remove();
+						});
+						var name = $("[name=sname]").val(), qq = $("[name=sqq]").val()
+						$box.append($("<div>").addClass("service-name").text(name))
+							.append($("<div>").addClass("service-number").text(qq))
+							.append($('<input type="hidden" name="serviceQQ">').val('["'+name+'","'+qq+'"]'))
+							.append($shade)
+							.appendTo($("#service-box"));
+					}
+				});
+			});
+			
+			$("#serviceState").on("click", function() {
+				$.ajax({
+					url: "switch",
+					data: {type: 1},
+					success: function(data) {
+						$.modalmsg(data.msg, data.state?"":"danger");
+					}
+				});
+			});
+			
+			$("#form-bank").formvalidate(function(data, render) {
+				$.ajax({
+					url: "bind_bank",
+					data: data,
+					success: function(data) {
+						$.modalmsg(data.msg, data.state?"":"danger");
+						if (data.state)
+							window.location.reload();
+					}
+				});
+			});
+			
+			$("#secretKey").on("click", function() {
+				$.confirm({
+					content: "\u66f4\u6362\u5bc6\u94a5\u540e\uff0c\u8bf7\u624b\u52a8\u590d\u5236\u65b0\u5bc6\u94a5\u81f3\u7f51\u5173\uff01",
+					yes: function() {
+						$.ajax({
+							url: "change_key",
+							success: function(data) {
+								$.modalmsg(data.msg, data.state?"":"danger");
+								if (data.state)
+									$("#secret-key").text(data.ele);
+							}
+						});
+						return true;
+					}
+				});
+			});
+			$(".service-shade").on("click", function() {
+				$(this).parent().remove();
+			});
+		});
+	</script>
+</body>
+</html>

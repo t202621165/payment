@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>rate.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+  </head>
+   <div th:replace="manage/common/common_js :: basic"></div>
+  <body>
+  	<form id="form" th:object="${rank}">
+  	<input type="hidden" th:field="*{id}">
+    <table th:width="100+'%'" th:border="0" th:cellspacing="0" th:cellpadding="0" id="main-tab">
+		<tr onmouseout="style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+			<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>费率名称</td>
+			<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+				<input class="text-word" type="text" th:field="*{name}" placeholder="输入费率名称" style="width:100%;color:red">
+			</td>
+			<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>一键设置</td>
+			<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+				<input th:class="text-word" id="change" type="text" placeholder="0-100" style="width:100%">
+			</td>
+		</tr>
+		<tbody>
+			<tr onmouseout="style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'" th:each="item,itemStat:${rates}">
+				<td th:each="rate,rateStat:${item}" style="padding: 0;">
+					<table th:border="0" th:cellspacing="0" th:cellpadding="0">
+						<tr>
+							<td th:align='center' th:valign='middle' class='borderright borderbottom' th:text="${rate.productName}" style="width:96px;"></td>
+							<td th:align='center' th:valign='middle' class='borderright borderbottom main-for' th:with="index=${itemStat.index*4+rateStat.index}">
+								<input type="hidden" th:value="${rate.id}" th:name="${'rates['+index+'].id'}">
+								<input type="hidden" th:value="${rate.productId}" th:name="${'rates['+index+'].product.id'}">
+								<input class="text-word rank-rate" type="text" th:value="${rate.rate}" th:name="${'rates['+index+'].rate'}" style="width:100%;">
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr th:if="*{!isAgency}" th:onmouseout="@{this.style.backgroundColor=&quot;#ffffff&quot;}"
+				th:onmouseover="@{this.style.backgroundColor=&quot;#edf5ff&quot;}"
+				th:style="@{background-color: rgb(255, 255, 255);}">
+				<td th:colspan="4" th:align='center' class="main-for">
+					<input type="button" id="saveRate" value="提交" class="text-but">
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script type="text/javascript">
+		$("#change").on("input", function() {
+			$(".rank-rate").val(this.value);
+		});
+		$("#saveRate").on("click", function() {
+			var error = false;
+			$(".rank-rate").each(function(i, element) {
+				if(!element.value) {
+					element.focus();
+					parent.error("不能为空", 1500);
+					error = true;
+					return false;
+				} else if (isNaN(element.value) || element.value < 0 || element.value > 100) {
+					element.focus();
+					parent.error("费率只允许0-100", 1500);
+					error = true;
+					return false;
+				}
+			});
+		
+			if (!error) {
+			    var load = window.parent.layer.load(0, {
+						shade : [ 0.7, '#393D49' ]
+					}, {
+						shadeClose : true
+				}); //0代表加载的风格，支持0-2
+				ajaxSend("post", "/man/rate/save", $("#form").serialize(), function(data) {
+					window.parent.success(data.msg, 2000);
+					var index = window.parent.layer.getFrameIndex(window.name);
+					window.parent.layer.close(index);
+					window.parent.layer.close(load);
+					window.parent.mainFrame.paging && window.parent.mainFrame.paging.query();
+				});
+			}
+		});
+	</script>
+  </body>
+</html>

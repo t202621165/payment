@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>list.html</title>
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+
+@media ( max-width : 800px) {
+	#search td.leftTd, #search td.rightTd {
+		width: auto;
+	}
+	#search select.level, #search input.text-word {
+		width: 90px;
+	}
+	#search select.level60 {
+		width: 60px;
+	}
+	#main-tab th:nth-child(3) {
+		display: none;
+	}
+	#main-tab td:nth-child(3) {
+		display: none;
+	}
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<!--main_top-->
+<form id="form" :controller="merchant">
+<table th:width="99+'%'" th:border="0" th:cellspacing="0" th:cellpadding="0" id="searchmain" >
+  <tr>
+    <td th:align="left" th:valign="top">您的位置：商户管理</td>
+  </tr>
+  <tr>
+    <td th:align="left" th:valign="top">
+	    <table th:width="100+'%'" th:border="0" th:cellspacing="0" th:cellpadding="0" id="search">
+	  		<tr>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>商户类型：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <select id="agencyStatus" name="type" th:class="level" :change="@change">
+				    <option value="" >&nbsp;&nbsp;-所有商户-</option>
+				    <option value=true >&nbsp;&nbsp;&nbsp;代理商户</option>
+				    <option value=false >&nbsp;&nbsp;&nbsp;普通商户</option>
+			     </select>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>结算类型：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <select id="settlementType" name="settlementType" th:class="level" :change="@change">
+				    <option value="" th:text="-全部-">&nbsp;&nbsp;-全部-</option>
+				    <option value="0" th:text="T+'+'+'0'">&nbsp;&nbsp;&nbsp;T+0</option>
+				    <option value="1" th:text="T+'+'+'1'">&nbsp;&nbsp;&nbsp;T+1</option>
+			     </select>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>比率组：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <select name="rank.id" th:class="level" :change="@change">
+				    <option value="">&nbsp;&nbsp;-全部-</option>
+				    <option th:each="item:${rank}" th:value="${item.id}" th:text="${item.name}"></option>
+			     </select>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>启用状态：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle">
+		         <select id="status" name="state" th:class="@{level level60}" :change="@change">
+				    <option value="" th:text="-全部-">&nbsp;&nbsp;-全部-</option>
+				    <option value="1" th:text="启用">&nbsp;&nbsp;&nbsp;启用</option>
+				    <option value="0" th:text="禁用">&nbsp;&nbsp;&nbsp;禁用</option>
+				    <option value="2" th:text="审核中">&nbsp;&nbsp;&nbsp;禁用</option>
+			     </select>
+	         </td>
+	  		</tr>
+	  		<tr>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>商户账号：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <input type="text" id="id" name="account" value="" class="text-word">
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>Ｑ　　Ｑ：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <input type="text" id="qq" name="qqNumber" th:class="text-word">
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="leftTd">
+		         <span>用户名：</span>
+	         </td>
+	   		 <td th:align="left" th:valign="middle" th:class="rightTd">
+		         <input type="text" id="account" name="nickname" th:class="text-word">
+	         </td>
+	         <td th:align="left" th:valign="middle" th:class="leftTd"><span id="paging">每页数量：</span></td>
+	         <td th:align="left" th:valign="middle" th:class="rightTd">
+	         	<div th:replace="manage/common/common_js :: pageSize"></div>
+	         </td>
+		         
+	   		 <td th:align="left" th:valign="middle">
+		         <input :click="@query" type="button" th:value="查询" th:class="@{btn-check btn-default btn-query}">
+	         </td>
+	  		</tr>
+		</table>
+    </td>
+  </tr>
+  <tr>
+    <td th:align="left" th:valign="top">
+    
+    <table th:width="100+'%'" th:border="0" th:cellspacing="0" th:cellpadding="0" id="main-tab">
+      <thead id="tableTitle">
+	      <tr>
+	        <th data-id="number" th:align="center" th:valign="middle" th:class="borderright">商户ID</th>
+	        <th data-id="id" th:align="center" th:valign="middle" th:class="borderright">商户账号</th>
+	        <th data-id="zcDate" th:align="center" th:valign="middle" th:class="borderright">注册时间</th>
+	        <th data-id="account" th:align="center" th:valign="middle" th:class="borderright">用户名</th>
+	        <th data-id="qq" th:align="center" th:valign="middle" th:class="borderright">QQ</th>
+	        <th data-id="agencyStatus" data-type="AGENCYSTATUS" th:align="center" th:valign="middle" th:class="borderright">商户类型</th>
+	        <th data-id="settlementType" th:align="center" th:valign="middle" th:class="borderright">结算类型</th>
+	        <th data-id="rankName" th:align="center" th:valign="middle" th:class="borderright">比率组</th>
+	        <th data-id="rankName" th:align="center" th:valign="middle" th:class="borderright">分区数</th>
+	        <th data-id="status" th:align="center" th:valign="middle" th:class="borderright">最后登录</th>
+	        <th data-id="status" data-type="STATUS0" th:align="center" th:valign="middle" th:class="borderright">状态</th>
+	       <!--  <shiro:hasPermission name="meroperation"> -->
+		        <th th:align="center" th:valign="middle">操作</th>
+	        <!-- </shiro:hasPermission> -->
+	      </tr>
+      </thead>
+      <tbody id="dataBody" :for="($index,item) in @data.content">
+      	<tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.id"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.account"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.joinDate | date('yyyy-MM-dd HH:mm:ss')"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.nickname"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.qqNumber == null ? '--' : @item.qqNumber"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}">
+	        	<span :if="!@item.type" style="color:green">普通商户</span>
+	        	<span :if="@item.type" style="color:red">代理商户</span>
+	        </td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}">
+	        	<span :if="@item.settlementType == 0">T0</span>
+	        	<span :if="@item.settlementType == 1">T1</span>
+	        </td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.rankName|parseNull('--')"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.partitionCount"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}" :text="@item.finalDate | dateNotNull('yyyy-MM-dd HH:mm:ss')"></td>
+	        <td th:align="center" th:valign="middle" th:class="@{borderright borderbottom}">
+				<input :if="@item.state==2" type="button" value="审核通过" :click="@render.enable(item)" class="btn-check btn-blue">
+	        	<label :if="@item.state!=2" :attr="{for:'switch-'+$index}" class="label-box no-margin">
+					<input :attr="{id:'switch-'+$index}" type="checkbox" value="1" :duplex="@item.state" :click="@render.enable(item)"/>
+					<span class="box-switch swith-blue enable dis"><i></i></span>
+				</label>
+	        </td>		
+        	<td th:align="center" th:valign="middle" th:class="borderbottom">
+        		<input type="button" th:value="编辑" :click="@render.edit(@item.id)" th:class="@{btn-check btn-default}">		        		
+        		<input type="button" th:value="删除" :click="@render.del(item.id)" th:class="@{btn-check btn-red}" th:style="@{margin-left:5px;}">
+        		<input type="button" th:value="进入商户后台" :click="@render.go(item.id)" th:class="@{btn-check btn-blue}" th:style="@{margin-left:5px;}">
+       		</td>
+		</tr>    		
+      </tbody>
+    </table></td>
+    </tr>
+  <tr>
+  	<td th:align="left" th:valign="top" th:class="fenye"
+			th:style="@{text-align: left;}">
+			<div th:replace="manage/common/common_js :: fenye"></div>
+	</td>
+  </tr>
+</table>
+</form>
+<div th:replace="manage/common/common_js :: work"></div>
+<script>
+	var options = {
+		edit:function(e){
+			window.location.href = "/man/merchant/edit?param="+e;
+		},
+		del:function(e){
+			window.parent.del("/man/merchant/del",e,"删除商户将级联删除该商户的所有关联信息,是否确定删除?");
+		},
+		enable : function(e) {
+			window.parent.ajaxSend("post", "/man/merchant/state", {
+				id : e.id
+			}, function(data) {
+				if (data.state) {
+					window.parent.mainFrame.paging.query();
+					window.parent.success(e.state==1?"已禁用":(e.state==2?"审核通过":"已启用"),1500);
+				} else {
+					window.parent.error(data.msg,1500);
+				}
+			});
+		},
+		go:function(e){
+			ajaxSend("get","/man/go",{id:e},function(data){
+				if(data.state){
+					window.open(data.msg);
+				}else {
+					window.parent.error(data.msg, 1000);
+				}
+			})
+			
+		}
+	}
+	var paging = $.paging("merchant",options,"#form");
+	
+</script>
+</body>
+</html>

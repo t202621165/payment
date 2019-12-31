@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">代理管理</span></div>
+			
+			<div class="form-heading">
+				<ul>
+					<li><a href="agent.html" class="tab">下属商户</a></li>
+					<li><a href="order.html" class="tab">代理订单</a></li>
+					<li class="active"><a href="group.html" class="tab">用户分组</a></li>
+				</ul>
+			</div>
+			
+			<form id="search" :controller="group">
+				<div class="content-body" id="table-content-ie">
+					<a class="btn btn-success pull-right" href="javascript:;" style="margin: 0 0 5px;" :click="@merge('')">添加分组</a>
+					<table class="table table-hover">
+						<thead :skip='true'>
+							<tr>
+								<th>#</th>
+								<th>默认</th>
+								<th>分组名称</th>
+								<th>用户个数</th>
+								<th>创建时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody :if="@data.totalElements > 0">
+							<tr :for="($index, item) in @data.content">
+								<td :text="$index + 1"></td>
+								<td>
+									<label :attr="{for:'idDefault'+$index}" class="label-box checkbox2 no-float">
+										<input :attr="{id:'idDefault'+$index}" type="radio" name="isDefault" 
+											value="true" :click="@render.setDefault(@item.id)" :duplex="@item.isDefault">
+										<i class="radio default"></i>
+									</label>
+								</td>
+								<td :text="@item.name"></td>
+								<td :text="@item.merchantCount"></td>
+								<td>
+									<p class="tab-p-heard" :text="@item.createDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.createDate | date('HH:mm:ss')"></p>
+								</td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-min" :click="@merge(@item)">编辑</button>
+										<button class="btn btn-min btn-danger" type="button" :attr="{disabled: @item.merchantCount>0}" 
+											:click="@item.merchantCount>0?'':@render.dele(@item.id)">删除</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tr :if="@data.totalElements < 1"><td colspan="6">暂无记录！</td></tr>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<div class="modal-shade" style="display: none;" id="rankRate" :controller="rankRate" :if="@show">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<span class="title">编辑分组</span>
+				<span class="modal-close" :click="@close">×</span>
+			</div>
+			<form :validate="@validate">
+				<div class="modal-box-body">
+					<div class="modal-box-content">
+						<table style="width: 740px;height: 206px;">
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="id" :duplex="@data.group.id">
+									分组名称：<input type="text" class="form-control" name="name" placeholder="请输入分组名称" 
+										:duplex="@data.group.name|parseNull" :rules="{required: true}">
+								</td>
+								<td>
+									一键设置：<input type="text" class="form-control" style="width: 70px;" :input="@oneKeySet">
+								</td>
+							</tr>
+							<tr :for="($index, item) in @data.rate">
+								<td :for="($index2, item2) in @item" class="text-right">
+									<span :text="@item2.name+'：'"></span>
+									<input type="hidden" :attr="{name: 'rates['+(3*$index+$index2)+'].product.id'}" :duplex="@item2.id">
+									<input :if="@item2.type==0" type="text" class="form-control" data-rate :attr="{name: 'rates['+(3*$index+$index2)+'].rate'}" placeholder="未设置" style="width: 70px;" 
+									:duplex="@item2.rate1|parseNull" :rules="{number: true, min: 0, max: @item2.rate2}">
+									<input :if="@item2.type==2" type="text" class="form-control" data-rate :attr="{name: 'rates['+(3*$index+$index2)+'].rate'}" placeholder="未设置" style="width: 70px;" 
+									:duplex="@item2.rate1|parseNull" :rules="{number: true, min: 0, max: @item2.rate2}" :input="@data.bankRate">
+									<span :if="@item2.rate2 > 0">
+										&nbsp;≤&nbsp;<span :text="@item2.rate2|number(2)"></span>
+									</span>
+								</td>
+							</tr>
+							<tr :visible="false" id="banks">
+								<td :for="($index, item) in @data.banks" class="text-right">
+									<span :text="@item.name+'：'"></span>
+									<input type="hidden" :attr="{name: 'rates['+(@data.size+$index)+'].product.id'}" :duplex="@item.id">
+									<input type="text" class="form-control" data-rate :attr="{name: 'rates['+(@data.size+$index)+'].rate'}" placeholder="未设置" style="width: 70px;" 
+									:duplex="@item.rate1|parseNull" :rules="{number: true, min: 0, max: @item.rate2}">
+									<span :if="@item.rate2 > 0">
+										&nbsp;≤&nbsp;<span :text="@item.rate2|number(2)"></span>
+									</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-box-footer">
+						<button type="button" class="btn" :click="@save">确定</button>
+						<button type="button" class="btn btn-danger" :click="@close">取消</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		var rate = $._option({
+			$id: "rankRate",
+			url: "group/merge",
+			data: {rate: {}, group: {}, callback: null, size: 0, banks: {}, 
+			bankRate: function(e) {
+				$("#banks input[data-rate]").val(e.target.value);
+			}}
+		});
+		
+		var paging = $.paging("group", {
+			merge: function(item) {
+				var callback = this.callback;
+				if (!item) {
+					item = {id: "", name: ""};
+				}
+				
+				$.ajax({
+					url: "rate",
+					data: {id: item.id},
+					success: function(data) {
+						if (data) {
+							rate.show = true;
+							rate.data.rate = data.type0;
+							rate.data.size = data.showSize;
+							rate.data.banks = data.type1;
+							rate.data.group = item;
+							rate.data.callback = callback;
+							$("#rankRate").css("display", "");
+						}
+					}
+				});
+			},
+			dele: $.render.dele({
+				url: "group/delete"
+			}),
+			setDefault: function(id) {
+				$.ajax({
+					url: "group/default",
+					data: {id: id},
+					success: function(data) {
+						$.modalmsg(data.msg);
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>

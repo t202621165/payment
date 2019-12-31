@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>common_js</title>
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+	<!-- basic scripts -->
+	<div th:fragment="basic">
+		<script th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+		<script th:src="@{/assets/js/avalon.js}"></script>
+		<script th:src="@{/assets/js/clock.js}"></script>
+		<script th:src="@{/assets/js/sdmenu.js}"></script>
+		<script th:src="@{/assets/js/jquery.common.js}"></script>
+	</div>
+	<div th:fragment="layer">
+		<script th:src="@{/assets/layui/lay/modules/layer.js}"></script>
+		<script th:src="@{/assets/layui/layui.all.js}"></script>
+	</div>
+	<div th:fragment="work">
+		<script th:src="@{/assets/js/work.js}"></script>
+	</div>
+	<div th:fragment="ztree">
+		<script th:src="@{/assets/js/ztree/jquery.ztree.core.js}"></script>
+		<script th:src="@{/assets/js/ztree/jquery.ztree.excheck.js}"></script>
+	</div>
+	<div th:fragment="echart">
+		<script th:src="@{/assets/js/dist/echarts.min.js}"></script>
+	</div>
+	<div th:fragment="date">
+		<script th:src="@{/assets/js/My97DatePicker/WdatePicker.js}"></script>
+	</div>
+	<div th:fragment="fenye" style="font-size: 0px;">
+		<span>共&nbsp;<b :text="@data.totalElements">0</b>&nbsp;条信息&nbsp;&nbsp;
+		共&nbsp;<b :text="@data.totalPages == null ? 0 : @data.totalPages">0</b>&nbsp;页
+		&nbsp;/当前&nbsp;<b :text="@data.number == null ? 1 : @data.number + 1">0</b>&nbsp;页
+		</span>
+			<div th:style="@{float: right;}">
+				<button type="button" title="首页" :click="@first">
+					<img src="/assets/images/sy.png">
+				</button>
+				<button type="button" title="上一页" :click="@prev">
+					<img src="/assets/images/syy.png ">
+				</button>
+				<span :text="' 第 '+ (@data.number == null ? 1 : @data.number + 1) + ' 页 '" class="pagtxt">&nbsp;第 &nbsp;<a href="javascript:;">0</a>&nbsp;页&nbsp;
+				</span>
+				<button type="button" title="下一页" :click="@next">
+					<img src="/assets/images/xyy.png ">
+				</button>
+				<button type="button" title="尾页" :click="@last">
+					<img src="/assets/images/wy.png">
+				</button>
+				<input type="text" id="jumpto" placeholder="0 ">
+				<button class="no-margin" type="button" title="点击跳转" :click="@jump">&nbsp;&nbsp;GO&nbsp;&nbsp;</button>
+			</div>
+	</div>
+	<div th:fragment="pageSize">
+		<input type="hidden" name="number" value="0">
+		<select id="pageSize" th:name="pageSize" th:class="@{level level60}" :change="@change">
+			<option value="5">&nbsp;&nbsp;5条</option>
+			<option value="10" selected="selected">&nbsp;&nbsp;10条</option>
+			<option value="15">&nbsp;&nbsp;15条</option>
+			<option value="20">&nbsp;&nbsp;20条</option>
+			<option value="30">&nbsp;&nbsp;30条</option>
+		</select>
+	</div>
+</body>
+</html>

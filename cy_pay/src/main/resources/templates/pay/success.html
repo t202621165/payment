@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>多渠道兑换平台-充值成功</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta name="description" content="this is my page">
+	<meta name="content-type" content="text/html; charset=UTF-8">
+	
+	<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+	<style type="text/css">
+		html, body {margin: 0;padding: 0;height: 100%;}
+		table {border-collapse: collapse;width: 100%;text-align: center;font-size: 14px;}
+		th, td {border: 1px solid #e4e4e4;padding: 10px 0;}
+		table tbody td.title {width: 15%;}
+		table tbody td.content {width: 35%;}
+		table tfoot td {text-align: left;padding-left: 20px;color: #ff0000;}
+		.header {background: #57c4f6;text-align: center;padding: 10px;color: #fff;}
+		.header div {display: inline-block;}
+		.header div * {float: left;}
+		.header div span {font-size: 30px;height: 80px;line-height: 80px;color: #fff;padding-left: 20px;}
+		.bottom-border {background: url(/assets/images/pay/bottom.png) repeat-x;height: 80px;}
+		div.content {box-shadow: 4px 4px 15px #f3f3f3;width: 800px;margin: 10px auto 0;padding: 10px 50px 20px;}
+		strong {color: #ff0000;}
+	</style>
+</head>
+
+<body>
+	<div class="header">
+		<div>
+			<img src="/assets/images/pay/success.png" style="height: 80px;">
+			<span>恭喜您！充值成功！！</span>
+		</div>
+		<p>本次充值奖励已下发至您的充值帐号，如有疑问，请勿领取奖励，并及时与客服联系。</p>
+	</div>
+	
+	<div class="bottom-border"></div>
+	
+	<div class="content" th:object="${returnVo}">
+		<p>以下是本次交易信息：</p>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="4">订单信息</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="title">订单号：</td>
+					<td class="content" th:text="*{orderNumber}"></td>
+					<td class="title">充值大区：</td>
+					<td th:text="*{partitionName}"></td>
+				</tr>
+				<tr>
+					<td class="title">支付方式：</td>
+					<td th:text="*{productName}"></td>
+					<td>充值金额：</td>
+					<td>
+						<strong th:text="*{payAmount}" style="color: #61c411;"></strong>
+					</td>
+				</tr>
+				<tr>
+					<td>充值账号：</td>
+					<td>
+						<strong th:text="*{playerAccount}"></strong>
+					</td>
+					<td>支付方式：</td>
+					<td th:text="*{productName}"></td>
+				</tr>
+				<tr>
+		        	<td>客服电话：</td>
+				    <td th:text="*{servicePhone}"></td>
+		            <td>客服QQ：</td>
+				    <td th:text="*{serviceQQ}"></td>
+			    </tr>
+				<tr th:if="*{remarks != null and remarks != ''}">
+		        	<td>充值奖励：</td>
+				    <td colspan="3" th:text="*{remarks}"></td>
+			    </tr>
+			</tbody>
+			<tfoot>
+				<tr>
+				    <td colspan="4">
+				    	注：充值所得奖励一切以游戏实际下发为准，如有疑问请与游戏客服联系！
+				    </td>
+			    </tr>
+			</tfoot>
+		</table>
+	</div>
+</body>
+</html>

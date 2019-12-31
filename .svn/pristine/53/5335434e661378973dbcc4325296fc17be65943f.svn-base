@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">充值订单</span></div>
+			
+			<form id="search" :controller="order">
+				<input name="state" type="hidden" th:value="${param.state==null?1:param.state}">
+				<div class="content-body">
+					<div class="search">
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">开始时间</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control Wdate" type="text" id="startDate" name="orderDate" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 00:00:00')}" placeholder="-年-月-日  --:--:--" readonly>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">结束时间</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control Wdate" type="text" id="endDate" name="payDate" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 23:59:59')}" placeholder="-年-月-日  --:--:--" readonly />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">订单编号</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control" type="text" name="orderNumber" placeholder="请输入订单号" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="txt_calendar" class="tab-input-tag">游戏账号</label>
+									</td>
+									<td class="tig-end">
+										<input class="form-control" type="text" name="playerAccount" placeholder="请输入游戏账号" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="select1" class="tab-input-tag">游戏分组</label>
+									</td>
+									<td class="tig-end">
+										<div id="group" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" id="select1" name="groupId" readonly />
+											<ul class="select-box-list">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">游戏分区</label>
+									</td>
+									<td class="tig-end">
+										<div id="partition" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="partition.id" readonly />
+											<ul class="select-box-list">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">支付方式</label>
+									</td>
+									<td class="tig-end">
+										<div id="product" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="product.id" readonly />
+											<ul class="select-box-list">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label for="field-01" class="tab-input-tag">订单金额</label>
+									</td>
+									<td>
+										<input class="form-control" type="text" name="amount" placeholder="0" />
+									</td>
+									<td class="tab-input-addon" style="text-align: center;">-</td>
+									<td class="tig-end">
+										<input class="form-control" type="text" name="payAmount" placeholder="999." />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="col-xs-1 text-center no-font">
+						<button type="button" class="btn btn-success" :click="@previousDay">上一天</button>
+						<button type="button" class="btn" :click="@today">今天</button>
+						<button type="button" class="btn btn-success" :click="@nextDay" :attr="{disabled: @isToday}">下一天</button>
+						<button type="button" class="btn" :click="@query">查询</button>
+					</div>
+				</div>
+				
+				<div class="col-xs-1 col-total">
+					<table class="table-total">
+						<tr>
+							<th></th>
+							<th th:if="false">订单总金额</th>
+							<th>支付金额</th>
+							<th>总利润</th>
+							<th th:if="false">待付款</th>
+							<th>成功笔数</th>
+						</tr>
+						<tr class="yesterday">
+							<th class="text-right" style="width: 110px;">昨日此时充值：</th>
+							<td th:if="false" :text="@data.yesterday.amount|number(2)">0.00</td>
+							<td :text="@data.yesterday.payAmount|number(2)">0.00</td>
+							<td :text="@data.yesterday.merchantProfit|number(2)">0.00</td>
+							<td th:if="false" :text="(@data.yesterday.amount-@data.yesterday.payAmount)|number(2)">0.00</td>
+							<td :text="@data.yesterday.successCount+@data.yesterday.waitingCount">0</td>
+						</tr>
+						<tr class="terday">
+							<th class="text-right">充值金额统计：</th>
+							<td th:if="false" :text="@data.today.amount|number(2)">0.00</td>
+							<td :text="@data.today.payAmount|number(2)">0.00</td>
+							<td class="text-success" :text="@data.today.merchantProfit|number(2)">0.00</td>
+							<td th:if="false" :text="(@data.today.amount-@data.today.payAmount)|number(2)">0.00</td>
+							<td :text="@data.today.successCount+@data.today.waitingCount">0</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="content-body no-padding" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<ul class="nav no-padding">
+						<li><a data-nav-name="state" data-nav-value="" href="javascript:;" :click="@checkNav" class="tab">全　部</a></li>
+						<li><a data-nav-name="state" data-nav-value="1" href="javascript:;" :click="@checkNav" class="tab" th:classappend="${param.state==null or #strings.toString(param.state) eq '1'?'active':''}">成　功</a></li>
+						<li><a data-nav-name="state" data-nav-value="2" href="javascript:;" :click="@checkNav" class="tab" th:classappend="${#strings.toString(param.state) eq '2'?'active':''}">待发送</a></li>
+						<li><a data-nav-name="state" data-nav-value="0" href="javascript:;" :click="@checkNav" class="tab" th:classappend="${#strings.toString(param.state) eq '0'?'active':''}">待付款</a></li>
+					</ul>
+					<div class="progress progress-active" data-tooltip-title="订单成功率" :attr="{'data-percent': @data.today.successRate+'%'}" style="margin-top: 1px;">
+						<div class="progress-bar" :css="{width: @data.today.successRate+'%'}"></div>
+					</div>
+					<table class="table table-hover">
+						<caption th:replace="merchant/common/common :: table-caption"></caption>
+						<thead :skip='true'>
+							<tr>
+								<th>下单时间</th>
+								<th>订单号</th>
+								<th>充值账号</th>
+								<th>所属分区</th>
+								<th>订单金额</th>
+								<th class="text-success">利润</th>
+								<th>充值方式</th>
+								<th>订单状态</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr :for="($index, item) in @data.content">
+								<td>
+									<p class="tab-p-heard" :text="@item.orderDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.orderDate | date('HH:mm:ss')"></p>
+								</td>
+								<td>
+									<a href="javascript:;" class="link tooltips-bottom" data-tooltips="点击查看订单详情" 
+										:click="@render.detail(@item)" :text="@item.orderNumber"></a>
+								</td>
+								<td :text="@item.playerAccount"></td>
+								<td :text="@item.partitionName?@item.partitionName:@item.discription" :css="{color: @item.partitionName?'':'red'}"></td>
+								<td :text="@item.amount|number(2)"></td>
+								<td :text="@item.merchantProfit|number(2)" class="text-success"></td>
+								<td :text="@item.productName"></td>
+								<td>
+									<button type="button" :if="@item.state==2" class="btn btn-min btn-primary" :click="@render.reissue(@item)">补发</button>
+									<span :if="@item.state!=2" class="lable lable-right" :class="@render.states[@item.state].clazz" :text="@render.states[@item.state].content"></span>
+								</td>
+							</tr>
+							<tr :if="@data.totalElements < 1"><td colspan="8">暂无记录！</td></tr>
+						</tbody>
+						<tfoot th:replace="merchant/common/common :: table-tfoot(8)"></tfoot>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<div class="modal-shade" id="detail" :controller="detail" style="display: none;">
+		<div class="modal-box">
+			<div class="modal-box-title">订单详情<span class="modal-close" id="close-detail">×</span></div>
+			<div class="modal-box-body">
+				<div class="modal-box-content">
+					<table style="width: 708px;margin-bottom: 1px;">
+						<tbody>
+							<tr>
+								<th style="width: 91px;">订单号</th>
+								<td :text="@data.orderNumber"></td>
+								<th style="width: 91px;">支付方式</th>
+								<td :text="@data.productName" class="h3 font-aqua"></td>
+							</tr>
+							<tr>
+								<th>玩家账号</th>
+								<td :text="@data.playerAccount"></td>
+								<th>游戏分区</th>
+								<td :text="@data.partitionName?@data.partitionName:@data.discription" :css="{color: @data.partitionName?'':'red'}" class="h3 font-green"></td>
+							</tr>
+							<tr>
+								<th>订单金额</th>
+								<td :text="@data.amount|number(2)" class="h3 text-orange"></td>
+								<th>下单时间</th>
+								<td :text="@data.orderDate|date('yyyy-MM-dd HH:mm:ss')"></td>
+							</tr>
+							<tr>
+								<th>付款金额</th>
+								<td :text="@detail.payAmount|number(2)" class="h3 text-success"></td>
+								<th>付款时间</th>
+								<td :text="@detail.payDate|dateNotNull('yyyy-MM-dd HH:mm:ss')"></td>
+							</tr>
+							<tr>
+								<th>赠送金额</th>
+								<td :text="@detail.giveAmount|number(2)"></td>
+								<th>玩家ＱＱ</th>
+								<td :text="@detail.playerQQ|parseNull('--')"></td>
+							</tr>
+							<tr>
+								<th>红包赠送</th>
+								<td :text="@detail.redPacketAmount|number(2)"></td>
+								<th>玩家电话</th>
+								<td :text="@detail.playerPhone|parseNull('--')"></td>
+							</tr>
+							<tr>
+								<th>玩家ＩＰ</th>
+								<td :text="@detail.playerIp"></td>
+								<th>订单状态</th>
+								<td>
+									<span :if="@data.state==0" class="lable lable-right danger">待付款</span>
+									<span :if="@data.state==1" class="lable lable-right">成　功</span>
+									<span :if="@data.state==2" class="lable lable-right primary">待发送</span>
+								</td>
+							</tr>
+							<tr>
+								<th>下发道具</th>
+								<td colspan="3" :text="@detail.remarks|parseNull('--')"></td>
+							</tr>
+						</tbody>
+						<tfoot :if="@data.state==2">
+							<tr>
+								<td colspan="4" class="text-right" style="border: none;padding: 3px 0;">
+									<button class="btn btn-min btn-primary" :click="@reissue(@data)">补发</button>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$("#close-detail").on("click", function() {
+					$("#detail").css("display", "none");
+				});
+			});
+		</script>
+	</div>
+	
+	<div class="modal-shade" id="reissue" style="display: none;">
+		<div class="modal-box" style="min-width: 300px;">
+			<div class="modal-box-title">订单补发<span class="modal-close closed">&#215;</span></div>
+			<div class="modal-box-body">
+				<div class="modal-box-content" style="padding: 30px;">
+					<div id="reissue-content" style="display: inline-block;color: #909aa5">补发中，请稍等</div>
+					<img id="load-gif" src="/assets/images/mer/5-121204194026.gif" style="float: right;">
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$(".closed").on("click", function() {
+					$("#reissue").css("display", "none");
+				});
+			});
+			function autoCloseModal(){
+				setTimeout(function() {
+					$("#reissue").css("display", "none");
+				}, 2000);
+			}
+		</script>
+	</div>
+	
+	<script type="text/javascript" src="/assets/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".Wdate").on("click", function() {
+				WdatePicker();
+			});
+			
+			$._tooltip();
+		});
+		
+		$("#group .select-box-list").combobox({
+			url: "group/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#group");
+			}
+		});
+		$("#partition .select-box-list").combobox({
+			url: "partition/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#partition");
+			}
+		});
+		$("#product .select-box-list").combobox({
+			url: "product/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#product");
+			}
+		});
+		var reissue = function(item) {
+			if (item.state == 2) {
+				$("#reissue-content").text("补发中，请稍等");
+				$("#reissue").css("display", "block");
+				$("#load-gif").css("display", "");
+				$.ajax({
+					url: "order/reissue",
+					load: false,
+					data: {id: item.id},
+					success: function(data) {
+						$("#reissue").css("display", "block");
+						$("#load-gif").css("display", "none");
+						$("#reissue-content").text(data.msg);
+						if (data.state) {
+							$("#close-detail").click();
+							paging.query();
+							autoCloseModal();
+						}else{
+							autoCloseModal();
+						}
+					}
+				});
+			}
+		};
+		var detail = avalon.define({
+			$id: "detail",
+			data: null,
+			detail: null,
+			reissue: reissue
+		});
+		var paging = $.paging("order", {
+			states: [
+				{clazz:"danger", content: "待付款"},
+				{clazz:"", content: "成　功"},
+				{clazz:"primary", content: "待发送"},
+				{clazz:"orange", content: "已退款"}
+			],
+			reissue: reissue,
+			detail: function(item) {
+				detail.data = item;
+				$.ajax({
+					load: false,
+					url: "order/detail",
+					data: {id: item.id},
+					success: function(data) {
+						if (data) {
+							detail.detail = data;
+							$("#detail").css("display", "block");
+						}
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>

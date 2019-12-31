@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>微信账户绑定</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/0.4.1/weui.css">
+</head>
+<body>
+	<div class="weui_msg">
+		<div class="weui_icon_area">
+			<i class="weui_icon_msg" th:classappend="${state ? 'weui_icon_success' : 'weui_icon_warn'}"></i>
+		</div>
+		<div class="weui_text_area">
+			<h4 class="weui_msg_title" th:text="${content}"></h4>
+		</div>
+		<div class="weui_text_area">
+			<a href="/mer/login" class="weui_btn weui_btn_primary">点击前往平台首页</a>
+		</div>
+	</div>
+</body>
+</html>

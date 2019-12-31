@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>留言板</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/0.4.1/weui.css">
+	<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+	<style type="text/css">
+		html, body,.chat-window {height: 100%;overflow: hidden;font-size: 14px;}
+		body {background: #fff}
+		table {
+			width: 100%;
+			height: 100%;
+			border-collapse: collapse;
+			border-spacing: 0;
+			border: none;
+		}
+		table td {border: 0;}
+		input:focus, button:focus {outline: none;}
+		input:focus {border-color: #2196f3;}
+		.t-c {text-align: center;}
+		.form-control {
+			width: 100%;
+			height: 36px;
+			line-height: 36px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			padding: 0 10px;
+		}
+		table input.form-control {
+			border-right: 0;
+			border-radius: 3px 0 0 3px;
+		}
+		.btn {
+			padding: 5px 10px;
+			white-space: nowrap;
+			height: 36px;
+			border: 0;
+			background: #2196f3;
+			color: #fff;
+			border-radius: 0 3px 3px 0;
+			cursor: pointer;
+		}
+		.btn:active {
+			-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.25);
+			box-shadow: inset 0 3px 5px rgba(0,0,0,.25);
+		}
+		ul {
+			list-style: none;
+			padding: 5px 0;
+		}
+		.warn {
+			position: fixed;
+			z-index: 11;
+			background: orange;
+		    color: #fff;
+		    line-height: 20px;
+		    padding: 0 10px;
+		    border-radius: 10px;
+		    left: calc(50% - 135px);
+		}
+/* 		.self .msg:before { */
+/* 			content: '已读'; */
+/* 			font-size: 12px; */
+/* 			left: -28px; */
+/* 			border: 0; */
+/* 			bottom: 0; */
+/* 			color: #aaa; */
+/* 		} */
+/* 		.self .msg.new:before { */
+/* 			content: '未读'; */
+/* 			color: #fc560b; */
+/* 		} */
+	</style>
+</head>
+<body>
+	<div th:if="${message == null}" class="weui_msg">
+		<div class="weui_icon_area">
+			<i class="weui_icon_msg weui_icon_info"></i>
+		</div>
+		<div class="weui_text_area">
+			<h4 class="weui_msg_title" th:text="${errMsg}"></h4>
+		</div>
+	</div>
+	<div th:if="${message != null}" class="chat-window" th:object="${message}">
+		<div class="chat-head">
+			<p style="margin-bottom: 10px;">分区名称：<span th:text="*{partitionName}"></span></p>
+			<div>
+				<p style="float: right;">
+					<span th:if="*{!#strings.isEmpty(phone)}" th:text="*{'TEL：' + phone}"></span>
+					<span th:if="*{!#strings.isEmpty(qq)}" th:text="*{'　QQ：' + qq}"></span>
+				</p>
+				<p>游戏账号：<span th:text="*{account}"></span></p>
+			</div>
+				<div th:if="${!message.isSubscribe and isReply}" class="warn">玩家未订阅此留言，无法收到您的回复！</div>
+		</div>
+		<div class="chat-body">
+			<div id="chat-content" class="chat-content">
+				<ul style="padding-bottom: 0;">
+					<li th:class="${isReply ? 'others' : 'self'}">
+						<div class="timer" th:text="*{#dates.format(leaveDate, 'MM-dd HH:mm')}"></div>
+						<div class="record">
+							<span class="icon" th:text="${isReply ? '玩家' : '我'}"></span>
+							<div class="msg" th:text="*{content}"></div>
+						</div>
+					</li>
+					<li th:each="item, itemState:${message.replies}" th:class="${item.type == 0 ? (isReply ? 'others' : 'self') : (isReply ? 'self' : 'others')}">
+						<div class="timer" th:if="${!item.isSameTime}" th:text="${#dates.format(item.recordDate, 'MM-dd HH:mm')}"></div>
+						<div class="record">
+							<span class="icon" th:text="${isReply ? (item.type == 0 ? '玩家' : '我') : (item.type == 0 ? '我' : 'GM')}"></span>
+							<div class="msg" th:text="${item.content}"></div>
+						</div>
+					</li>
+				</ul>
+				<ul :controller="records" style="padding-top: 0;display: none;" :css="{display: @data.length > 0 ? 'block':'none'}">
+					<li :for="item in @data" :class="@item.flag ? 'self' : 'others'">
+						<div class="timer" :text="@item.recordDate|date('MM-dd HH:mm:ss')"></div>
+						<div class="record">
+							<span class="icon" :text="@item.flag ? '我':(@item.type==1?'GM':'玩家')"></span>
+							<div class="msg" :text="@item.content"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="chat-foot">
+			<form id="reply">
+				<input type="hidden" name="type" th:value="${isReply ? 1 : 0}" />
+				<input type="hidden" name="msgId" th:value="${msgId}" />
+				<input type="hidden" name="message.id" th:value="${message.id}" />
+				<table :controller="reply">
+					<tr>
+						<td>
+							<input th:style="${isMsg?'':'display:none'}" :if="@isMsg" :css="{display: ''}" :duplex="@content" class="form-control" type="text" id="content" name="content" />
+							<div th:style="${isMsg?'display:none':''}" :if="!@isMsg" :css="{display: ''}" class="form-control t-c" >对方留言后可继续回复</div>
+						</td>
+						<td th:style="${isMsg?'width: 1%;':'width: 1%;display:none'}" :if="@isMsg" :css="{display: ''}">
+							<button id="btn" class="btn" type="button" :click="@send">发　送</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+		<script type="text/javascript" src="/assets/js/avalon.js"></script>
+		<script type="text/javascript">
+			var chat = document.getElementById("chat-content");
+			chat.scrollTop = chat.scrollHeight;
+			window.onresize = function() {
+				chat.scrollTop = chat.scrollHeight;
+			};
+			document.body.onload = function() {
+				chat.scrollTop = chat.scrollHeight;
+			};
+		</script>
+		
+		<script th:inline="javascript">
+			$(function() {
+				var records = avalon.define({
+					$id: "records",
+					data: []
+				});
+				var reply = avalon.define({
+					$id: "reply",
+					content: '',
+					isMsg: [[${isMsg}]],
+					send: function() {
+						if (!this.content) {
+							alert("请输入回复内容")
+							return;
+						}
+						$.post("/wechat/reply",$("#reply").serialize()).then(function(data) {
+							if (data.state) {
+								reply.isMsg = !reply.isMsg
+								records.data.push({
+									content: reply.content,
+									flag: true,
+									type: 0,
+									recordDate: new Date()
+								});
+								chat.scrollTop = chat.scrollHeight;
+// 								reply.content = '';
+							}
+						});
+					}
+				});
+				
+				(function(factory) {
+					factory(records);
+				})(function($$) {
+					if ('EventSource' in window) {
+						var source = new EventSource("/wechat/conn?msgId=" + [[${(isReply ? 1 : 0) + msgId}]]);
+				  
+						source.onopen = function(event) {
+							console.log("Open SSE !")
+						};
+						 
+						source.onmessage = function(event) {
+							if (event.data) {
+								var data = eval("(" + event.data + ")");
+								$$.data.push(data);
+								chat.scrollTop = chat.scrollHeight;
+								reply.isMsg = !reply.isMsg;
+							}
+						};
+						 
+						source.addEventListener('connect', function(event) {
+						 	console.log("connect", event.data)
+						}, false); 
+						
+						source.addEventListener('close', function(event) {
+							console.log("SSE Closed !")
+						 	source.close();
+						}, false);
+						 
+						source.onerro = function(event) {
+							console.log("SSE error", event)
+						};
+					} else {
+						alert("Your browser doesn't support SSE.Please manual flush the page to get new msg.")
+					}
+					
+				});
+			});
+		</script>
+	</div>
+</body>
+</html>

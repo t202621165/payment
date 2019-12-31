@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title">
+				<span class="title">充值统计</span>
+			</div>
+
+			<div class="form-heading">
+				<ul>
+					<li><a href="/mer/analyse/pay_1.html">充值统计</a></li>
+					<li><a href="/mer/analyse/pay_2.html">时段统计</a></li>
+					<li><a href="/mer/analyse/game_1.html">分区统计</a></li>
+					<li><a href="/mer/analyse/game_2.html">分组统计</a></li>
+					<li><a href="/mer/analyse/game_3.html">充值排行</a></li>
+					<li class="active"><a href="/mer/analyse/ips.html">IPS统计</a></li>
+				</ul>
+			</div>
+
+			<div class="content-body" id="table-content-ie"
+				:controller="/mer/visit">
+				<div class="col-xs-1">
+					<form id="search">
+						<table>
+							<tbody>
+								<tr>
+									<td>日 期：</td>
+									<td><input id="startDate" name="visitDate"
+										class="form-control Wdate" type="text"
+										th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 00:00:00')}"
+										style="width: 200px;" placeholder="-年-月-日  --:--:--" readonly></td>
+									<td>&nbsp;至&nbsp;</td>
+									<td><input id="endDate" name="endDate"
+										class="form-control Wdate" type="text"
+										th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
+										style="width: 200px;" placeholder="-年-月-日  --:--:--" readonly></td>
+									<td><button type="button" class="btn" :click="@query">查询</button></td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" style="margin-top: 10px;">
+							<caption th:replace="merchant/common/common :: table-caption"></caption>
+							<thead :skip='true'>
+								<tr>
+									<th>#</th>
+									<th>域名</th>
+									<th>访问次数</th>
+									<th>登录次数</th>
+									<th>支付笔数</th>
+									<th>充值金额</th>
+									<th>收入</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr :for="($index, item) in @data.content">
+									<td :text="$index + 1"></td>
+									<td :text="@item.domain"></td>
+									<td :text="@item.visitCount"></td>
+									<td :text="@item.count"></td>
+									<td :text="@item.orderCount"></td>
+									<td :text="@item.orderMoney|number(2)"></td>
+									<td :text="@item.profit|number(2)"></td>
+								</tr>
+								<tr :if="@data.totalElements < 1">
+									<td colspan="7">暂无记录！</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- content End-->
+	</div>
+
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+
+	<script type="text/javascript"
+		src="/assets/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$(".Wdate").on("click", function() {
+			WdatePicker();
+		});
+		
+		var paging = $.paging("/mer/visit");
+		
+	</script>
+</body>
+</html>

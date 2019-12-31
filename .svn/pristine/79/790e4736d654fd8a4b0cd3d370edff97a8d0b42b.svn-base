@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>多渠道兑换平台</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<script src="/assets/layui/layui.all.js"></script>
+</head>
+
+<body style="background: #333;">
+	<div style="text-align: center;margin-top: 100px;">
+		<img alt="" src="/assets/images/404.png">
+	</div>
+	<script type="text/javascript">
+		var content = "页面已丢失，无法找到当前访问路径！";
+		layer.open({
+			type : 1,
+			title : false,
+			closeBtn : false,
+			area : '380px;',
+			shade : 0,
+			resize : false,
+			btnAlign : 'c',
+			moveType : 1,
+			content : '<div style="padding: 50px; text-align: center; background-color: #393D49; color: #fff; font-weight: 300;">'+content+'</div>',	
+		});
+	</script>
+	
+</body>
+
+</html>

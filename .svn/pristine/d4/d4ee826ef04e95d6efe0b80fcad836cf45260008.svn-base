@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title"><span class="title">分区管理</span></div>
+			
+			<form id="search" :controller="partition">
+				<div class="content-body">
+					<div class="search">
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">所属分组</label>
+									</td>
+									<td class="tig-end">
+										<div id="group" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="group.id" readonly />
+											<ul class="select-box-list" onclick="paging.query()">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">游戏模板</label>
+									</td>
+									<td class="tig-end">
+										<div id="template" class="select-box select-box-after form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="template.id" readonly />
+											<ul class="select-box-list" onclick="paging.query()">
+												<li data-value="">-请选择-</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="tab-input-group">
+								<tr>
+									<td class="tab-input-addon tig-head">
+										<label class="tab-input-tag">分区状态</label>
+									</td>
+									<td class="tig-end">
+										<div id="product" class="select-box form-control" data-select-box-on="-请选择-">
+											<input type="text" class=" select-box-input" name="state" readonly />
+											<ul class="select-box-list" onclick="paging.query()">
+												<li data-value="">-请选择-</li>
+												<li data-value="1">启用</li>
+												<li data-value="0">禁用</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="content-body no-padding" id="table-content-ie">
+					<div class="load-box"></div>
+					
+					<input type="hidden" name="type" value="">
+					<input type="hidden" id="line" th:value="${line}">
+					<ul class="nav no-padding">
+						<li><a data-nav-name="type" data-nav-value="" href="javascript:;" :click="@checkNav" class="tab active">全　部</a></li>
+						<li><a data-nav-name="type" data-nav-value="1" href="javascript:;" :click="@checkNav" class="tab">传　奇</a></li>
+						<li><a data-nav-name="type" data-nav-value="2" href="javascript:;" :click="@checkNav" class="tab">传　世</a></li>
+						<li><a data-nav-name="type" data-nav-value="3" href="javascript:;" :click="@checkNav" class="tab">传奇三</a></li>
+						<li><a data-nav-name="type" data-nav-value="0" href="javascript:;" :click="@checkNav" class="tab">通用</a></li>
+<!-- 						<li><a data-nav-name="type" data-nav-value="4" href="javascript:;" :click="@checkNav" class="tab no-margin">WEB</a></li> -->
+					</ul>
+					
+					<table class="table table-hover">
+						<caption th:replace="merchant/common/common :: table-caption"></caption>
+						<thead class="batch-check">
+							<tr>
+								<td>
+									<label for="check-all" class="label-box checkbox2 no-margin">
+										<input id="check-all" type="checkbox" :click="@checkAll">
+										<i class="check no-margin"></i>
+									</label>
+								</td>
+								<th>排序</th>
+								<th>名称</th>
+								<th>游戏模板</th>
+								<th>服务器</th>
+								<th>脚本路径</th>
+								<th>状态</th>
+								<th>开区时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody class="batch-check">
+							<tr :for="($index, item) in @data.content" style="opacity: 0;" :css="{opacity: @opacity}">
+								<td>
+									<label :attr="{for:'check-one-'+$index}" class="label-box checkbox2 no-margin">
+										<input type="checkbox" name="ids" :attr="{id:'check-one-'+$index,value: @item.id}" :click="@checkOne">
+										<i class="check no-margin"></i>
+									</label>
+								</td>
+								<td>
+									<input class="form-control" name="sort" type="text" size="1" :duplex="@item.sort">
+								</td>
+								<td>
+									<a class="link tooltips-bottom" data-tooltips="点击编辑分区" 
+										:attr="{href:'partition/edit_'+@item.id+'.html'}" 
+										:text="@item.useDate|compareToNowDate(@item.name, @item.useName)"></a>
+								</td>
+								<td>
+									<p class="tab-p-heard" :text="@item.templateName"></p>
+									<p class="text-gray" :text="@item.currencyName"></p>
+								</td>
+								<td>
+									<p class="tab-p-heard" :text="@item.serverIp|parseNull('--')"></p>
+									<p :if="@item.type!=4" class="text-gray" :text="@item.serverPort"></p>
+								</td>
+								<td :text="@item.type==0?'SQL':(@item.type==4?'WEB通讯':@item.scriptPath)"></td>
+								<td>
+									<label :attr="{for:'switch-'+$index}" class="label-box no-margin no-float" :class="@item.state?'checked':''">
+										<input :attr="{id:'switch-'+$index}" type="checkbox" :duplex-checked="@item.state" :click="@render.state(@item.id)"/>
+										<span class="box-switch"><i></i></span>
+									</label>
+								</td>
+								<td>
+									<p class="tab-p-heard" :text="@item.useDate | date('yyyy-MM-dd')"></p>
+									<p class="text-gray" :text="@item.useDate | date('HH:mm:ss')"></p>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-min" href="javascript:;" :attr="{'data-uuid': @item.uuid}" :click="@render.recharge">充值</a>
+										<a class="btn btn-min" href="javascript:;" :click="@render.check(@item)">检测</a>
+										<a class="btn btn-min" href="javascript:;" :attr="{href:'partition/edit_'+@item.id+'.html'}">编辑</a>										
+										<a class="btn btn-min" href="javascript:;" :click="@render.load(@item)">加载</a>
+										<a class="btn btn-min" :attr="{href:'partition/edit_'+@item.id+'.html?isClone=true'}">克隆</a>
+										<a class="btn btn-min" :attr="{href: 'reissue_'+@item.id+'.html'}">补发</a>
+										<a class="btn btn-min btn-danger" href="javascript:;" :click="@render.dele(@item.id)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr :if="@data.totalElements < 1"><td colspan="9">暂无记录！</td></tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th colspan="9" class="text-right no-font">
+									<div class="btn-group pull-left">
+										<button type="button" data-batch="batchSort" data-url="partition/sort" class="btn cy-batchs cy-on" disabled>排序</button>
+										<button type="button" data-batch="batchDel" data-url="partition/batch_delete" class="btn btn-danger cy-batchs cy-on" disabled>删除</button>
+									</div>
+									<div class="page-option">
+										<a class="btn-paging" href="javascript:;" :click="@first">
+											<img src="/assets/images/mer/sy.png">
+										</a>
+										<a class="btn-paging" href="javascript:;" :click="@prev">
+											<img src="/assets/images/mer/syy.png">
+										</a>
+										<span :text="@data.number + 1 + '/' + @data.totalPages">0/0</span>
+										<a class="btn-paging" href="javascript:;" :click="@next">
+											<img src="/assets/images/mer/xyy.png">
+										</a>
+										<a class="btn-paging" href="javascript:;" :click="@last">
+											<img src="/assets/images/mer/wy.png">
+										</a>
+										<input id="jumpto" class="paging" type="text" placeholder="0">
+										<a class="btn-paging no-margin" href="javascript:;" :click="@jump">GO</a>
+									</div>
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</form>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript">
+		$("#group .select-box-list").combobox({
+			url: "group/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#group");
+			}
+		});
+		
+		$("#template .select-box-list").combobox({
+			url: "template/list",
+			isDefault: true,
+			template: '<li data-value="@value">@text</li>',
+			callback: function() {
+				$.selectBox("#template");
+			}
+		});
+		
+		var paging = $.paging("partition", {
+			state: $.render.state({
+				url: "partition/state",
+				msg: [
+					"\u5206\u533a\u542f\u7528\u6210\u529f",
+					"\u5df2\u7981\u7528\u5f53\u524d\u5206\u533a"
+				]
+			}),
+			test: function() {
+				alert(666)
+			},
+			dele: $.render.dele({
+				url: "partition/delete",
+				content: "\u5220\u9664\u5206\u533a\u5c06\u5bfc\u81f4\u5145\u503c\u65e0\u6cd5\u5b8c\u6210\uff01"
+			}),
+			check: function(item) {
+				if (item.type == 4) {
+					$.modalmsg("当前分区暂不支持检测分区！");
+					return;
+				}
+				
+				$.ajax({
+					url: "partition/check",
+					data: {id: item.id},
+					success: function(data) {
+						$.modalmsg(data.msg);
+					}
+				});
+			},
+			batchSort: function() {
+				var checked = $("tbody tr").find("td:eq(0) input:checked");
+				var sorts = "";
+				checked.each(function(i, element) {
+					sorts += "&sort=" + $(element).parents("tr").find("input[name=sort]").val();
+				});
+				if (checked.length > 0) {
+					$.ajax({
+						url: "partition/sort",
+						load: false,
+						isDis: false,
+						data: checked.serialize() + sorts,
+						success: function(data) {
+							data.state && paging.query();
+							$.modalmsg(data.msg);
+						}
+					});
+				}
+			},
+			load: function(item) {
+				if (item.type != 1 && item.type != 2) {
+					$.modalmsg("当前分区暂不支持加载分区！");
+					return;
+				}
+					
+				$.ajax({
+					url: "partition/load",
+					data: {id: item.id},
+					success: function(data) {
+						$.modalmsg(data.msg);
+					}
+				});
+			},
+			recharge: function(e) {
+				window.open($("#line").val() + "/pay/recharge/" + $(e.target).attr("data-uuid"));
+			}
+		});
+	</script>
+</body>
+</html>

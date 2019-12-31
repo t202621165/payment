@@ -1,0 +1,37 @@
+.page-header, .page-content .control .title-bar, .page-content .content 
+.content-title, .modal-box, .btn {
+	background-color: #3F51B5;
+}
+
+.table th, .font-default, .info, .content-body ul.nav li a, 
+.page-content .control .wrapper li a, .profile-title, .modal-box-body, 
+.dropdown-menu li a {
+	color: #3F51B5;
+}
+
+.modal-box, .modal-box-body {
+	border-color: #3F51B5;
+}
+.user-col1, .user-col2 .vline, .box-info, .user-accounts, .option-box li, .bank-info {
+	border-color: #99a8ff;
+}
+
+.user-accounts a {
+	color: #99a8ff;
+}
+
+.page-heager-nav .menus a.on, .page-heager-nav .menus a:hover {
+	background-color: #0621b3;
+}
+
+.btn:not(.disable):hover, .btn:not([disabled]):hover {
+	background-color: #4761f3;
+}
+
+.modal-box {
+    background: -webkit-linear-gradient(top,#3F51B5 0,#6c82ff 30%);
+    background: -moz-linear-gradient(top,#3F51B5 0,#6c82ff 30%);
+    background: -o-linear-gradient(top,#3F51B5 0,#6c82ff 30%);
+    background: linear-gradient(to bottom,#3F51B5 0,#6c82ff 30%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3F51B5,endColorstr=#6c82ff,GradientType=0);
+}

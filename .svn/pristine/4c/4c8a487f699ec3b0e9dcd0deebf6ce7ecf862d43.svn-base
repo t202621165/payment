@@ -1,0 +1,57 @@
+#服务器配置
+server:
+  port: 8080
+  tomcat:
+    max-threads: 1000
+    max-http-header-size: 10000000
+spring:
+  #数据源配置
+  datasource: 
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.0.169:8889/payment
+    username: iwanol
+    password: iwanol0928****
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 30000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      remove-abandoned: true
+      remove-abandoned-timeout: 1800
+      filters: stat,wall
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+#JPA
+  jpa:
+    database: MYSQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    #show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming: 
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  #前端模版
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+logging:
+  path: /cy/logs
+  level:
+    com:
+      cypay: info
+    root: warn
+com: 
+  payment: 
+    mark: paypal
+    name: 多渠道兑换平台
+    ssid: author-1

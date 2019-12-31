@@ -1,0 +1,90 @@
+#服务器配置
+server:
+  port: 80
+  tomcat:
+    max-threads: 1000
+    max-http-header-size: 10000000
+spring:
+  jmx:
+    enabled: false
+  #数据源配置
+  datasource: 
+    type: com.alibaba.druid.pool.DruidDataSource
+#    url: kVs3ZDJ5LA3hFmzkMNVwYsnjk3Qs/UYOUNb1DIGJfKh1yj57u9a2I5UflmyyUPVhHw1SfuIX0F50XYjQAdfEniZP6b9IlgEJxFuWzK2kLlI=
+    url: jdbc:mysql://192.168.0.169:8889/payment_test?rewriteBatchedStatements=true
+    username: FcZLFhAI0Kf61tyd7+qZuw==
+#    url: jdbc:mysql://114.55.94.50:8889/payment?rewriteBatchedStatements=true
+    password: xMvV1u+dKggGVkR+nkO3rA==
+#    username: root
+#    password: lypcj1216....
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 30000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      remove-abandoned: true
+      remove-abandoned-timeout: 1800
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  cache:
+    type: simple
+#    type: JCache
+#    jcache:
+#      config: classpath:/ehcache.xml
+#JPA
+  jpa:
+    database: MYSQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming: 
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  #前端模版
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+logging:
+  path: /cy/logs
+  level:
+    com.cypay: info
+    root: warn
+#自定义属性
+com.payment: 
+    url: paypal
+    mark: paypal
+    name: 多渠道兑换平台
+    ssid: author-1
+    t1_auto_settlement: false
+    sse-timeout: 60000 #SSE超时时间 单位：毫秒
+wx:
+  #微信开放平台-微信登陆
+  open:
+    appid: wxbdc5610cc59c1631
+    secret: wxbdc5610cc59c1631
+    redirect_uri: https://passport.yhd.com
+  #微信公众平台-消息推送
+  mp:
+    token: aaa
+    auth-url: http://q248m2.natappfree.cc
+    appid: wx2c0b4b5f8eae318e
+    secret: 3bc58c839670fcb6ae34685e55dc5bf6
+    msg-tid: 0-5LC3F-FCtpKc-I56CceBhdzG8K37zDSLI_O3WOZDE
+    msg-remark: 收到一条新的留言反馈，请及时回复（点击下方）！！
+    order-tid: ElHxnxqo7xQ_GQoMqSSTc8zq70jv0dMKwN1lfqEa-gY
+    order-remark: 请及时处理您的订单,如果没同步请尽快登录平台进行处理！！
+    reply-tid: ZC0WTXq2-1_Vz_IaW-mWre5w_FjS3O-GrMPflrn7h10
+    reply-remark: 点击下方查看回复详情！！
+    is-share: true
+    sub-wx-mp:
+      msg-remark: 您的留言已提交！！！请留意本公众号，我们将第一时间通知您反馈结果。

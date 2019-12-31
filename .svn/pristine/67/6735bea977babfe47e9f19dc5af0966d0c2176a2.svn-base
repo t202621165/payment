@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>product.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <link href="/assets/css/css.css" rel="stylesheet" type="text/css">
+	<link href="/assets/css/main.css" rel="stylesheet" type="text/css">
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
+
+  </head>
+  <body>
+  <form id="form" th:object="${gallery}">
+  	<input type="hidden" th:field="*{id}"/>
+  	<input type="hidden" th:field="*{mark}"/>
+  	<input type="hidden" th:field="*{state}"/>
+  	<input type="hidden" th:field="*{signType}"/>
+    <table th:width="100+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" id="main-tab">
+		<tbody th:class="@{active-tb baseInfo}">
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>通道名称</td>
+				<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{name}" placeholder="输入通道名称" th:style="@{width:100%}">
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle'
+					th:class='@{borderright borderbottom bggray font-weight}'>通道账号</td>
+				<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{account}" placeholder="请输入通道账号" th:style="@{width:100%}">
+				</td>
+			</tr>
+			<tr th:if="*{mark eq 'wechat'}" onmouseout="style.backgroundColor='#ffffff'"
+				th:onMouseOver="@{style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>AppId</td>
+				<td th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{appId}" placeholder="请输入appId" th:style="@{width:100%}">
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}" th:if="*{signType == 0}">
+				<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>通道密钥</td>
+				<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{md5Key}" placeholder="请输入通道密钥" th:style="@{width:100%}">
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}" th:if="*{signType == 1}">
+				<td th:align='center' th:valign='middle'
+					th:class='@{borderright borderbottom bggray font-weight}'>加密私钥</td>
+				<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{privateKey}" placeholder="请输入私钥" th:style="@{width:100%}">
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}" th:if="*{signType == 1}">
+				<td th:align='center' th:valign='middle'
+					th:class='@{borderright borderbottom bggray font-weight}'>加密公钥</td>
+				<td th:align='center' th:valign='middle' class='borderright borderbottom main-for'><input
+					class="text-word" type="text" th:field="*{publicKey}" placeholder="请输入公钥" th:style="@{width:100%}"></td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>金额范围</td>
+				<td th:align='left' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{minAmount}" placeholder="请输入最低充值金额 0.00" th:style="@{width:48%}">
+					<span>-</span>
+					<input class="text-word" type="text" th:field="*{maxAmount}" placeholder="请输入最高充值金额 0.00" th:style="@{width:49%}">
+				</td>
+			</tr>
+			<tr th:if="false" th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle'
+					th:class='@{borderright borderbottom bggray font-weight}'>风控域名</td>
+				<td th:align='left' th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{riskDomain}" placeholder="请输入风控域名" th:style="@{width:93%}">
+					<span title='开启/关闭风控'><input class='table-checkbox' type="checkbox" th:field="*{riskState}"/></span>				
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle'
+					th:class='@{borderright borderbottom bggray font-weight}'>跳转模式</td>
+				<td th:align='left' th:valign='middle'
+					th:class='@{borderright borderbottom main-for}'>
+					<label for="isRedirect1" class="label-box checkbox2 box-blue">
+						<input type="radio" th:field="*{isRedirect}" value=true><i class="radio default"></i>重定向跳转
+					</label>
+					<label for="isRedirect2" class="label-box checkbox2 box-blue" style="margin-left: 10px;">
+						<input type="radio" th:field="*{isRedirect}" value=false><i class="radio default"></i>直返二维码
+					</label>
+					<span style="margin-left: 30px;color: red;">若两种都支持，请按场景自由切换</span>
+				</td>
+			</tr>
+			<tr th:onmouseout="@{style.backgroundColor='#ffffff'}"
+				th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+				<td th:align='center' th:valign='middle' class='borderright borderbottom bggray font-weight'>付款备注</td>
+				<td th:valign='middle' class='borderright borderbottom main-for'>
+					<input class="text-word" type="text" th:field="*{des}" placeholder="付款时提示的备注、商品描述等，尽量避免填写中文(视接口而定)" th:style="@{width:100%}">
+				</td>
+			</tr>
+			
+		</tbody>
+		<tfoot>
+			<tr th:onmouseout="@{this.style.backgroundColor=&quot;#ffffff&quot;}"
+				th:onmouseover="@{this.style.backgroundColor=&quot;#edf5ff&quot;}"
+				th:style="@{background-color: rgb(255, 255, 255);}">
+				<td th:colspan="2" class="main-for" style="text-align: center;">
+					<input id="commit" type="button" value="提交"  class="text-but">
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script type="text/javascript">
+		function sel(type){
+			if(type == 0){
+				$("#md5Key").show();
+				$("#privateKey").hide();
+				$("#publicKey").hide();
+			}else if(type == 1){
+				$("#md5Key").hide();
+				$("#privateKey").show();
+				$("#publicKey").show();
+			}
+		}
+		$("#commit").on("click", function() {
+			$.ajax({
+				type : "post",
+				url : "/man/gallery/edit",
+				data : $("#form").serialize(),
+				success : function(data) {
+					parent.success(data.msg, 2000);
+					data.ele && $("input[name="+data.ele+"]").focus();
+					if (data.state) {
+						parent.mainFrame.paging.query();
+						var index = window.parent.layer.getFrameIndex(window.name);
+						window.parent.layer.close(index);
+					}
+				}
+			});
+		});
+	</script>
+  </body>
+</html>			

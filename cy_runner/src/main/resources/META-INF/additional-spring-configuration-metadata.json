@@ -1,0 +1,118 @@
+{"properties": [
+  {
+    "name": "com.payment.mark",
+    "type": "java.lang.String",
+    "description": "唯一标识"
+  },
+  {
+    "name": "com.payment.name",
+    "type": "java.lang.String",
+    "description": "网站名称/标题"
+  },
+  {
+    "name": "com.payment.ssid",
+    "type": "java.lang.String",
+    "description": "服务集合标识符"
+  },
+  {
+    "name": "com.payment.url",
+    "type": "java.lang.String",
+    "description": "网关通信域名,如果为空则默认获取当前商户的请求域名"
+  },
+  {
+    "name": "wx.open.appid",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "微信开放平台-appid"
+  },
+  {
+    "name": "wx.open.secret",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "微信开放平台-secret"
+  },
+  {
+    "name": "wx.open.redirect_uri",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "微信开放平台-授权回调域名"
+  },
+  {
+    "name": "com.payment.t1_auto_settlement",
+    "type": "java.lang.Boolean",
+    "defaultValue": false,
+    "description": "T1自动结算开关"
+  },
+  {
+    "name": "wx.mp.token",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "Token"
+  },
+  {
+    "name": "wx.mp.auth-url",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "授权URL，正确响应微信发送的Token验证"
+  },
+  {
+    "name": "wx.mp.appid",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "微信公众平台(主公众号)-appid"
+  },
+  {
+    "name": "wx.mp.secret",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "微信公众平台(主公众号)-secret"
+  },
+  {
+    "name": "wx.mp.msg-tid",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "留言成功通知-模板ID"
+  },
+  {
+    "name": "wx.mp.msg-remark",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "留言成功通知-模板备注"
+  },
+  {
+    "name": "wx.mp.order-tid",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "订单成功通知-模板ID"
+  },
+  {
+    "name": "wx.mp.order-remark",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "订单成功通知-模板备注"
+  },
+  {
+    "name": "wx.mp.reply-tid",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "留言回复通知-模板ID"
+  },
+  {
+    "name": "wx.mp.reply-remark",
+    "type": "java.lang.String",
+    "defaultValue": "",
+    "description": "留言回复通知-模板备注"
+  },
+  {
+    "name": "wx.mp.sub-wx-mp",
+    "type": "com.cypay.common.config.WxMpConfig$SubWxMp",
+    "defaultValue": "",
+    "description": "子公众号(面向玩家)"
+  },
+  {
+    "name": "wx.mp.is-share",
+    "type": "java.lang.Boolean",
+    "defaultValue": false,
+    "description": "设置为true时，子公众号的appid和secret将失效"
+  }
+]}

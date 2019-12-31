@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>payment.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+</head>
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+</style>
+<div th:replace="manage/common/common_js :: basic"></div>
+<div th:replace="manage/common/common_js :: date"></div>
+<body>
+	<!--main_top-->
+	<form id="form" :controller="settlement">
+		<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+			th:cellpadding="0" id="searchmain">
+			<tr>
+				<td th:width="99+'%'" th:align="left" th:valign="top">您的位置：<span
+					th:text="提现业务"></span>
+				</td>
+			</tr>
+			<tr>
+				<td th:align="left" th:valign="top">
+						<div th:class="searchDiv">
+							<div class="search-input" :if="@render.state==1">
+								<div class="search-input-top">
+									<span>开始时间：</span> <input type="text"
+										th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 00:00:00')}" name="startDate"
+										th:style="@{color: #528fc6;}"
+										th:onclick="'javascript:WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\',lang:\'zh-cn\'})'"
+										th:placeholder="@{--年--月--日  --:--:--}" th:readonly="readonly">
+								</div>
+
+							</div>
+							<div class="search-input" :if="@render.state==1">
+								<div th:class="search-input-top">
+									<span>结束时间：</span> <input type="text" 
+										th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 23:59:59')}" name="endDate"
+										th:style="@{color: #528fc6;}"
+										th:onclick="'javascript:WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\',lang:\'zh-cn\'})'"
+										th:placeholder="@{--年--月--日  --:--:--}" th:readonly="readonly">
+								</div>
+							</div>
+
+							<div th:class="search-input">
+								<div th:class="search-input-top">
+									<span>商户ＩＤ：</span> <input type="text" id="merchantId"
+										th:name="merchantId" th:placeholder="请输入商户ID">
+								</div>
+
+							</div>
+							<div th:class="search-input">
+								<div th:class="search-input-top">
+									<span>余额：</span> <input type="number" id="startMoney"
+										name="useAmount" th:min="1" th:placeholder="0"> <span
+										th:style="@{width: 20px;padding: 0;text-align: center;}">--</span>
+									<input type="number"
+										th:min="1" name = "amount" th:placeholder="@{99...9}">
+								</div>
+							</div>
+							<div th:class="search-input">
+								<div th:class="search-input-top">
+									<span id="paging">每页数量：</span>
+									<div th:replace="manage/common/common_js :: pageSize"></div>
+								</div>
+							</div>
+							
+							<div th:class="search-input">
+								<div>
+									<input :click="@query" type="button"
+										th:value="查询" th:class="@{btn-check btn-default btn-query}">
+								</div>
+							</div>
+						</div>
+				</td>
+			</tr>
+			<tr>
+				<td th:align="left" th:valign="top">
+
+					<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+						th:cellpadding="0" id="main-tab" style="border-top: none;">
+						<caption style="text-align: left;padding-left: 10px;">
+							<label for="apply" class="label-box checkbox checkbox-min box-blue">
+								<input type="radio" id="apply" name="state" value="0" :duplex="@render.state" :change="@query">
+								<span class="box-left">🈸待审核</span>
+								<i class="check-right radio default"></i>
+							</label>
+							<label for="payment" class="label-box checkbox checkbox-min box-blue">
+								<input type="radio" id="payment" name="state" value="2" :duplex="@render.state" :change="@query">
+								<span class="box-left">💰待付款</span>
+								<i class="check-right default"></i>
+							</label>
+							<label for="record" class="label-box checkbox checkbox-min box-blue">
+								<input type="radio" id="record" name="state" value="1" :duplex="@render.state" :change="@query">
+								<span class="box-left">📝结算记录</span>
+								<i class="check-right radio default"></i>
+							</label>							
+						</caption>
+						<thead id="tableTitle" class="batch-check">
+							<tr>
+								<th th:align="center" th:valign="middle" th:class="borderright">
+									<label class="label-box checkbox2 box-blue no-margin" :click="@checkAll">
+										<input type="checkbox"><i class="check no-margin"></i>
+									</label>
+								</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">申请时间</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">流水号</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">收款人</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">收款银行</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">收款账号</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">金额</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">手续费</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">描述</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">完成时间</th>
+								<th th:align="center" th:valign="middle" th:class="borderright">状态</th>
+							</tr>
+						</thead>
+						<tbody id="dataBody" class="batch-check">
+							<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+								th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}" 
+								:for="($index,item) in @data.content">
+								<td th:align="center" th:valign="middle" class="borderright borderbottom">
+									<label :attr="{for: 'bank_'+$index}" class="label-box checkbox2 box-blue no-margin">
+										<input :attr="{id: 'bank_'+$index,value: @item.settlementId}" type="checkbox" :click="@checkOne">
+										<i class="check no-margin"></i>
+									</label>
+								</td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.applyDate | date('yyyy-MM-dd HH:mm:ss')">									
+								</td>
+								<td hidden="hidden">
+									<input type="text" :duplex="@item.settlementId" id="settlementId">
+									<input type="text" :duplex="@item.merchantId" id="merchantId">
+								</td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.serialNumber"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.realName"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}":text="@item.bankName"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.bankNumber"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.amount | number(2)" id="amount" style="color:green;font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.fee | number(2)" id="fee" style="color:red;font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.discription" style="font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.complateDate | dateNotNull('yyyy-MM-dd HH:mm:ss')"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}">
+									<div th:class="@{tag primary}" :if="@item.state == 0">等待审核</div>
+									<div th:class="@{tag success}" :if="@item.state == 1">出款成功</div>
+									<div th:class="@{tag default}" :if="@item.state == 2">等待出款</div>
+									<div th:class="@{tag red}" :if="@item.state == -2">资金驳回</div>
+									<div th:class="@{tag red}" :if="@item.state == -1">审核失败</div>
+								</td>
+							</tr>
+						</tbody>
+						<tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'" :if="@data.totalElements == 0">
+							<td colspan="11" th:align="center" th:valign="middle" class="borderright borderbottom">暂无记录！</td>
+					   </tr> 
+						<tfoot>
+							<tr>
+								<td th:colspan="11" th:style="@{text-align: left;padding: 10px;}" th:align="center" th:valign="middle" th:class="@{borderright borderbottom}">
+									<input :if="@render.state==1" type="button" :click="render.clear" value="清除结算记录" class="btn-check btn-red" style="width:110px;margin-left:5px;">
+									
+									<div id="settle-group" class="btn-group" :if="@render.state!=1">
+										<input type="button" value="审核通过" class="btn-check btn-blue cy-batchs" 
+											:if="@render.state==0" :click="@render.settlement(1,'AGREE_TO_AUDIT')" disabled> 
+										<input type="button" value="资金批付" class="btn-check btn-blue cy-batchs" 
+											:if="@render.state==2" :click="@render.settlement(1,'AGREE_PAYMENT')" disabled>
+										<input shiro:hasPermission="payee_alipay" type="button" value="支付宝代付" 
+											class="btn-check btn-blue cy-batchs" :if="@render.state==2" :click="@render.settlement(2,'alipay')" disabled>
+										<input shiro:hasPermission="payee_wechat" type="button" value="微信代付" 
+											class="btn-check btn-blue cy-batchs" :if="@render.state==2" :click="@render.settlement(2,'wechat')" disabled>
+										<input type="button" value="驳回" class="btn-check btn-red cy-batchs" 
+											:click="@render.settlement(0,@render.state==0?'REFUSE_TO_AUDIT':'REFUSE_PAYMENT')" disabled>
+											
+									</div>
+									<span :if="@render.state==2" style="float: right;color:red;margin-right:30px;line-height: 30px;"><strong id = "totalFee"></strong></span>
+									<span :if="@render.state==2" style="float: right;color:red;margin-right:30px;line-height: 30px;"><strong id = "waitPayTotalAmount"></strong></span>										
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td th:align="left" th:valign="top" th:class="fenye"
+					th:style="@{text-align: left;}">
+					<div th:replace="manage/common/common_js :: fenye"></div>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script th:inline = "javascript">
+		$("#waitPayTotalAmount").empty().text("待付款总额 : 【"+[[${total.totalAmount}]]+" 元】");
+		$("#totalFee").empty().text("总手续费 : 【"+[[${total.totalFee}]]+" 元】");
+		var options = {
+			state: 2,
+			settlement: function(type, mark) {
+				var array = $("tbody.batch-check tr").find(":first input:checked");
+				if (array.length > 0) {
+					var data = new Array();
+					array.each(function () {
+			            data.push(this.value);
+			        });
+					
+					if (type == 0) {
+						window.parent.layer.prompt({
+							title : '输入拒绝理由并确认',
+							formType : 2
+						}, function(text, index) {
+							window.parent.layer.close(index);
+							window.parent.settlement(data, "/man/payment/" + mark + "?disc=" + text);
+						});
+					} else if (type == 1) {
+						window.parent.settlement(data,"/man/payment/" + mark);
+					} else {
+						window.parent.selectDaiFu(data,"/man/payee/",mark);
+					}
+				} else {
+					window.parent.error("请选择操作记录",2000);
+				}
+			},
+			clear:function(){
+				var startDate = $('input[name="startDate"]').val();
+			    var endDate = $('input[name="endDate"]').val();
+			    window.parent.layer.confirm('是否确认清除该时间段的所有结算数据？', {
+	           		 btn : [ '确定', '取消' ]//按钮
+	       		 	}, function() {
+	       		 	window.parent.ajaxSend("get","/man/settlement/clear",{"startDate":startDate,"endDate":endDate},function(data){
+	       		 		if(data.state){
+	       		 			window.parent.success(data.msg,2000,function(){
+	       		 				mainFrame.location.reload();
+	       		 			});
+	       		 		}else{
+	       		 			window.parent.error(data.msg,2000);
+	       		 		}
+	       		 	});
+	       		}); 
+			}
+		}
+		var paging = $.paging("settlement",options,"#form");
+	</script>
+</body>
+</html>

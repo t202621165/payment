@@ -1,0 +1,132 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>detail.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<!--main_top-->
+	<form id="form" :controller="settlement">
+	<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" id="searchmain">
+		<tr>
+			<td th:width="99+'%'" th:align="left" th:valign="top">您的位置：批复记录
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+				
+					<div class="searchDiv">
+						<div class="search-input" hidden="hidden">
+							<div class="search-input-top">
+								<span>流水号：</span>
+								<input type="text" name="replySerialNumber" th:value="${serialNumber}" class="text-word" placeholder="输入流水号查询">
+							</div>
+
+						</div>
+
+						<div th:class="search-input">
+							<div th:class="search-input-top">
+								<span id="paging">每页数量：</span>
+								<div th:replace="manage/common/common_js :: pageSize"></div>
+							</div>
+						</div>
+						<!-- <div th:class="search-input">
+							<div>
+								<input :click="query()" type="button"
+									th:value="查询" th:class="@{btn-check btn-default btn-query}">
+							</div>
+						</div> -->
+					</div>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+				<table th:width="100+'%'" th:border="0" th:cellspacing="0"
+					th:cellpadding="0" id="main-tab">
+					<thead id="tableTitle">
+						<!-- <tr>
+							<th th:colspan="11" th:valign="middle" th:class="borderright"
+								th:style="@{text-align: left;padding-left: 10px;color: #2790F7}">
+								<span>总计总额</span>
+								<b id="sumMoney" th:style="@{color: #FF0000}" th:text="0.00"></b>&nbsp;元
+								&nbsp;&nbsp;&nbsp;
+								<span>手续费</span>
+								<b id="sxf" th:style="@{color: #FF0000}" th:text="0.00"></b>&nbsp;元
+							</th>
+						</tr> -->
+						<tr>
+							<th th:align="center" th:valign="middle" th:class="borderright">申请时间</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">流水号</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">商户</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">收款银行</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">收款账号</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">金额</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">手续费</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">描述</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">完成时间</th>
+							<th th:align="center" th:valign="middle" th:class="borderright">状态</th>
+						</tr>
+					</thead> 
+					<tbody id="dataBody" :for="($index,item) in @data.content">
+						<tr th:onMouseOut="@{this.style.backgroundColor='#ffffff'}"
+								th:onMouseOver="@{this.style.backgroundColor='#edf5ff'}">
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.applyDate | date('yyyy-MM-dd HH:mm:ss')"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.serialNumber"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.realName"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}":text="@item.bankName"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}"
+									:text="@item.bankNumber"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.amount | number(2)" style="color:green;font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.fee | number(2)" style="color:red;font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.discription" style="font-weight: bold;"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}" :text="@item.complateDate | dateNotNull('yyyy-MM-dd HH:mm:ss')"></td>
+								<td th:align="center" th:valign="middle"
+									th:class="@{borderright borderbottom}">				
+									<div th:class="@{tag success}" :if="@item.state == 1">出款成功</div>
+									<div th:class="@{tag default}" :if="@item.state == 3">等待批复</div>
+								</td>
+							</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top" th:class="fenye"
+				th:style="@{text-align: left;}">
+				<div th:replace="manage/common/common_js :: fenye"></div>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<script type="text/javascript">
+		var paging = $.paging("settlement",null,"#form");
+	</script>
+</body>
+
+</html>

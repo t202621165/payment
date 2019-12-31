@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>多渠道兑换平台</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<script src="/assets/layui/layui.all.js"></script>
+</head>
+
+<body>
+	<script>
+		var content = "访问域名被拒绝,请联系平台管理员处理";
+		layer.open({
+			type : 1,
+			title : false, //不显示标题栏
+			closeBtn : false,
+			area : '380px;',
+			shade : 0.8,
+			id : 'LAY_layuipro', //设定一个id，防止重复弹出
+			resize : false,
+			btnAlign : 'c',
+			moveType : 1, //拖拽模式，0或者1
+			content : '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">'+content+'</div>',	
+		});
+	</script>
+</body>
+
+</html>

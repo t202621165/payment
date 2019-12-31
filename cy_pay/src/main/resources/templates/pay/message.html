@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="pay/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div class="header">
+		<img src="/assets/images/web/logo.png" class="cache" >
+		<img src="/assets/images/server.png" class="cache" >
+		<div class="content fixed-width">
+			<div class="tools" th:if="false">
+				<a th:href="${'/pay/query_' + type + '/'+ uuid}" data-tooltip-title="点击前往查询订单信息">订单查询</a>
+			</div>
+		</div>
+	</div>
+	<!-- header End-->
+	
+
+	<!-- container -->
+	<div class="container">
+		<div class="content-des font-red des-1">
+			<p>注：所有充值业务全及时生效(网络高峰期5-10分钟等待)，充值完成以后,请您在指定NPC处领取.无需向管理员索取。</p>
+		</div>
+
+		<div class="pay-body">
+			<div class="order">
+				<h2>我要留言</h2>
+				<form id="form-data">
+					<dl>
+						<dd>
+		                    <span class="lab">游戏分区：</span>
+	                        <select class="form-control required" id="partition" name="partitionId" data-rule="{required: true}" style="width: 214px;height: 32px;">
+		        				<option th:if="${!#lists.isEmpty(list) and #lists.size(list) != 1}" value="">--请选择分区--</option>
+		        				
+	       						<option th:if="${!#lists.isEmpty(list)}" th:each="item:${list}" 
+	       							th:value="${item.id}" th:text="${item.name}"></option>
+	                        </select>
+	                        <strong class="font-error">&nbsp;*</strong>
+		                </dd>
+					</dl>
+					<dl>
+						<dd>
+							<span class="lab">游戏帐号：</span>
+							<input class="form-control required" maxlength="30" name="account" data-rule="{required: true}" type="text" placeholder="请输入您的游戏账号">
+							<strong class="font-error">&nbsp;*</strong>
+						</dd>
+					</dl>
+					<dl>
+						<dd>
+							<span class="lab">联系ＱＱ：</span>
+							<input class="form-control required" maxlength="11" name="qq" data-rule="{qqnumber: false}" type="text" placeholder="请输入您的联系QQ">
+						</dd>
+					</dl>
+					<dl>
+						<dd>
+							<span class="lab">联系电话：</span>
+							<input class="form-control required" maxlength="11" name="phone" data-rule="{phonenumber: false}" type="text" placeholder="请输入您的联系电话">
+						</dd>
+					</dl>
+					<dl>
+		                <dd>
+		                    <span class="lab">留言内容：</span>
+		                    <textarea class="form-control required" name="content" data-rule="{required: true}" style="width:300px; height:90px;" rows="5" maxlength="100" placeholder="请输入您的留言内容"></textarea>
+		                    <strong class="font-error">&nbsp;*</strong>
+		                </dd>
+					</dl>
+	 				<dl>
+	 					<dd>
+	 						<span class="lab">&nbsp;</span>
+		 					<a id="form-commit" href="javascript:;" class="btn" title="点击提交留言">确定留言</a>
+	 					</dd>
+	 				</dl>
+				</form>
+				<div id="leave-succ" class="text-center hide" style="padding-top: 10px;">
+					<img src="/assets/images/pay/l_success.png">
+					<p style="color: red;font-size: 16px;">留言成功！</p>
+					<p style="color: red;font-size: 18px;">微信扫码后，可接收ＧＭ回复！</p>
+					<p style="color: red;font-size: 18px;">每次留言都要扫，否则无法绑定本条留言！</p>
+					<img id="wx_qrcode" alt="微信扫一扫" />
+				</div>
+			</div>
+			<div class="des-remark">
+				<p>注意：请玩家在确认成功冲值后，假如还没有出现获得相关物品，请再等几分钟，然后再用您充值的游戏帐号登陆，进行查看！谢谢！！</p>
+			</div>
+		</div>
+	</div>
+	<!-- container End-->
+	
+	<!-- foot -->
+	<div th:replace="pay/common/common :: foot"></div>
+	<!-- foot End-->
+	
+	<!-- online-server -->
+	<div th:replace="pay/common/common :: online-server"></div>
+	<!-- online-server End-->
+	
+	<!-- script-IE -->
+	<div th:replace="pay/common/common :: script-ie"></div>
+	<!-- script-IE End-->
+	
+	<script type="text/javascript" src="/assets/js/recharge.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$.message();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="merchant/common/common :: head"></head>
+
+<body>
+	<!-- header -->
+	<div th:replace="merchant/common/common :: header"></div>
+	<!-- header End-->
+
+	<!-- page-content -->
+	<div id="page-content" class="page-content">
+		<!-- control -->
+		<div th:replace="merchant/common/common :: control"></div>
+		<!-- control End-->
+
+		<!-- content -->
+		<div class="content">
+			<div class="content-title">
+				<span class="title" th:text="${isAdd?'添加分区':(isClone?'克隆分区':'编辑分区')}"></span>
+			</div>
+			
+			<div class="content-body">
+				<form th:object="${partition}" :controller="partition" :validate="@validate">
+					<!-- node-body -->
+					<div class="node-body">
+						<!-- 分区类型 -->
+						<div class="node-info">
+							<input th:if="${!isAdd && !isClone}" type="hidden" th:field="*{id}">
+							<input type="hidden" th:field="*{sort}">
+							<input type="hidden" name="isClone" th:value="${isClone}" />
+							<div class="node-info-name">分区类型：</div>
+							<div class="node-info-value no-font">
+								<label for="type-cq" class="lab-tab tooltips-bottom" data-tooltips="热血传奇" th:if="${isAdd} or *{type == 1}">
+									<input id="type-cq" type="radio" name="type" value="1" th:checked="*{type == 1}" :duplex="@data.type">
+									<span class="tab">
+										<span class="partition-type pt-cq"></span>
+									</span>
+								</label>
+								<label for="type-cs" class="lab-tab tooltips-bottom" data-tooltips="传奇世界" th:if="${isAdd} or *{type == 2}">
+									<input id="type-cs" type="radio" name="type" value="2" th:checked="*{type == 2}" :duplex="@data.type">
+									<span class="tab">
+										<img alt="传奇世界" src="/assets/images/mer/cs.jpg">
+									</span>
+								</label>
+								<label for="type-cq3" class="lab-tab tooltips-bottom" data-tooltips="传奇三" th:if="${isAdd} or *{type == 3}">
+									<input id="type-cq3" type="radio" name="type" value="3" th:checked="*{type == 3}" :duplex="@data.type">
+									<span class="tab">
+										<img alt="传奇三" src="/assets/images/mer/cq3.jpg">
+									</span>
+								</label>
+								<label for="type-sql" class="lab-tab tooltips-bottom" data-tooltips="SQL通用" th:if="${isAdd} or *{type == 0}">
+									<input id="type-sql" type="radio" name="type" value="0" th:checked="*{type == 0}" :duplex="@data.type">
+									<span class="tab">
+										<img alt="SQL通用" src="/assets/images/mer/sql.jpg">
+									</span>
+								</label>
+								<label for="type-game" class="lab-tab tooltips-bottom" data-tooltips="WEB通讯" th:if="false and ${isAdd} or *{type == 4}">
+									<input id="type-game" type="radio" name="type" value="4" th:checked="*{type == 4}" :duplex="@data.type">
+									<span class="tab">
+										<img alt="WEB" src="/assets/images/mer/web.png">
+									</span>
+								</label>
+							</div>
+						</div>
+						<!-- 分区类型 -->
+						<!-- 分区设置 -->
+						<div class="node-info">
+							<div class="node-info-name">分区设置：</div>
+							<div class="node-info-value">
+								<div class="info-value-sub">
+									<label th:for="${#ids.next('ybEgg')}" class="label-box checkbox checkbox-min">
+										<input type="checkbox" th:field="*{ybEgg}" :duplex-checked="@data.ybEgg">
+										<span class="box-left">开启元宝蛋</span>
+										<i class="check-right check"></i>
+									</label>
+									<label th:for="${#ids.next('noticeState')}" class="label-box checkbox checkbox-min">
+										<input type="checkbox" th:field="*{noticeState}" :duplex-checked="@data.noticeState">
+										<span class="box-left">启用分区公告</span>
+										<i class="check-right check"></i>
+									</label>
+									<label for="isCreate" class="label-box checkbox checkbox-min tooltips-bottom" data-tooltips="添加分区同时创建网关脚本，请确保与网关通讯正常" 
+										th:if="*{type == 1 or type == 2}" :if="@data.type == 1 || @data.type == 2">
+										<input id="isCreate" checked="checked" name="isCreate" type="checkbox">
+										<span class="box-left">创建游戏脚本</span>
+										<i class="check-right check"></i>
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- 分区设置 -->
+						<!-- 分区名称 -->
+						<div class="node-info">
+							<div class="node-info-name">测试开区名称：</div>
+							<div class="node-info-value form">
+								<input class="form-control" placeholder="请输入分区名称" maxlength="30" 
+									th:field="*{name}" :duplex="@data.name|parseNull" 
+									:rules="{required: true, maxlength: 30}">
+								<p>3-30个字符，请勿输入特殊符号</p>
+							</div>
+						</div>
+						<!-- 分区名称 -->
+						<!-- 开区时间 -->
+						<div class="node-info">
+							<div class="node-info-name">测试开区时间：</div>
+							<div class="node-info-value form">
+								<input class="form-control Wdate" placeholder="请选择开区时间" name="createDate" 
+									th:value="${#dates.format(partition.createDate, 'yyyy-MM-dd HH:mm:ss')}" 
+									:duplex="@data.createDate|date('yyyy-MM-dd HH:mm:ss')" 
+									:rules="{required: true}" readonly style="padding-right: 6px;">
+							</div>
+						</div>
+						<!-- 开区时间 -->
+						<!-- 开区名称 -->
+						<div class="node-info">
+							<div class="node-info-name">正式开区名称：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+									<input class="form-control" placeholder="请输入开区名称" 
+										maxlength="30" th:field="*{useName}" :duplex="@data.useName|parseNull" 
+										:rules="{required: true, maxlength: 30}">
+									<p>正式开区后使用当前名称为分区名称</p>
+								</div>
+							</div>
+						</div>
+						<!-- 开区名称 -->
+						<!-- 开区时间 -->
+						<div class="node-info">
+							<div class="node-info-name">正式开区时间：</div>
+							<div class="node-info-value form">
+								<input class="form-control Wdate" placeholder="请选择开区时间" name="useDate" 
+									th:value="${#dates.format(partition.useDate, 'yyyy-MM-dd HH:mm:ss')}" 
+									:duplex="@data.useDate|date('yyyy-MM-dd HH:mm:ss')" 
+									:rules="{required: true}" readonly style="padding-right: 6px;">
+							</div>
+						</div>
+						<!-- 开区时间 -->
+						<!-- 所属分组 -->
+						<div class="node-info">
+							<div class="node-info-name">所属分组：</div>
+							<div class="node-info-value form box-nomargin" style="width: 500px;">	
+								<label th:if="${!#lists.isEmpty(group)}" th:each ="item,itemStat : ${group}" 
+									th:for="${'redPacketAdditional'+itemStat.index}" class="label-box checkbox2">
+									<input class="group-item" th:id="${'redPacketAdditional'+itemStat.index}" type="checkbox" th:name="groupIds[__${itemStat.index}__]" th:value="${item.id}" th:checked="${item.isChecked}">
+									<i class="check"></i><span th:text ="${item.name}"></span>
+								</label>
+								<label th:if="${!#lists.isEmpty(group)}" for="redPacketAdditional" class="label-box checkbox2">
+									<input id="redPacketAdditional" type="checkbox">
+									<i class="check"></i><b>全选</b>
+								</label>
+								<a th:if="${#lists.isEmpty(group)}" href="/mer/group.html" class="btn btn-success tooltips-bottom" data-tooltips="点击添加新分组">添加</a>
+							</div>
+						</div>
+						<!-- 所属分组 -->
+						<!-- 分区模板 -->
+						<div class="node-info">
+							<div class="node-info-name">分区模板：</div>
+							<div class="node-info-value form">
+								<select class="form-control" name="template.id" 
+									:duplex="@data.templateId" :rules="{notnull: true}">
+									<option value="">-请选择-</option>
+									<option th:if="${!#lists.isEmpty(template)}" th:each="item:${template}" 
+										th:value="${item.id}" th:text="${item.name}" th:selected="*{templateId} == ${item.id}" 
+										th:attr="ms-if='(@data.type==4&&'+${item.type==0}+')||@data.type=='+${item.type}"></option>
+								</select>
+								<a href="/mer/template/add.html" class="btn btn-success tooltips-bottom" data-tooltips="点击添加新模板">添加</a>
+							</div>
+						</div>
+						<!-- 分区模板 -->
+						<!-- 脚本路径 -->
+						<div class="node-info" th:if="${isAdd} or *{type != 0}" :if="@data.type != 0 && @data.type != 4">
+							<div class="node-info-name">分区路径：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+								<input class="form-control width-300" type="text" placeholder="分区路径" 
+									th:field="*{scriptPath}" :duplex="@data.scriptPath|parseNull('D:/MirServer')" 
+									:rules="{required: true}">
+								</div>
+								<div class="info-value-sub">
+									<p>分区安装脚本目录或INI文件存放路径</p>
+								</div>
+							</div>
+						</div>
+						<!-- 脚本路径 -->
+						<!-- 分区公告 -->
+						<div class="node-info">
+							<div class="node-info-name">分区公告：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+									<textarea class="form-control width-300" rows="2" placeholder="请输入分区公告" 
+										th:field="*{notice}" :duplex="@data.notice|parseNull" 
+										:rules="{required: @data.noticeState}"></textarea>
+								</div>
+								<div class="info-value-sub">
+									<p>玩家将在游戏分区充值页面看到此消息提示</p>
+								</div>
+							</div>
+						</div>
+						<!-- 分区公告 -->
+						<!-- 网关通讯 -->
+						<div class="node-info" style="display: none;" :if="@data.type!=4" 
+							:css="{display: @data.type!=4?'inline-block':''}">
+							<div class="node-info-name">通讯网关：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+									<div>
+										<p>Ｉ　Ｐ：</p><input class="form-control" maxlength="16" type="text" 
+											placeholder="网关所在服务器ip" th:field="*{serverIp}" :duplex="@data.serverIp|parseNull" 
+											:rules="{required: true, maxlength: 16}">
+									</div>
+									<div>	
+										<p>端　口：</p><input class="form-control" maxlength="5" size="4" placeholder="端口" 
+											type="text" th:field="*{serverPort}" :duplex="@data.serverPort|parseNull" 
+											:rules="{required: true, max: 65535, digits: true}">
+									</div>
+								</div>
+								<p>您的游戏网关所在服务器IP和通讯端口</p>
+							</div>
+						</div>
+						<!-- 网关通讯 -->
+						<!-- WEB通讯 -->
+						<div class="node-info" style="display: none;" :if="@data.type==4" 
+							:css="{display: @data.type==0&&@data.communicationMode==0?'inline-block':''}">
+							<div class="node-info-name">WEB通讯：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+									<div>
+										<p>接收地址：</p>
+										<input class="form-control width-300" type="text" placeholder="接收地址" 
+											th:field="*{webUrl}" :duplex="@data.webUrl|parseNull" :rules="{required: true}">
+									</div>
+								</div>
+								<div class="info-value-sub">
+									<div>
+										<p>成功标识：</p>
+										<input class="form-control width-300" type="text" placeholder="通讯成功标识" 
+											th:field="*{successMark}" :duplex="@data.successMark|parseNull('success')" :rules="{required: true}">
+									</div>
+								</div>
+								<div class="info-value-sub">
+									<div>
+										<p>数据格式：</p>
+										<textarea class="form-control" rows="4" cols="50" th:field="*{dataFormat}" 
+											:duplex="@data.dataFormat|parseNull('orderNumber=订单号&playerAccount=玩家账号&payType=支付方式&currencyName=游戏币&payMoney=实际支付金额&finalMoney=赠送后金额&ratio=兑换比例&sign=MD5(订单号&玩家账号&支付方式&游戏币&实际支付金额&赠送后金额&兑换比例&签名密钥)')" 
+											:rules="{required: true}"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- WEB通讯 -->
+						<!-- 数据库配置 -->
+						<div class="node-info" style="display: none;" :if="@data.type==0&&@data.type!=4" 
+							:css="{display: @data.type==0&&@data.type!=4?'inline-block':''}">
+							<div class="node-info-name">数据库配置：</div>
+							<div class="node-info-value form">
+								<div class="info-value-sub">
+									<div>
+										<p>类　型：</p>
+										<select class="form-control" th:field="*{dbInfos.type}" 
+											:duplex="@data.dbInfos.type" :rules="{required: @data.type==0}">
+											<option value="0">MySQL</option>
+											<option value="2">SQL Server</option>
+										</select>
+									</div>
+								</div>
+								<div class="info-value-sub">
+									<div>
+										<p>Ｉ　Ｐ：</p><input class="form-control" maxlength="16" placeholder="数据库服务器ip" 
+											type="text" th:field="*{dbInfos.ip}" :duplex="@data.dbInfos.ip|parseNull('127.0.0.1')" 
+											:rules="{required: true, maxlength: 16}">
+									</div>
+									<div>	
+										<p>端　口：</p><input class="form-control" maxlength="5" size="4" placeholder="端口" 
+											type="text" th:field="*{dbInfos.port}" :duplex="@data.dbInfos.port|parseNull(@data.dbInfos.type==0?3306:1433)" 
+											:rules="{required: true, max: 65535, digits: true}">
+									</div>
+								</div>
+								<div class="info-value-sub">
+									<div>
+										<p>用户名：</p><input class="form-control" type="text" placeholder="数据库连接用户名" 
+											th:field="*{dbInfos.user}" :duplex="@data.dbInfos.user|parseNull(@data.dbInfos.type==0?'root':'sa')" :rules="{required: true}">
+									</div>
+									<div>	
+										<p>密　码：</p><input class="form-control width-140" type="text" placeholder="数据库连接密码" 
+											th:field="*{dbInfos.pwd}" :duplex="@data.dbInfos.pwd|parseNull" :rules="{required: true}">
+									</div>
+								</div>
+								<div class="info-value-sub">
+									<div>
+										<p>ＳＱＬ：</p>
+										<textarea class="form-control" cols="46" th:field="*{dbInfos.sql}" 
+											placeholder="UPDATE 数据库名.表名 SET 游戏币字段 = 游戏币字段 + @SUM@ WHERE 账号字段 = @USER@" 
+											:duplex="@data.dbInfos.sql|parseNull" :rules="{required: true}"></textarea>
+									</div>
+								</div>
+								<p>1.多条sql请用";"隔开&nbsp;&nbsp;</p>
+								<p>2.账号变量:@USER@ 游戏币数量:@SUM@</p>
+							</div>
+						</div>
+						<!-- 数据库配置 -->
+						<!-- 分区公告 -->
+						<div class="node-info">
+							<div class="node-info-name">&nbsp;</div>
+							<div class="node-info-value no-font">
+								<button th:if="${!isClone}" type="button" class="btn btn-large" :click="@save">保　存</button>
+								<button th:if="${!isAdd and isClone}" type="button" class="btn btn-large btn-primary" :click="@saveas">克隆分区</button>
+							</div>
+						</div>
+						<!-- 分区公告 -->
+					</div>
+					<!-- node-body -->
+				</form>
+			</div>
+		</div>
+		<!-- content End-->
+	</div>
+	
+	<!-- getway -->
+	<div th:replace="merchant/common/common :: getway"></div>
+	<!-- getway End-->
+	
+	<script type="text/javascript" src="/assets/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.common.js"></script>
+	<script type="text/javascript" src="/assets/js/options.min.js"></script>
+	<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".Wdate").on("click", function() {
+				WdatePicker();
+			});
+			
+			$("#redPacketAdditional").on("click", function() {
+				$(".group-item").prop("checked", this.checked);
+			});
+		});
+	</script>
+	<script type="text/javascript" th:inline="javascript">
+		var data = [[${partition}]];
+		data.serverIp = data.serverIp || returnCitySN["cip"];
+		var option = $._option({
+			$id: "partition",
+			url: "add",
+			hideMsg: true,
+			data: data,
+			back: "/mer/partition.html"
+		});
+	</script>
+</body>
+</html>

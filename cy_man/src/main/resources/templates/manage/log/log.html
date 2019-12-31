@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>list.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link th:href="@{/assets/css/css.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+<style>
+body {
+	overflow-x: auto;
+	background: #f2f0f5;
+	padding: 15px 0px 10px 5px;
+}
+#sys-log { 
+	width: 100%;
+	min-height: 600px;
+	resize: none;
+	border-radius: 8px;
+	border: 1px solid #222533;
+    background: #222533;
+    color: #97a1da;
+	padding: 15px;
+	font-size: 15px;
+	cursor: default;
+	white-space: pre;
+}
+#sys-log:focus {
+	outline: 0;
+}
+</style>
+</head>
+<div th:replace="manage/common/common_js :: basic"></div>
+<body>
+	<form id="form" :controller="log">
+	<!--main_top-->
+	<table th:width="99+'%'" th:border="0" th:cellspacing="0"
+		th:cellpadding="0" id="searchmain">
+		<tr>
+			<td th:width="99+'%'" th:align="left" th:valign="top">您的位置：<span
+				th:text="系统日志"></span>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+				<div th:class="searchDiv" th:align="left" style="line-height: 35px;padding-left: 15px;">
+					<div th:class="search-input">系统当天运行日志记录</div>					
+					<div>
+						<input id="refresh" type="button" value="刷　新" class="btn-check btn-red"style="margin-top: 3px;float: right;margin-right: 10px;">
+					</div>
+			    </div>
+			</td>
+		</tr>
+		<tr>
+			<td th:align="left" th:valign="top">
+				<textarea id="sys-log" readonly></textarea>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<div th:replace="manage/common/common_js :: work"></div>
+	<script>
+		$(function() {
+			function log() {
+				$.ajax({
+					type: "post",
+					url: "log/syslog",
+					success: function(data) {
+						$("#sys-log").val(data);
+					}
+				});
+			}
+			log();
+			$("#refresh").on("click", function() {
+				log();
+			});
+		});
+	</script>
+</body>
+</html>

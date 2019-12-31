@@ -1,0 +1,228 @@
+package com.cypay.pay.controller;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cypay.common.config.InitialLoader;
+import com.cypay.common.entity.Message;
+import com.cypay.common.enums.Edition;
+import com.cypay.common.enums.PaymentType;
+import com.cypay.common.service.impl.GalleryService;
+import com.cypay.common.service.impl.MessageService;
+import com.cypay.common.service.impl.PartitionService;
+import com.cypay.common.util.DUtil;
+import com.cypay.common.util.QRCodeUtil;
+import com.cypay.common.vo.PartitionVo;
+import com.cypay.common.vo.Result;
+import com.cypay.pay.factory.GatewayFactory;
+import com.cypay.pay.service.OrderService;
+import com.cypay.pay.service.ProductService;
+import com.cypay.pay.service.RechargeService;
+import com.cypay.pay.vo.NoticeVo;
+import com.cypay.pay.vo.OrderVo;
+import com.cypay.pay.vo.RechargeVo;
+import com.cypay.pay.vo.Resultful;
+
+@Controller
+@RequestMapping(value = "/pay")
+public class RechargeController {
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private PartitionService partitionService;
+	
+	@Autowired
+	private RechargeService rechargeService;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private GalleryService galleryService;
+	
+	@Autowired
+	private MessageService messageService;
+	
+	/**
+	 * 充值
+	 * @param vo
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@PostMapping(value = "/recharge")
+	public @ResponseBody Object recharge(OrderVo vo, @RequestParam(value = "token") String token, HttpServletRequest request) {
+		// token验证，防止重复提交
+		if (!token.equals(request.getSession().getAttribute("token"))) {
+			return Result.error("页面已失效，请刷新");
+		}
+		
+		// 订单提交参数校验
+		Result result = vo.validate();
+		if (!result.getState())
+			return result;
+		
+		// 获取当前充值分区信息
+		PartitionVo partition = partitionService.findByUuid(vo.getUuid());
+		if (partition == null) {
+			return Resultful.error("PARTITION_NOT_EXIST！");
+		}
+		
+		// 获取充值产品和通道信息
+		RechargeVo recharge = productService.findProductAndGallery(vo.getProductId());
+		if (recharge == null) {
+			return Resultful.error("PRODUCT_UNUSABLE！");
+		}
+		
+		// 校验产品信息和通道信息
+		result = recharge.validate(vo.getAmount());
+		if (!result.getState())
+			return result;
+		
+		// 判断是否支持当前通道
+		if (!GatewayFactory.payments.containsKey(recharge.getGalleryMark())) {
+			return Resultful.error("NOT_SUPPORT！");
+		}
+
+		String galleryMark = recharge.getRealGalleryMark();
+		// 判断当前通道是否已授权
+		if (!InitialLoader.USABLE_GALLERY.contains(galleryMark)) {
+			return Resultful.error("UNAUTHORIZED！");
+		}
+		
+		// 判断当前通道是否支持此支付方式
+		if (!PaymentType.isSupport(galleryMark, recharge.getTypeMark())) {
+			return Resultful.error("GALLERY_NOT_SUPPORT_PRODUCT！");
+		}
+		
+		if (!Edition.current_edition.isMultiGallery()) { // 系统不支持多通道
+			if (galleryService.countByMark(galleryMark).longValue() > 1) {
+				return Resultful.error("NOT_SUPPORT_MULTI_GALLERY！");
+			}
+		}
+		
+		// 创建订单，获取充值链接
+		Resultful resultful = rechargeService.recharge(vo, partition, recharge, request);
+		if (resultful.isState()) {
+			// 下单请求成功，移除token
+			request.getSession().removeAttribute("token");
+		}
+		return resultful;
+	}
+	
+	/**
+	 * 异步通知
+	 * @param _gateway_type_
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/notify")
+	public String gatewayNotify(HttpServletRequest request, HttpServletResponse response, 
+			Model model, @RequestParam(value = "_gateway_type_") String _gateway_type_) {
+		response.setCharacterEncoding("GBK");
+		NoticeVo notice = rechargeService.gatewayNotice(request, response, _gateway_type_, 0);
+		if (notice == null) {
+			return null;
+		}
+		model.addAttribute("returnVo", notice);
+		return "pay/success";
+	}
+	
+	/**
+	 * 同步跳转
+	 * @param _gateway_type_
+	 */
+	@RequestMapping(value = "/return")
+	public String gatewayReturn(HttpServletRequest request, HttpServletResponse response, 
+			Model model, @RequestParam(value = "_gateway_type_") String _gateway_type_) {
+		response.setCharacterEncoding("GBK");
+		NoticeVo notice = rechargeService.gatewayNotice(request, response, _gateway_type_, 1);
+		if (notice == null) {
+			return null;
+		}
+		model.addAttribute("returnVo", notice);
+		return "pay/success";
+	}
+	
+	/**
+	 * 生成二维码
+	 * @param qrcodeUrl
+	 * @param response
+	 */
+	@GetMapping(value = "/qrcode")
+	public void qrcode(@RequestParam(value = "qrcodeUrl") String qrcodeUrl, HttpServletResponse response) {
+		QRCodeUtil.createQRCode(qrcodeUrl, response);
+	}
+	
+	/**
+	 * 查询订单是否支付成功
+	 * @param orderNumber
+	 * @return
+	 */
+	@PostMapping(value = "/query")
+	public @ResponseBody Long query(@RequestParam(value = "orderNumber") String orderNumber) {
+		return orderService.countByOrderNumber(orderNumber);
+	}
+	
+	/**
+	 * 支付成功页面
+	 * @param orderNumber
+	 * @return
+	 */
+	@GetMapping(value = "/success")
+	public String success(@RequestParam(value = "orderNumber") String orderNumber, Model model) {
+		model.addAttribute("returnVo", orderService.findReturnData(orderNumber));
+		return "pay/success";
+	}
+	
+	/**
+	 * 错误页面
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = {"", "/error"})
+	public String error(Model model, @RequestParam(defaultValue = "0") Integer type) {
+		if (type == 0) {
+			model.addAttribute("code", "INVALID_REQUEST");
+			model.addAttribute("msg", "请求无效");
+		} else {
+			model.addAttribute("code", "PARTITION_NOT_FIND");
+			model.addAttribute("msg", "分区不存在或已被删除");
+		}
+		return "pay/error";
+	}
+	
+	/**
+	 * 玩家留言
+	 * @param message
+	 * @return
+	 */
+	@PostMapping(value = "/leaving")
+	public @ResponseBody Result leavingMessage(Message message) {
+		return messageService.save(message);
+	}
+	
+	/**
+	 * 订单查询
+	 * @param message
+	 * @return
+	 */
+	@PostMapping(value = "/oList")
+	public @ResponseBody Object queryOrder(OrderVo v) {
+		v.setOrderDate(DUtil.beginOfToday());
+		return orderService.findVoList(v);
+	}
+}
